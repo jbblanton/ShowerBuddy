@@ -1,0 +1,2 @@
+"""Automate the CRUD"""
+
