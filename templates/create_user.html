@@ -6,9 +6,24 @@
   <h1>Shower Buddy</h1>
 
   <form>
-    Name:
-    Gender / Sex / Body type to display
-    Hair
+    <label for="user-name">User's Name:</label>
+    <input id="user-name" type="text" name="user-name">
+    
+    <fieldset>
+      <legend>User's body type:</legend>
+      <input id="fem" type="radio" name="fem" value="female-feminine">
+      <label for="fem">Female / Feminine</label>
+      <br>
+      <input id="masc" type="radio" name="masc" value="male-masculine">
+      <label for="masc"> Male / Masculine</label>
+      <br>
+      <input id="other" type="radio" name="other" value="other">
+      <label for="other">Other / Non-binary</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>How does this person clean their Hair?</legend>
+      Shampoo? <input id="shampoo" type="checkbox" name="hair" value="yes">
         Shampoo
         Conditioner
         Other
@@ -21,6 +36,9 @@
             Legs
             Other
         Other
+    Caregiver's name
+    Caregiver's email
+    Caregiver's text 
     Submit
   </form>
   
