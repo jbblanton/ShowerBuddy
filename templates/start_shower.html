@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Start a Shower {% endblock %}
+
+{% block body %}
+
+  <h1>Start a Shower Routine</h1>
+
+  <label for="user-name">Who is taking a shower?</label>
+  <select id="user-name" name="select">
+    {% for user in users %}
+      <optgroup label="{{user}}">
+
+      {% for flow in user %}
+        <option value="{{flow}}">{{flow}}</option>
+      {% endfor %}
+
+      </optgroup>
+    {% endfor %}
+   </select>
+
+   <input type="submit" name="submit" value="Start Shower!">
+  
+{% endblock %}
