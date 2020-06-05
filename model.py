@@ -1,12 +1,20 @@
 """Models for the Shower Buddy app"""
 
+import os
 from flask_sqlalchemy import SQLAlchemy
+import crud
+import server
 
-sb_db = SQLAlchemy()
+os.system('dropdb testing')
+os.system('createdb testing')
 
-# ** To do: figure out how to prevent all these ids from getting jumbled!
+db = SQLAlchemy()
+
 # Can there be a connection between 2 (eg: cg_id = 12, user_id = 12.1 ?)
 # Can the incrementing start at a certain point, or start with min digits?
+
+
+################# Models & Info ##################################
 
 class Caregiver(db.Model):
     """A Caregiver"""
@@ -14,9 +22,10 @@ class Caregiver(db.Model):
     __tablename__ = "caregivers"
 
     caregiver_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
+    #caregiver_name =db.Column(db.String(25),)
     email = db.Column(db.String(50), unique = True, nullable = False,)
     password = db.Column(db.String(25), nullable = False,)
-    telephone = db.Column(db.String(10),)
+    telephone = db.Column(db.String(12),)
 
     user = db.relationship('User')
 
@@ -32,6 +41,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     user_name = db.Column(db.String(50), nullable = False,)
+    user_body = db.Column(db.String(6),)
     caregiver_id = db.Column(db.Integer, db.ForeignKey('caregivers.caregiver_id'))
 
     caregiver = db.relationship('Caregiver')
@@ -48,9 +58,9 @@ class Flow(db.Model):
 
     flow_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     title = db.Column(db.String(60),)
+# default title = 'daily'
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    # Should the Flow.title be nullable? is there a way to set a default? 
-    # At least set a suggestion ("daily shower"), along with a suggested flow.
+
 
     user = db.relationship('User')
 
@@ -77,6 +87,7 @@ class Flow_Activity(db.Model):
         return f'<Flow_Activity flow_act_id={self.flow_act_id}, \
                 step in sequence={self.seq_step}>'
 
+
 class Activity(db.Model):
     """Activities that occur during a shower sequence or 'flow' """
 
@@ -87,10 +98,12 @@ class Activity(db.Model):
     activity_video = db.Column(db.Text,)
 
     flow_act = db.relationship('Flow_Activity')
+    act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Activity id={self.activity_id}, description={self.description}, \
                 video={self.activity_video}>'
+
 
 class Activity_Product(db.Model):
     """Connector table between Activities & Products """
@@ -119,8 +132,26 @@ class Product(db.Model):
     product_name = db.Column(db.String(25), nullable = False,)
     product_label_color = db.Column(db.String(20),)
 
-    act_prod_id = db.relationship('activity_products.act_prod_id')
+    act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Product id={self.product_id}, name={self.product_name}, \
                 label color={self.product_label_color}>'
+
+################ end of models ##################################
+
+# Examples:
+
+# Caregiver: Robin@aol.com, 555-222-7890, pass1234
+#     User: Bob, male, daily showers, shampoo, soap, shave face
+
+# def example_dats():
+
+#     c = Caregiver(email="Robin@aol.com",telephone="555-222-7890", password="pass1234")
+#     # creating a user object called c 
+#     # including c in constructor call for our user creates the relationship
+#     u = User(user_name="Bob", user_body=male, caregiver=c)
+#     new_flow = Flow(.....)
+#     act1 = .......
+#     new_flow.activities.append(act1) #append things one at a time, see if you can use extened if you need to do many at once
+#     db.session.add(new_flow, u)
