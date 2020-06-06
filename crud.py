@@ -1,6 +1,7 @@
 """Use the form data to create accounts, users, shower flows, etc. """
 
-from model import db, Caregiver, User, Flow, Flow_Activity, Activity, Activity_Product, Product
+from model import db, Caregiver, User, Flow, Flow_Activity, Activity, Product
+import json
 
 def create_caregiver(email, telephone, password):
     """Pt 1 of form will collect this data: 
@@ -24,8 +25,10 @@ def create_user(name, body, caregiver):
     db.session.commit()
 
 
-def create_flow(title='daily', user):
-    """Will call upon an existing User object to create a shower routine (numbering the order of activities) """
+# Can we make a default title here?
+def create_flow(title, user):
+    """Will call upon an existing User object to create a shower routine 
+        (numbering the order of activities) """
 
     flow = Flow(title=title, user=user)
 
@@ -34,15 +37,15 @@ def create_flow(title='daily', user):
 
 # Should this be blended in to the next function to do all in one?
 
-def create_flow_activities(flow, steps, time):
+def create_flow_activities(flow, steps):
     """ Steps is a dictionary of activities [shampoo, condition, shave, etc.] 
             in an order designated by the caregiver during creation.
-        Time is a whole-shower unit that will be segmented out to each step 
-            in the flow.
+Need to figure out this part--> Time is a whole-shower unit that will be 
+        segmented out to each step in the flow.
         From flow, pull title and flow_id
         """
 
-    # steps = {1: "shampoo", 2: "shave face", 3: "scrub body"}
+    # steps = {1: "shampoo", 2: "shave face", 3: "scrub body"}  <--json file??
     for keys, values, in steps:
         Flow_Activity.seq_step = key
         Activity.description = Activities_dictionary[value]
@@ -50,16 +53,6 @@ def create_flow_activities(flow, steps, time):
 
 # Needed: a database of descriptions to pull from for Activity.description
 #        (future feature to allow a caregiver to record their voice?)
-Activities_dictionary = {
-    'shampoo': "Put a small amount of shampoo into your hand, \
-                pat your hands together, and then rub this shampoo into your hair.\
-                 Use your fingertips to massage your head, so the shampoo can \
-                 clean your scalp.", 
-    "conditioner": "Put a small amount of conditioner into your hand, \
-                pat your hands together, and then massage this conditioner \
-                into your hair.",
-    "another activity": "and so on"
-    }
 
     # Maybe this dictionary is where the images of a user's products can be stored?
     # Or, at least the url that would get the image, if kept separately. 

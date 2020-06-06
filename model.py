@@ -94,33 +94,61 @@ class Activity(db.Model):
     __tablename__ = "activities"
 
     activity_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
+    activity_name = db.Column(db.String(30))
     description = db.Column(db.Text,)
     activity_video = db.Column(db.Text,)
 
     flow_act = db.relationship('Flow_Activity')
-    act_prod_id = db.relationship('Activity_Product')
+    #act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Activity id={self.activity_id}, description={self.description}, \
                 video={self.activity_video}>'
 
 
-class Activity_Product(db.Model):
-    """Connector table between Activities & Products """
 
-    __tablename__ = "activity_products"
+## Deactivated this table on 6/5 based on a conversation with mentor R. 
+## Since one activity (shampooing) can have many products due to the number of 
+## unique users (Bob uses Pert, Lola uses Suave, Pickle uses Pantene, etc.), 
+## this was a messy connection.
+## This table is being replaced by Flow_Product which will tuple a 
+## flow_act_id and product_id to allow the unique combo of user + product.
+##
+# class Activity_Product(db.Model):
+#     """Connector table between Activities & Products """
 
-    act_prod_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
-    activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'))
-    product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'))
+#     __tablename__ = "activity_products"
 
-    activity = db.relationship('Activity')
-    product = db.relationship('Product')
+#     act_prod_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
+#     activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'))
+#     product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'))
 
-    def __repr__(self):
-        return f'<Act_Prod id={self.act_prod_id}, activity_id={self.activity_id}, \
-                product_id={self.product_id}>' 
+#     activity = db.relationship('Activity')
+#     product = db.relationship('Product')
 
+#     def __repr__(self):
+#         return f'<Act_Prod id={self.act_prod_id}, activity_id={self.activity_id}, \
+#                 product_id={self.product_id}>' 
+
+
+# class Flow_Product(db.Model):
+#     """Tying a unique flow to the necessary products"""
+
+#     __tablename__ = "flow_products"
+
+#     fa_id = db.Column(db.Integer, db.ForeignKey('flow_acts.flow_act_id'), primary_key = True,)
+#     prod_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), primary_key = True, )
+
+#     flowacts = db.relationship('Flow_Activity')
+#     products = db.relationship('Product')
+
+
+# REFERENCE:
+#    CREATE TABLE my_association (
+#   user_id INTEGER REFERENCES user(id),
+#   account_id INTEGER REFERENCES account(id),
+#   PRIMARY KEY (user_id, account_id)
+# )
 
 class Product(db.Model):
     """Info on Products used for a Shower """
@@ -132,26 +160,21 @@ class Product(db.Model):
     product_name = db.Column(db.String(25), nullable = False,)
     product_label_color = db.Column(db.String(20),)
 
-    act_prod_id = db.relationship('Activity_Product')
+    # act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Product id={self.product_id}, name={self.product_name}, \
                 label color={self.product_label_color}>'
 
+
 ################ end of models ##################################
 
-# Examples:
+def connect_to_db(flask_app, db_uri='postgresql:///testing', echo=True):
+    flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    flask_app.config['SQLALCHEMY_ECHO'] = echo
+    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Caregiver: Robin@aol.com, 555-222-7890, pass1234
-#     User: Bob, male, daily showers, shampoo, soap, shave face
+    db.app = flask_app
+    db.init_app(flask_app)
 
-# def example_dats():
-
-#     c = Caregiver(email="Robin@aol.com",telephone="555-222-7890", password="pass1234")
-#     # creating a user object called c 
-#     # including c in constructor call for our user creates the relationship
-#     u = User(user_name="Bob", user_body=male, caregiver=c)
-#     new_flow = Flow(.....)
-#     act1 = .......
-#     new_flow.activities.append(act1) #append things one at a time, see if you can use extened if you need to do many at once
-#     db.session.add(new_flow, u)
+    print('Connected to the db!')
