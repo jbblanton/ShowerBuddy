@@ -5,14 +5,19 @@
 
   <h1>Start a Shower Routine</h1>
 
+  Below this will be a jinja for loop to create a drop down menu where a caregiver can choose who is showering and, where applicable, which routine.
+<p></p>
+  ** Future feature: When started, send confirmation test to CG to ensure they're aware and attentive
+<p></p>
+
   <label for="user-name">Who is taking a shower?</label>
   <select id="user-name" name="select">
     {% for user in users %}
-      <optgroup label="{{user}}">
+      <optgroup label="{{user.user_name}}">{{user.user_name}} {{user.user_id}}
 
-      {% for flow in user %}
+{#       {% for flow in user %}
         <option value="{{flow}}">{{flow}}</option>
-      {% endfor %}
+      {% endfor %} #}
 
       </optgroup>
     {% endfor %}

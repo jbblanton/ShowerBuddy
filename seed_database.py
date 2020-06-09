@@ -6,8 +6,8 @@ import crud
 import model
 import server
 
-os.system('dropdb sbtesting')
-os.system('createdb sbtesting')
+os.system('dropdb testing')
+os.system('createdb testing')
 
 model.connect_to_db(server.app)  #From server.py, app is the argument passed in to this function to set up the database
 
@@ -70,6 +70,16 @@ def seed_products(dictionary):
 
     stuff = []
 
-    for key, value in Activities_dictionary:
-        thing = model.Product()
+    for key in Activities_dictionary:
+        thing = model.Product(product_name=key, 
+            product_img=Activities_dictionary[key]["image"])
+        stuff.append(thing)
 
+    model.db.session.add_all(stuff)
+    model.db.session.commit()
+
+
+# >>> robin = model.Caregiver(email="robin@aol.com", password="1234pass", telephone="555-789-4561")
+# >>> lola = model.User(user_name="Lola", user_body="female", caregiver=robin)
+# >>> model.db.session.add(robin)
+# >>> model.db.session.add(lola)

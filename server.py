@@ -3,10 +3,14 @@
 from flask import (Flask, render_template, request, flash, session, redirect) 
 import crud
 from jinja2 import StrictUndefined
+from model import connect_to_db
 
 app = Flask(__name__)
-# app.secret.key = 'lola'  <-- **Figure out if/why this is needed!
-app.jinja_env.undefined = StrictUndefined  # ** Review what the heck this is for
+
+app.secret_key = 'lola'
+app.jinja_env.undefined = StrictUndefined  
+
+
 
 
 @app.route('/')
@@ -15,6 +19,9 @@ def homepage():
 
     return render_template('/homepage.html')
 
+
+# This will be turned into a toggle button to allow ABOUT to show up 
+# on main pg with a click
 @app.route('/about')
 def about_app():
     """Take visitor to the About page"""
@@ -24,16 +31,42 @@ def about_app():
 
 @app.route('/create_user')
 def create_user():
+    """Go to new user form """
+
+    return render_template('/create_user.html')
+
+
+
+
+@app.route('/create_user', methods=["POST"])
+def register_user():
     """Add a new user.
         Check if caregiver info already exists and make connection; 
         else create both objects """
 
-    # , methods=['POST']
-    # Lots of info from the forms to get and organize
-    # Verify a user was added
-    # "Start shower now?"
+    # create a caregiver:
+    cg_email = request.form.get('caregiver-email')
+# If cg_email already in system, need to divert to adding an addtl user, not creating 2 accounts
+    cg_pass = request.form.get('caregiver-password')
+    cg_phone = request.form.get('caregiver-phone')
 
-    return render_template('/create_user.html')
+    caregiver = crud.create_caregiver(cg_email, cg_phone, cg_pass)
+
+    session["cg_email"] = cg_email
+
+
+    # create a user profile:
+    user_name = request.form.get('user-name')
+    user_body = request.form.get('body')
+
+    new_user = crud.create_user(user_name, user_body, caregiver)
+
+
+    # get the list of associated users for display on the start_shower page:
+    users = crud.get_user_by_caregiver(caregiver=caregiver)
+    print(users)
+
+    return render_template('/start_shower.html', users=users)
 
 
 @app.route('/login', methods=['POST'])
@@ -42,6 +75,17 @@ def log_in():
         Render P3 (choose user / start shower) """
 
     pass
+
+
+@app.route('/start_shower')
+def choose_flow():
+    """Display users and their shower flows.
+        Only associated user(s) will display.
+        Caregiver will be able to select and start a flow"""
+
+    users = crud.get_user_by_caregiver()
+
+    return render_template('start_shower', users=users)
 
 
 @app.route('/start_shower')
@@ -75,6 +119,6 @@ def play_shower():
 
 
 if __name__ == "__main__":
-    # connect_to_db(app)  <-- ** Figure out if you need something like this to function!
+    connect_to_db(app)  
     app.run(host='0.0.0.0', debug=True)
 

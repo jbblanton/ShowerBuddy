@@ -2,16 +2,9 @@
 
 import os
 from flask_sqlalchemy import SQLAlchemy
-import crud
-import server
 
-os.system('dropdb testing')
-os.system('createdb testing')
 
 db = SQLAlchemy()
-
-# Can there be a connection between 2 (eg: cg_id = 12, user_id = 12.1 ?)
-# Can the incrementing start at a certain point, or start with min digits?
 
 
 ################# Models & Info ##################################
@@ -30,8 +23,15 @@ class Caregiver(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<Caregiver caregiver_id={self.caregiver_id}, \
-                email={self.email}, phone={self.telephone}>'
+        return f'<Caregiver caregiver_id={self.caregiver_id}, email={self.email}, phone={self.telephone}>'
+
+    def check_if_registered(email):
+        """Check if a caregiver is already registered"""
+
+        # Query a given email address; 
+        #   If exists in db, alert('this email already has an account, plz log in')
+        #   Else: create account
+        pass
 
 
 class User(db.Model):
@@ -41,7 +41,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     user_name = db.Column(db.String(50), nullable = False,)
-    user_body = db.Column(db.String(6),)
+    user_body = db.Column(db.String(16),)
     caregiver_id = db.Column(db.Integer, db.ForeignKey('caregivers.caregiver_id'))
 
     caregiver = db.relationship('Caregiver')
@@ -49,6 +49,13 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User name={self.user_name} user_id={self.user_id}>'
+
+
+    def check_if_user():
+        """Look for the combo of user name & body + caregiver
+            Goal: prevent duplication; redirect to "add a flow" """
+
+        pass
 
 
 class Flow(db.Model):
@@ -65,8 +72,7 @@ class Flow(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<Flow flow_id={self.flow_id}, title={self.title}, \
-                user={self.user.user_name}>'
+        return f'<Flow flow_id={self.flow_id}, title={self.title}, user={self.user.user_name}>'
         # I don't know if I can write that last bit like that... FIND OUT
 
 
@@ -84,8 +90,7 @@ class Flow_Activity(db.Model):
     activity = db.relationship('Activity')
 
     def __repr__(self):
-        return f'<Flow_Activity flow_act_id={self.flow_act_id}, \
-                step in sequence={self.seq_step}>'
+        return f'<Flow_Activity flow_act_id={self.flow_act_id},  step in sequence={self.seq_step}>'
 
 
 class Activity(db.Model):
@@ -102,8 +107,7 @@ class Activity(db.Model):
     #act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
-        return f'<Activity id={self.activity_id}, description={self.description}, \
-                video={self.activity_video}>'
+        return f'<Activity id={self.activity_id}, description={self.description}, video={self.activity_video}>'
 
 
 
@@ -163,8 +167,7 @@ class Product(db.Model):
     # act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
-        return f'<Product id={self.product_id}, name={self.product_name}, \
-                label color={self.product_label_color}>'
+        return f'<Product id={self.product_id}, name={self.product_name}, label color={self.product_label_color}>'
 
 
 ################ end of models ##################################
@@ -177,4 +180,9 @@ def connect_to_db(flask_app, db_uri='postgresql:///testing', echo=True):
     db.app = flask_app
     db.init_app(flask_app)
 
-    print('Connected to the db!')
+
+if __name__ == '__main__':
+    from server import app
+
+    connect_to_db(app)
+    print("Connected to DB.")

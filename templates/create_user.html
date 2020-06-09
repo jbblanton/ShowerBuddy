@@ -2,35 +2,35 @@
 {% block title %} Create an Account {% endblock %}
 
 {% block body %}
-
+  
   <h1>Shower Buddy</h1>
 
 {# Look into a "Linear Stepper" or "Parallel Stepper" for making this form look
  good. Should be part of the Bootstrap work. #}
 
 
-  <form>
+  <form id="create-user-form" method="POST">
     {# Get basic info about user for USERS table #}
     <label for="user-name">User's Name:</label>
-    <input id="user-name" type="text" name="user-name">
+    <input id="user-name" type="text" name="user-name" required>
     
     <fieldset>
       <legend>User's body type:</legend>
-        <input id="fem" type="radio" name="body" value="female-feminine">
+        <input class="body-type" id="fem" type="radio" name="body" value="female-feminine">
       <label for="fem">Female / Feminine</label>
       <br>
-      <input id="masc" type="radio" name="body" value="male-masculine">
+      <input class="body-type" id="masc" type="radio" name="body" value="male-masculine">
         <label for="masc"> Male / Masculine</label>
       <br>
-      <input id="other" type="radio" name="body" value="other">
-        <label for="other">Other / Non-binary</label>
+      <input class="body-type" id="other-bod" type="radio" name="body" value="other-bod">
+        <label for="other-body">Other / Non-binary</label>
     </fieldset>
 
     <fieldset>
       <legend>How does this person clean their Hair?</legend>
       Shampoo? <input id="shampoo" type="checkbox" name="hair" value="shampoo">
       Conditioner? <input id="conditioner" type="checkbox" name="hair" value="conditioner">
-      Other? <input id="other" type="checkbox" name="hair" value="other">
+      Other? <input id="other-hair" type="checkbox" name="hair" value="other-hair">
       {# If other, add text input and collect that info #}
     </fieldset>
 
@@ -47,6 +47,38 @@
       Their legs? <input id="shave-legs" type="checkbox" name="shave-legs">
     </fieldset>
 
+    
+    <div id="shower-sort">
+      <h4>In what order should this person shower?</h4>
+      <div class="span6"> 
+        {# In preparation for Boostrap; 2 equal columns #}
+        <ol class="shower-order options">Shower Elements:
+          <li class="add">Shampoo hair</li>
+          <li class="add">Condition hair</li>
+          <li class="add">Wash body</li>
+          <li class="add">Shave face</li>          
+          <li class="add">Shave underarms</li>
+          <li class="add">Shave legs</li>          
+        </ol>
+      </div>
+      <div class="span6">
+        <ol class="shower-order final">Shower Order:
+          <li class="base">Initial body rinse</li>
+          <li class="base">Wet hair</li>
+          <li class="base">Final body rinse</li>
+        </ol>
+      </div>
+
+    <div class="span4">
+      <h4>Final order:</h4>
+      <pre id="serialized-output"></pre>
+    </div>
+
+
+
+
+
+
     <br>
 
     <strong>
@@ -57,22 +89,25 @@
 <br>
 
     <fieldset>
-      <legend>Caregiver Information</legend>
+      <legend>Caregiver Information:</legend>
       <label for="caregiver-name">Name:</label>
         <input id="caregiver-name" type="text" name="caregiver-name">
         <br>
       <label for="caregiver-phone">Cellphone number:</label>
-        <input id="caregiver-phone" type="text" name="caregiver-phone">
+        <input id="caregiver-phone" type="tel" name="caregiver-phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-555-1212">
         <br>
       <label for="caregiver-email">Email Address:</label>
-        <input id="caregiver-email" type="text" name="caregiver-email" required>
+        <input id="caregiver-email" type="email" name="caregiver-email" required>
         <br>
       <label for="caregiver-password">Password (8 characters minimum):</label>
         <input id="caregiver-password" type="password" name="caregiver-password" minlength="8" required>
     </fieldset>
 
     <input type="submit" value="Create Account">
-    <input type="submit" value="Save & Create another">
+    {# <input type="submit" formaction="reset" value="Save & Create another"> #}
+    {# Need to edit the Save & create another to submit and then reset the form
+    Maybe there should be a 'create new user' button on the post-log in page?? #}
   </form>
   
+
 {% endblock %}
