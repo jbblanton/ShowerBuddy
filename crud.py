@@ -1,40 +1,40 @@
 """Use the form data to create accounts, users, shower flows, etc. """
 
-from model import (db, connect_to_db, Caregiver, User, Flow, Flow_Activity, Activity, Product)
+from model import (db, connect_to_db, User, Client, Flow, Flow_Activity, Activity, Product)
 
 
 def create_caregiver(email, telephone, password):
     """Pt 1 of form will collect this data: 
         ...
         Plan is to call this function when the person moves from Pt 1 to Pt 2 so the Caregiver object will be available for the next function """
-
-    caregiver = Caregiver(email=email, telephone=telephone, password=password)
-
+      
+    caregiver = User(email=email, telephone=telephone, password=password)
+        
     db.session.add(caregiver)
     db.session.commit()
 
     return caregiver
 
 
-def create_user(name, body, caregiver):
+def create_client(name, body, caregiver):
     """P2 of form will collect this data:
         ...
         Expecting to be able to call on caregiver data based on either P1 or an existing caregiver account """
 
-    user = User(user_name=name, user_body=body, caregiver=caregiver)
+    client = Client(client_name=name, client_body=body, caregiver=caregiver)
 
-    db.session.add(user)
+    db.session.add(client)
     db.session.commit()
 
-    return user.user_id
+    return Client.client_id
 
 
 # Can we make a default title here?
-def create_flow(title, user):
+def create_flow(title, client):
     """Will call upon an existing User object to create a shower routine 
         (numbering the order of activities) """
 
-    flow = Flow(title=title, user=user)
+    flow = Flow(title=title, client=client)
 
     db.session.add(flow)
     db.session.commit()
@@ -42,16 +42,21 @@ def create_flow(title, user):
 # Should this be blended in to the create_flow_activities function to do all in one?
 
 
-def get_user_by_caregiver(caregiver):
+def get_client_by_caregiver(caregiver):
+    """Returns a list of all users associated with a caregiver ID"""
 
-    print("CG ID:")
-    print(caregiver.caregiver_id)
-    print("That was it!")
-
-    users = db.session.query(User).filter(User.caregiver_id == caregiver.caregiver_id).all()
-    print(users)
+    users = db.session.query(Client).filter(Client.caregiver_id == caregiver.user_id).all()
 
     return users
+
+
+def get_caregiver_by_email(email):
+    """Get info on a Caregiver so they can log in. """
+
+    caregiver = User.query.get(User.email == email)
+
+    return caregiver
+
 
 #####  TO DO:  #####
 

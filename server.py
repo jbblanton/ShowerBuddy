@@ -3,16 +3,23 @@
 from flask import (Flask, render_template, request, flash, session, redirect) 
 import crud
 from jinja2 import StrictUndefined
-from model import connect_to_db
+from model import (db, connect_to_db, User, Client)
+from flask_login import (LoginManager, login_user, login_required, logout_user)
+
+
 
 app = Flask(__name__)
 
 app.secret_key = 'lola'
 app.jinja_env.undefined = StrictUndefined  
 
+### For using the flask_login tools:
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 
+### App Routes:
 @app.route('/')
 def homepage():
     """Render the homepage"""
@@ -30,12 +37,10 @@ def about_app():
 
 
 @app.route('/create_user')
-def create_user():
+def render_create_user_page():
     """Go to new user form """
 
     return render_template('/create_user.html')
-
-
 
 
 @app.route('/create_user', methods=["POST"])
@@ -46,35 +51,89 @@ def register_user():
 
     # create a caregiver:
     cg_email = request.form.get('caregiver-email')
-# If cg_email already in system, need to divert to adding an addtl user, not creating 2 accounts
     cg_pass = request.form.get('caregiver-password')
     cg_phone = request.form.get('caregiver-phone')
 
-    caregiver = crud.create_caregiver(cg_email, cg_phone, cg_pass)
-
-    session["cg_email"] = cg_email
-
-
+    cg = User.check_if_registered(cg_email)
+    print('Here is the Caregiver')
+    print(cg)
+    if cg:
+# The flash didn't happen, just the redirect; Maybe stop redirect and put a 
+#   button to the log in page? 
+        flash('There is already an account with this email. Please try again, or else Please log in')
+        return '<h3>There is already an account with this email. Please try again, or else log in on the homepage.</h3>'
+    else:
+        caregiver = crud.create_caregiver(cg_email, cg_phone, cg_pass)
+        session["cg_email"] = cg_email
     # create a user profile:
-    user_name = request.form.get('user-name')
-    user_body = request.form.get('body')
-
-    new_user = crud.create_user(user_name, user_body, caregiver)
-
-
-    # get the list of associated users for display on the start_shower page:
-    users = crud.get_user_by_caregiver(caregiver=caregiver)
+        user_name = request.form.get('user-name')
+        user_body = request.form.get('body')
+        new_user = crud.create_client(user_name, user_body, caregiver)
+# get the list of associated users for display on the start_shower page:
+        users = crud.get_client_by_caregiver(caregiver=caregiver)
+    print('Here is the client')
     print(users)
-
     return render_template('/start_shower.html', users=users)
 
 
-@app.route('/login', methods=['POST'])
-def log_in():
-    """Log in a caregiver.
-        Render P3 (choose user / start shower) """
+@app.route('/login')
+def render_log_in_page():
+    """Render the page where a caregiver can log in."""
 
-    pass
+    return render_template('/homepage.html')
+
+
+# @app.route('/login', methods=["POST"])
+# def log_in_user():
+#     """"Log in an existing caregiver"""
+
+#     email = request.form.get('caregiver-email')
+#     password = request.form.get('caregiver-password')
+#     caregiver = crud.get_caregiver_by_email(email)
+
+#     if email == caregiver.email and password == caregiver.password:
+#         flash('Successfully logged in!')
+# # Pretty sure the flash won't work. Whatever happened to our 3 page app??
+#         session["cg_email"] = caregiver.email
+# # Pretty sure this should change to caregiver ID. Need to check in on this
+#         users = crud.get_user_by_caregiver(caregiver=caregiver)
+#         return render_template('/start_shower.html', users=users)
+#     else: 
+#         flash('Could not log in. Please try again!')
+#         return redirect('/')
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    print("this is the caregiver's id:")
+    print(user_id)
+    return User.query.get(int(user_id))
+
+
+@app.route('/homepage', methods=["GET", "POST"])
+def login():
+
+    email = request.form['caregiver-email']
+
+    user = User.query.filter_by(email=email).first()
+    #password = request.form.get('cg-password')
+    print(email)
+    #caregiver = crud.get_caregiver_by_email(email)
+    print(user)
+    if not user:
+        return '<h1>Account not found.</h1>'
+
+    login_user(user)
+
+    return '<h1>Login Successful!</h1>'
+
+
+@app.route('/logout')
+def log_out_user():
+    """Logout a caregiver"""
+
+    logout_user(user)
+    return 'You are logged out. Have a great day!'
 
 
 @app.route('/start_shower')
@@ -83,7 +142,7 @@ def choose_flow():
         Only associated user(s) will display.
         Caregiver will be able to select and start a flow"""
 
-    users = crud.get_user_by_caregiver()
+    users = crud.get_client_by_caregiver()
 
     return render_template('start_shower', users=users)
 

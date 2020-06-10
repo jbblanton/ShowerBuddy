@@ -8,9 +8,21 @@
   <h2> </h2>
     <ul>
       <li><a href="/about">About the Shower Buddy</a></li>
-      <li><a href="/login">Login to Start a Shower</a></li>
-      <li><a href="/create_user">Create a Shower Routine</a></li>
+      <li><a href="/create_user">Create a New account & a Shower Routine</a></li>
     </ul>
+
+    <p></p>  
+      <h4>Login to Start a Shower</h4>
+        <form id="login" method="POST">
+          <label for="caregiver-email">Email:</label>
+          <input id="cg-email" type="email" name="cg-email" required>
+          <label for="cg-password">Password:</label>
+          <input id="cg-password" type="password" name="cg-password" minlength="8" required>
+          <input type="submit" value="Log In">
+        </form>
+
+
+
   
 {% endblock %}
 

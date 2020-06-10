@@ -12,8 +12,8 @@
 
   <label for="user-name">Who is taking a shower?</label>
   <select id="user-name" name="select">
-    {% for user in users %}
-      <optgroup label="{{user.user_name}}">{{user.user_name}} {{user.user_id}}
+    {% for client in users %}
+      <optgroup label="{{client.client_name}}">{{client.client_name}} {{client.client_id}}
 
 {#       {% for flow in user %}
         <option value="{{flow}}">{{flow}}</option>

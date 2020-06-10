@@ -4,26 +4,45 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 
 
+
 db = SQLAlchemy()
 
 
 ################# Models & Info ##################################
 
-class Caregiver(db.Model):
-    """A Caregiver"""
+class User(db.Model):
+    """A User, aka: a Caregiver"""
 
-    __tablename__ = "caregivers"
+    __tablename__ = "users"
 
-    caregiver_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
+    user_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     #caregiver_name =db.Column(db.String(25),)
     email = db.Column(db.String(50), unique = True, nullable = False,)
     password = db.Column(db.String(25), nullable = False,)
     telephone = db.Column(db.String(12),)
 
-    user = db.relationship('User')
+    client = db.relationship('Client')
+
+    def get_id(self):
+        """Return caregiver's ID, to satisfy login requirements;
+            For use with the Flask Login """
+
+        return self.user_id
+
+    def is_authenticated(self):
+        """Return True if user is authenticated;
+            For use with the Flask Login """
+
+        return self.authenticated
+
+    def is_anonymous(self):
+        """No anonymous use allowed!
+            For use with the Flask Login """
+
+        return False
 
     def __repr__(self):
-        return f'<Caregiver caregiver_id={self.caregiver_id}, email={self.email}, phone={self.telephone}>'
+        return f'<Caregiver user_id={self.user_id}, email={self.email}, phone={self.telephone}>'
 
     def check_if_registered(email):
         """Check if a caregiver is already registered"""
@@ -31,27 +50,27 @@ class Caregiver(db.Model):
         # Query a given email address; 
         #   If exists in db, alert('this email already has an account, plz log in')
         #   Else: create account
-        pass
+        return User.query.filter(User.email == email).first()
 
 
-class User(db.Model):
-    """A User"""
+class Client(db.Model):
+    """A Client, aka: the end-User"""
 
-    __tablename__ = "users"
+    __tablename__ = "clients"
 
-    user_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
-    user_name = db.Column(db.String(50), nullable = False,)
-    user_body = db.Column(db.String(16),)
-    caregiver_id = db.Column(db.Integer, db.ForeignKey('caregivers.caregiver_id'))
+    client_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
+    client_name = db.Column(db.String(50), nullable = False,)
+    client_body = db.Column(db.String(16),)
+    caregiver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
-    caregiver = db.relationship('Caregiver')
+    caregiver = db.relationship('User')
     flow = db.relationship('Flow')
 
     def __repr__(self):
-        return f'<User name={self.user_name} user_id={self.user_id}>'
+        return f'<Client client_name={self.client_name} client_id={self.client_id} user_id={self.caregiver_id}>'
 
 
-    def check_if_user():
+    def check_if_client():
         """Look for the combo of user name & body + caregiver
             Goal: prevent duplication; redirect to "add a flow" """
 
@@ -66,13 +85,13 @@ class Flow(db.Model):
     flow_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     title = db.Column(db.String(60),)
 # default title = 'daily'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.client_id'))
 
 
-    user = db.relationship('User')
+    client = db.relationship('Client')
 
     def __repr__(self):
-        return f'<Flow flow_id={self.flow_id}, title={self.title}, user={self.user.user_name}>'
+        return f'<Flow flow_id={self.flow_id}, title={self.title}, client={self.Client.client_name}>'
         # I don't know if I can write that last bit like that... FIND OUT
 
 
@@ -171,6 +190,10 @@ class Product(db.Model):
 
 
 ################ end of models ##################################
+
+
+
+
 
 def connect_to_db(flask_app, db_uri='postgresql:///testing', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
