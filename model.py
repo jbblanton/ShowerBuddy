@@ -4,13 +4,12 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 
 
-
 db = SQLAlchemy()
 
 
 ################# Models & Info ##################################
 
-class User(db.Model):
+class Caregiver(db.Model):
     """A User, aka: a Caregiver"""
 
     __tablename__ = "users"
@@ -53,7 +52,7 @@ class User(db.Model):
         return User.query.filter(User.email == email).first()
 
 
-class Client(db.Model):
+class User(db.Model):
     """A Client, aka: the end-User"""
 
     __tablename__ = "clients"

@@ -1,6 +1,7 @@
 """Use the form data to create accounts, users, shower flows, etc. """
 
-from model import (db, connect_to_db, User, Client, Flow, Flow_Activity, Activity, Product)
+from model import (db, Caregiver, User, Flow, Flow_Activity, Activity, Product)
+import json
 
 
 def create_caregiver(email, telephone, password):
@@ -29,6 +30,18 @@ def create_client(name, body, caregiver):
     return Client.client_id
 
 
+def get_user_by_caregiver(caregiver):
+
+    print("CG ID:")
+    print(caregiver.caregiver_id)
+    print("That was it!")
+
+    users = db.session.query(User).filter(User.caregiver_id == caregiver.caregiver_id).all()
+    print(users)
+
+    return users
+
+
 # Can we make a default title here?
 def create_flow(title, client):
     """Will call upon an existing User object to create a shower routine 
@@ -38,8 +51,6 @@ def create_flow(title, client):
 
     db.session.add(flow)
     db.session.commit()
-
-# Should this be blended in to the create_flow_activities function to do all in one?
 
 
 def get_client_by_caregiver(caregiver):
@@ -56,9 +67,6 @@ def get_caregiver_by_email(email):
     caregiver = User.query.get(User.email == email)
 
     return caregiver
-
-
-#####  TO DO:  #####
 
 
 def create_flow_activities(flow, steps):
