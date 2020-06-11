@@ -1,6 +1,6 @@
 """Use the form data to create accounts, users, shower flows, etc. """
 
-from model import db, Caregiver, User, Flow, Flow_Activity, Activity, Product
+from model import (db, Caregiver, User, Flow, Flow_Activity, Activity, Product)
 import json
 
 def create_caregiver(email, telephone, password):
@@ -25,6 +25,18 @@ def create_user(name, body, caregiver):
     db.session.commit()
 
 
+def get_user_by_caregiver(caregiver):
+
+    print("CG ID:")
+    print(caregiver.caregiver_id)
+    print("That was it!")
+
+    users = db.session.query(User).filter(User.caregiver_id == caregiver.caregiver_id).all()
+    print(users)
+
+    return users
+
+
 # Can we make a default title here?
 def create_flow(title, user):
     """Will call upon an existing User object to create a shower routine 
@@ -35,7 +47,12 @@ def create_flow(title, user):
     db.session.add(flow)
     db.session.commit()
 
+
 # Should this be blended in to the next function to do all in one?
+
+
+#####  TO DO:  #####
+
 
 def create_flow_activities(flow, steps):
     """ Steps is a dictionary of activities [shampoo, condition, shave, etc.] 
@@ -61,10 +78,6 @@ Need to figure out this part--> Time is a whole-shower unit that will be
     # still be able to revert to the default if desired.
 
 
-
-
-#####  TO DO:  #####
-
 def get_products(user, flow):
     """Gets names and images of all products that will 
         be needed for a shower """
@@ -88,3 +101,7 @@ def update_product_images():
     pass
 
     # return success or fail message
+
+if __name__ == '__main__':
+    from server import app
+    connect_to_db(app)

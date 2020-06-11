@@ -10,9 +10,6 @@ os.system('createdb testing')
 
 db = SQLAlchemy()
 
-# Can there be a connection between 2 (eg: cg_id = 12, user_id = 12.1 ?)
-# Can the incrementing start at a certain point, or start with min digits?
-
 
 ################# Models & Info ##################################
 
