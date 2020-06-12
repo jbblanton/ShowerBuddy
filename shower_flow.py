@@ -27,11 +27,11 @@ def create_shower_flow(flow_id):
 def create_product_list(flow_id):
     """Use this to make a list of products needed during a given flow"""
 
-    # Product = { product_id:
-    #                 product_image:
-    #                 product_name:
-    #                 product_color_label:
-    #             }
+    Product = { product_id:
+                    product_image:
+                    product_name:
+                    product_color_label:
+                }
 
     products = []
 

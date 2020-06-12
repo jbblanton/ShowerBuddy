@@ -4,6 +4,7 @@
 //   $("p.about").toggle(10);
 // })
 
+<<<<<<< HEAD
 // const group = $("ol.shower-order").sortable({
 //   group: 'shower-order',
 //   isValidTarget: function ($item, container) {
@@ -78,3 +79,14 @@
 //     console.log(response)
 //   })
 // });
+=======
+// document.querySelector('#about-sb').addEventListener('click', (evt) => {
+//   $("p.about").toggle(10);
+// })
+
+
+
+
+
+
+>>>>>>> af071d6... End of day 9

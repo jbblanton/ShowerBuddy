@@ -38,18 +38,18 @@ def example_people():
     # flows = []
 
     flow = {
-        f = {"user": lola, "title": "daily",
+        1: {"user": lola, "title": "daily",
             1: "shampoo", 2: "conditioner", 3: "bar_soap", 4: "shave armpits"},
-        l = {"user": Tuesday, "title": "weekly",
+        2: {"user": Tuesday, "title": "weekly",
             1: "conditioner", 2: "liquid_soap", 3: "shave legs"},
-        o = {"user": pickle, "title": "daily",
+        3: {"user": pickle, "title": "daily",
             1: "bar_soap", 2: "shave face"},
-        w = {"user": Tuesday, "title": "Mon, Thur",
+        4: {"user": Tuesday, "title": "Mon, Thur",
             1: "shampoo", 2: "conditioner", 3: "liquid_soap", 
             4: "shave armpits", 5: "shave legs"}
             }
 
-    for key in flow:
+    #for key in flow:
 
 
 
@@ -70,26 +70,48 @@ def example_people():
     model.db.session.commit()
 
 
-Activities_dictionary = {
+
+def seed_activities():
+    """Fill the Activity table with standard data"""
+    
+    Activities_dictionary = {
     "shampoo": {
         "description": "Put a small amount of shampoo into your hand, pat your hands together, and then rub this shampoo into your hair. Use your fingertips to massage your head, so the shampoo can clean your scalp.", 
         "video": "video_file.mpeg",
-        "image": "shampoo.jpg"
+        "image": "/static/img/shampoo.png"
         }, 
     "conditioner": {
         "description": "Put a small amount of conditioner into your hand, pat your hands together, and then massage this conditioner into your hair.", 
         "video": "video_file2.mpeg",
-        "image": "conditioner.jpg"
+        "image": "/static/img/conditioner.png"
         },
-    "bar soap": {
+    "bar-soap": {
         "description": "Get the bar of soap wet and rub the bar onto a washcloth to create a lather. Use washcloth to scrub your body. Be sure to spend extra time on the trinity.",
         "video": "video_file3.mpeg",
-        "image": "bar_soap.jpg"
-    }
+        "image": "/static/img/bar_soap.png"
+        },
+    "liquid-soap": {
+        "description": "To Be Completed",
+        "video": "video_file",
+        "image": "/static/img/liquid_soap.png"
+        },
+    "shave-face": {
+        "description": "To Be Completed",
+        "video": "video_file",
+        "image": "/static/img/razor2.png"
+        },
+    "shave-armpits": {
+        "description": "To Be Completed",
+        "video": "video_file",
+        "image": "/static/img/razor_blades.png"
+        },
+    "shave-legs": {
+        "description": "To Be Completed",
+        "video": "video_file",
+        "image": "/static/img/lady_razor.png"
+        },
 }
 
-def seed_activities(dictionary):
-    """Fill the Activity table with standard data"""
 
     actions = []
     stuff = []
@@ -107,3 +129,9 @@ def seed_activities(dictionary):
     model.db.session.add_all(actions)
     model.db.session.add_all(stuff)
     model.db.session.commit()
+
+
+
+seed_activities()
+example_people()
+

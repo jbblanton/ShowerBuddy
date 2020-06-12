@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block title %} Start a Shower {% endblock %}
 
+{#     <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> #}
+
 {% block body %}
 
   <h1>Start a Shower Routine</h1>
@@ -12,17 +16,88 @@
 
   <label for="user-name">Who is taking a shower?</label>
   <select id="user-name" name="select">
-    {% for client in users %}
-      <optgroup label="{{client.client_name}}">{{client.client_name}} {{client.client_id}}
 
-{#       {% for flow in user %}
-        <option value="{{flow}}">{{flow}}</option>
+    {% for user in users %}
+      <option value="{{user.user_name}}">{{user.user_name}}
+
+{#  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER.
+
+      {% for flow in user %}
+        <option value="{{flow.title}}">{{flow.title}}</option>
+
       {% endfor %} #}
 
-      </optgroup>
+      </option>
     {% endfor %}
    </select>
 
    <input type="submit" name="submit" value="Start Shower!">
   
+
+{#   // This is what needs to be added to the html in order to run 
+// jQuery and Bootstrap -->
+// <body>
+//   >content<
+
+//   jQuery script:
+// <script
+//   src="https://code.jquery.com/jquery-3.5.1.js"
+//   integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+//   crossorigin="anonymous"></script>
+
+//   Boostrap script: 
+//   <!-- CSS only -->
+// <link rel="stylesheet" 
+// href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+// integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+// crossorigin="anonymous">
+
+//   My own script:
+//   <script></script>
+// </body>
+// </html> #}
+
+
+
+
+{# Maybe this all goes on to the DASHBOARD so the start_shower.html can be where the event is coded? 
+  Or just do it all on one pg?  #}
+
+
+  <span>
+
+    <h2 id="activity-name"> - activity_name goes here - </h2>
+  </span>
+  <div class="container" id="activity-video">This would be the video of the action: (Random gif chosen)
+    <div style="width:80%;height:0;padding-bottom:76%;position:relative;"><iframe src="https://giphy.com/embed/1ZP5VGWqd6nYY" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/vintage-basketball-1ZP5VGWqd6nYY">via GIPHY</a></p>
+  <hr>
+
+<h1 id="activity-name"> - Activity_name - Progress Bar</h1>
+
+<div id="myProgress">
+  <div id="myBar"></div>
+</div>
+
+<br>
+<button onclick="move()">Click Me</button> 
+{# Obviously the 'click me' needs to go and the start will trigger automatically #}
+
+<script>
+  function move() {
+    var elem = document.getElementById("myBar");   
+    var width = 0;
+    var id = setInterval(frame, 1000);
+    function frame() {
+      if (width == 100) {
+        clearInterval(id);
+      } else {
+        width++; 
+        elem.style.width = width + '%'; 
+      }
+    }
+  }</script>
+
+      <img id="product-img">
+      <button id="help">HELP!</button>
+
 {% endblock %}

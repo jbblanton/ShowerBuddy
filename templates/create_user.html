@@ -22,29 +22,34 @@
       <input class="body-type" id="masc" type="radio" name="body" value="male-masculine">
         <label for="masc"> Male / Masculine</label>
       <br>
+
       <input class="body-type" id="other-bod" type="radio" name="body" value="other-bod">
         <label for="other-body">Other / Non-binary</label>
     </fieldset>
 
+{# Maybe I add a field for 'Frequncy' and use that as the title?  #}
+
     <fieldset>
       <legend>How does this person clean their Hair?</legend>
-      Shampoo? <input id="shampoo" type="checkbox" name="hair" value="shampoo">
-      Conditioner? <input id="conditioner" type="checkbox" name="hair" value="conditioner">
-      Other? <input id="other-hair" type="checkbox" name="hair" value="other-hair">
+
+      Shampoo? <input id="shampoo" type="checkbox" name="activity" value="shampoo">
+      Conditioner? <input id="conditioner" type="checkbox" name="activity" value="conditioner">
+      Other? <input id="other-hair" type="checkbox" name="activity" value="other-hair">
+
       {# If other, add text input and collect that info #}
     </fieldset>
 
     <fieldset>
       <legend>How does this person clean their Body?</legend>
-      Bar soap? <input id="bar-soap" type="checkbox" name="body" value="bar-soap">
-      Liquid soap? <input id ="liq-soap" type="checkbox" name="body" value="liq-soap">
+      Bar soap? <input id="bar-soap" type="checkbox" name="activity" value="bar-soap">
+      Liquid soap? <input id ="liq-soap" type="checkbox" name="activity" value="liq-soap">
     </fieldset>
 
     <fieldset>
       <legend>Does this person Shave?</legend>
-      Their face? <input id="shave-face" type="checkbox" name="shave" value="shave-face">
-      Their underarms? <input id="shave-pits" type="checkbox" name="shave" value="shave-pits">
-      Their legs? <input id="shave-legs" type="checkbox" name="shave-legs">
+      Their face? <input id="shave-face" type="checkbox" name="activity" value="shave-face">
+      Their underarms? <input id="shave-pits" type="checkbox" name="activity" value="shave-pits">
+      Their legs? <input id="shave-legs" type="checkbox" name="activity" value="shave-legs">
     </fieldset>
 
     
