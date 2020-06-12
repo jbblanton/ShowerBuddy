@@ -41,7 +41,7 @@ def create_user():
 @app.route('/create_user', methods=["POST"])
 def register_user():
     """Add a new user.
-        Check if caregiver info already exists; 
+        Check if caregiver info already exists
         else create both objects """
 
     # create a caregiver:
@@ -52,6 +52,7 @@ def register_user():
 
     caregiver = crud.create_caregiver(cg_email, cg_phone, cg_pass)
 
+# Why?? I'm not even doing anything with sessions.... UGH
     session["cg_email"] = cg_email
 
 
@@ -60,6 +61,11 @@ def register_user():
     user_body = request.form.get('body')
 
     new_user = crud.create_user(user_name, user_body, caregiver)
+
+
+    # create a flow:
+    activities = request.form.get('activity')
+    new_flow = crud.create_flow(activities, user=new_user)
 
 
     # get the list of associated users for display on the start_shower page:
@@ -74,7 +80,16 @@ def log_in():
     """Log in a caregiver.
         Render P3 (choose user / start shower) """
 
-    pass
+    email = request.form.get('cg-email')
+    password = request.form.get('cg-password')
+
+    active = model.Caregiver.check_if_registered(email)
+
+    if active:
+        users = crud.get_user_by_caregiver(caregiver=active)
+        return render_template('/start_shower.html', users=users)
+    else:
+        flash('No account found. Please try again!')
 
 
 @app.route('/start_shower')

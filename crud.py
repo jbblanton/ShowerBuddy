@@ -1,6 +1,6 @@
 """Use the form data to create accounts, users, shower flows, etc. """
 
-from model import (db, Caregiver, User, Flow, Flow_Activity, Activity, Product)
+from model import (db, connect_to_db, Caregiver, User, Flow, Flow_Activity, Activity, Product)
 import json
 
 def create_caregiver(email, telephone, password):
@@ -13,6 +13,8 @@ def create_caregiver(email, telephone, password):
     db.session.add(caregiver)
     db.session.commit()
 
+    return caregiver
+
 
 def create_user(name, body, caregiver):
     """P2 of form will collect this data:
@@ -24,28 +26,49 @@ def create_user(name, body, caregiver):
     db.session.add(user)
     db.session.commit()
 
+    return user
+
 
 def get_user_by_caregiver(caregiver):
+    """Returns a list of users associated with a given caregiver"""
 
-    print("CG ID:")
     print(caregiver.caregiver_id)
-    print("That was it!")
 
     users = db.session.query(User).filter(User.caregiver_id == caregiver.caregiver_id).all()
-    print(users)
 
     return users
 
 
 # Can we make a default title here?
-def create_flow(title, user):
+# for now, YES!
+def create_flow(activities, user):
     """Will call upon an existing User object to create a shower routine 
         (numbering the order of activities) """
 
-    flow = Flow(title=title, user=user)
+    flow = Flow(title="daily", user=user)
+
+    flow_obj = []
+    prod_obj = []
+
+    # ['shampoo', 'bar soap', 'shave face']
+    for activity in activities:
+        act = db.session.query(Activity).filter(Activity.activity_name == activity).first()
+        prod = db.session.query(Product).filter(Product.product_name == activity).first()
+        step = Flow_Activity(act, flow)
+        flow_obj.append(step)
+        thing = Flow_Product(step, prod)
+        prod_obj.append(thing)
+
+
+
+
 
     db.session.add(flow)
+    db.session.add_all(flow_obj)
+    db.session.add_all(prod_obj)
     db.session.commit()
+
+    return flow
 
 
 # Should this be blended in to the next function to do all in one?
@@ -101,6 +124,8 @@ def update_product_images():
     pass
 
     # return success or fail message
+
+
 
 if __name__ == '__main__':
     from server import app

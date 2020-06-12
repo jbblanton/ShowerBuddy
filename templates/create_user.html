@@ -9,7 +9,7 @@
  good. Should be part of the Bootstrap work. #}
 
 
-  <form>
+  <form id="create-user-form" method="POST">
     {# Get basic info about user for USERS table #}
     <label for="user-name">User's Name:</label>
     <input id="user-name" type="text" name="user-name">
@@ -22,29 +22,31 @@
       <input id="masc" type="radio" name="body" value="male-masculine">
         <label for="masc"> Male / Masculine</label>
       <br>
-      <input id="other" type="radio" name="body" value="other">
-        <label for="other">Other / Non-binary</label>
+      <input id="other-body" type="radio" name="body" value="other">
+        <label for="other-body">Other / Non-binary</label>
     </fieldset>
+
+{# Maybe I add a field for 'Frequncy' and use that as the title?  #}
 
     <fieldset>
       <legend>How does this person clean their Hair?</legend>
-      Shampoo? <input id="shampoo" type="checkbox" name="hair" value="shampoo">
-      Conditioner? <input id="conditioner" type="checkbox" name="hair" value="conditioner">
-      Other? <input id="other" type="checkbox" name="hair" value="other">
+      Shampoo? <input id="shampoo" type="checkbox" name="activity" value="shampoo">
+      Conditioner? <input id="conditioner" type="checkbox" name="activity" value="conditioner">
+      Other? <input id="other-hair" type="checkbox" name="activity" value="other-hair">
       {# If other, add text input and collect that info #}
     </fieldset>
 
     <fieldset>
       <legend>How does this person clean their Body?</legend>
-      Bar soap? <input id="bar-soap" type="checkbox" name="body" value="bar-soap">
-      Liquid soap? <input id ="liq-soap" type="checkbox" name="body" value="liq-soap">
+      Bar soap? <input id="bar-soap" type="checkbox" name="activity" value="bar-soap">
+      Liquid soap? <input id ="liq-soap" type="checkbox" name="activity" value="liq-soap">
     </fieldset>
 
     <fieldset>
       <legend>Does this person Shave?</legend>
-      Their face? <input id="shave-face" type="checkbox" name="shave" value="shave-face">
-      Their underarms? <input id="shave-pits" type="checkbox" name="shave" value="shave-pits">
-      Their legs? <input id="shave-legs" type="checkbox" name="shave-legs">
+      Their face? <input id="shave-face" type="checkbox" name="activity" value="shave-face">
+      Their underarms? <input id="shave-pits" type="checkbox" name="activity" value="shave-pits">
+      Their legs? <input id="shave-legs" type="checkbox" name="activity" value="shave-legs">
     </fieldset>
 
     <br>
@@ -57,22 +59,24 @@
 <br>
 
     <fieldset>
-      <legend>Caregiver Information</legend>
+      <legend>Caregiver Information:</legend>
       <label for="caregiver-name">Name:</label>
         <input id="caregiver-name" type="text" name="caregiver-name">
         <br>
       <label for="caregiver-phone">Cellphone number:</label>
-        <input id="caregiver-phone" type="text" name="caregiver-phone">
+        <input id="caregiver-phone" type="tel" name="caregiver-phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-555-1212">
         <br>
       <label for="caregiver-email">Email Address:</label>
-        <input id="caregiver-email" type="text" name="caregiver-email" required>
+        <input id="caregiver-email" type="email" name="caregiver-email" required>
         <br>
       <label for="caregiver-password">Password (8 characters minimum):</label>
         <input id="caregiver-password" type="password" name="caregiver-password" minlength="8" required>
     </fieldset>
 
     <input type="submit" value="Create Account">
-    <input type="submit" value="Save & Create another">
+    {# <input type="submit" formaction="reset" value="Save & Create another"> #}
+    {# Need to edit the Save & create another to submit and then reset the form
+    Maybe there should be a 'create new user' button on the post-log in page?? #}
   </form>
   
 {% endblock %}

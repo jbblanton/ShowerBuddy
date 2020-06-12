@@ -2,11 +2,11 @@
 
 import os
 from flask_sqlalchemy import SQLAlchemy
-import crud
+# import crud
 import server
 
-os.system('dropdb testing')
-os.system('createdb testing')
+# os.system('dropdb testing')
+# os.system('createdb testing')
 
 db = SQLAlchemy()
 
@@ -31,6 +31,14 @@ class Caregiver(db.Model):
                 email={self.email}, phone={self.telephone}>'
 
 
+    def check_if_registered(email):
+        """Check if a caregiver is already registered"""
+
+        cg = db.session.query(Caregiver).filter(Caregiver.email == email).first()
+
+        return cg
+
+
 class User(db.Model):
     """A User"""
 
@@ -38,7 +46,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     user_name = db.Column(db.String(50), nullable = False,)
-    user_body = db.Column(db.String(6),)
+    user_body = db.Column(db.String(20),)
     caregiver_id = db.Column(db.Integer, db.ForeignKey('caregivers.caregiver_id'))
 
     caregiver = db.relationship('Caregiver')
@@ -46,6 +54,12 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User name={self.user_name} user_id={self.user_id}>'
+
+    def check_if_user():
+        """Look for the combo of user name & body + caregiver
+            Goal: prevent duplication; redirect to "add a flow" """
+
+        pass
 
 
 class Flow(db.Model):
@@ -73,7 +87,7 @@ class Flow_Activity(db.Model):
     __tablename__ = "flow_acts"
 
     flow_act_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
-    seq_step = db.Column(db.Integer, nullable = False,)
+    seq_step = db.Column(db.Integer, nullable = True,)
     flow_id = db.Column(db.Integer, db.ForeignKey('flows.flow_id'))
     activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'))
 
@@ -128,24 +142,19 @@ class Activity(db.Model):
 #                 product_id={self.product_id}>' 
 
 
-# class Flow_Product(db.Model):
-#     """Tying a unique flow to the necessary products"""
+class Flow_Product(db.Model):
+    """Tying a unique flow to the necessary products"""
 
-#     __tablename__ = "flow_products"
+    __tablename__ = "flow_products"
 
-#     fa_id = db.Column(db.Integer, db.ForeignKey('flow_acts.flow_act_id'), primary_key = True,)
-#     prod_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), primary_key = True, )
+    
+    flow_prod_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
+    fa_id = db.Column(db.Integer, db.ForeignKey('flow_acts.flow_act_id'),)
+    prod_id = db.Column(db.Integer, db.ForeignKey('products.product_id'),)
 
-#     flowacts = db.relationship('Flow_Activity')
-#     products = db.relationship('Product')
+    flowacts = db.relationship('Flow_Activity')
+    products = db.relationship('Product')
 
-
-# REFERENCE:
-#    CREATE TABLE my_association (
-#   user_id INTEGER REFERENCES user(id),
-#   account_id INTEGER REFERENCES account(id),
-#   PRIMARY KEY (user_id, account_id)
-# )
 
 class Product(db.Model):
     """Info on Products used for a Shower """
