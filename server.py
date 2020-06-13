@@ -9,6 +9,7 @@ import model
 # from model import (db, connect_to_db, Caregiver, User)
 import test
 
+
 app = Flask(__name__)
 app.secret_key = 'lola'
 app.jinja_env.undefined = StrictUndefined  
@@ -69,7 +70,8 @@ def register_user():
 
 
     # create a flow:
-    activities = request.form.get('activity')
+    activities = request.form.getlist('activity')
+    print(activities)
     new_flow = crud.create_flow(activities, user=new_user)
 
 
@@ -138,7 +140,11 @@ def play_shower():
         Add connection for the SOS button?
         Event listener for Snooze and Next buttons """
 
-    # shower_flow.take_shower()
+    # Get the user_id from the FE based on who's in the drop-down
+    flow_id = crud.get_users_flow_id(user)
+    # this function is currently expecting a user obj. Remember to update if we're passing in the actual number!
+
+    activities = shower_flow.create_shower(flow_id)
 
 
 
