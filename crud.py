@@ -1,6 +1,6 @@
 """Use the form data to create accounts, users, shower flows, etc. """
 
-from model import (db, connect_to_db, Caregiver, User, Flow, Flow_Activity, Activity, Product)
+from model import (db, connect_to_db, Caregiver, User, Flow, Flow_Activity, Activity, Flow_Product, Product)
 import json
 
 def create_caregiver(email, telephone, password):
@@ -32,18 +32,15 @@ def create_user(name, body, caregiver):
 def get_user_by_caregiver(caregiver):
     """Returns a list of users associated with a given caregiver"""
 
-    print(caregiver.caregiver_id)
-
     users = db.session.query(User).filter(User.caregiver_id == caregiver.caregiver_id).all()
 
     return users
 
 
-# Can we make a default title here?
-# for now, YES!
+# For now, default title = 'Daily'
 def create_flow(activities, user):
     """Will call upon an existing User object to create a shower routine 
-        (numbering the order of activities) """
+        (returns a flow object) """
 
     flow = Flow(title="daily", user=user)
 
@@ -54,13 +51,10 @@ def create_flow(activities, user):
     for activity in activities:
         act = db.session.query(Activity).filter(Activity.activity_name == activity).first()
         prod = db.session.query(Product).filter(Product.product_name == activity).first()
-        step = Flow_Activity(act, flow)
+        step = Flow_Activity(activity=act, flow=flow)
         flow_obj.append(step)
-        thing = Flow_Product(step, prod)
+        thing = Flow_Product(flowacts=step, products=prod)
         prod_obj.append(thing)
-
-
-
 
 
     db.session.add(flow)
@@ -71,34 +65,24 @@ def create_flow(activities, user):
     return flow
 
 
-# Should this be blended in to the next function to do all in one?
+def get_users_flow_id(user):
+    """Loads all available shower routines for a given user.
+        Returns a list of objects:
+        [<Flow flow_id=1, title=daily, user=Honey>]
+        """
+
+    flows = db.session.query(Flow).filter(Flow.user_id == user.user_id).all()
+
+    flow_id = flows[0].flow_id
+    # hard coding this due to every user currently only having one flow.  
+    # TO DO: Edit when additional routines are an option!
+
+    return flow_id
+
+
 
 
 #####  TO DO:  #####
-
-
-def create_flow_activities(flow, steps):
-    """ Steps is a dictionary of activities [shampoo, condition, shave, etc.] 
-            in an order designated by the caregiver during creation.
-Need to figure out this part--> Time is a whole-shower unit that will be 
-        segmented out to each step in the flow.
-        From flow, pull title and flow_id
-        """
-
-    # steps = {1: "shampoo", 2: "shave face", 3: "scrub body"}  <--json file??
-    for keys, values, in steps:
-        Flow_Activity.seq_step = key
-        Activity.description = Activities_dictionary[value]
-        Product.product_name = value
-
-# Needed: a database of descriptions to pull from for Activity.description
-#        (future feature to allow a caregiver to record their voice?)
-
-    # Maybe this dictionary is where the images of a user's products can be stored?
-    # Or, at least the url that would get the image, if kept separately. 
-    # Is there a master dictionary and then one that gets built for the flow? 
-    # This could allow someone to potentially overwrite the description and 
-    # still be able to revert to the default if desired.
 
 
 def get_products(user, flow):
@@ -108,14 +92,6 @@ def get_products(user, flow):
     pass
 
     # return [products.product_name and products.product_image]
-
-
-def get_users_flow(user, flow):
-    """Loads the shower routine for a given user and flow.title """
-
-    pass
-
-    # return [how the fuck am I doing this??]
 
 
 def update_product_images():

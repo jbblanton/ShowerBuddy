@@ -8,17 +8,15 @@ import timeit
 ## TO DO: Figure this part out! These should be separate functions called in
 ##    to the take_shower() action.
 
-def create_shower_flow(flow_id):
+def create_shower(flow_id):
     """Use this function to make a list of activities for a given user"""
-    # Shower Flow = { step_num : 
-    #                 activity_id:
-    #                     activity_name:
-    #                     description:
-    #                     video:          }
+    # Shower Flow = { activity_id:
+    #                 activity_name:
+    #                 description:
+    #                 video:          }
 
-    SELECT step_seq, activity_id FROM flows WHERE flow_id = flow_id
-    => 1,2,3,4,5; 23, 24, 25, 16, 10
 
+    SELECT * FROM activities JOIN flow_acts ON flow_acts.activity_id = activities.activity_id WHERE flow_id = 3;
 
     activities = []
 
@@ -27,11 +25,11 @@ def create_shower_flow(flow_id):
 def create_product_list(flow_id):
     """Use this to make a list of products needed during a given flow"""
 
-    Product = { product_id:
-                    product_image:
-                    product_name:
-                    product_color_label:
-                }
+    # Product = { product_id:
+    #                 product_image:
+    #                 product_name:
+    #                 product_color_label:
+    #             }
 
     products = []
 
@@ -43,7 +41,7 @@ def take_shower(flow_id):
 
         'Activities' list will populate from the user's Flow.
         If statements control the order of the flow, and each activity is
-        removed after completion. 
+            removed after completion. 
         Initial_rinse and Final_rinse are universal steps. """
 
 
@@ -105,41 +103,41 @@ def initial_rinse():
         FUTURE FEATURE: have a version of initial_BODY_rinse for users
         who will not be washing their hair."""
 
-        return True
+    return True
 
 
 def shampoo_hair(activity_id, product_id):
     """Shampoo hair"""
 
     # Declare state:
-    print('<h2>Let\'s SHAMPOO our hair!</h2>')
+#     print('<h2>Let\'s SHAMPOO our hair!</h2>')
 
-    # Identify product:
-    print('<img src="default_shampoo_bottle"></img> \
-        <p>Get the shampoo and put some in your hand</p> \
-        <img src="product in hand"></img>')
+#     # Identify product:
+#     print('<img src="default_shampoo_bottle"></img> \
+#         <p>Get the shampoo and put some in your hand</p> \
+#         <img src="product in hand"></img>')
 
-# How to start a timer?
-# TO DO: Read docs on Timeit
-    While time < 3 minutes:
+# # How to start a timer?
+# # TO DO: Read docs on Timeit
+#     #While time < 3 minutes:
 
-    # Description of action:
-        print('<p>Rub your hands together once and then put them on your head. Work the shampoo into your hair, rubbing your fingertips on your scalp.</p>')
+#     # Description of action:
+#         print('<p>Rub your hands together once and then put them on your head. Work the shampoo into your hair, rubbing your fingertips on your scalp.</p>')
 
-    # Play video / gif of action:
-        print('<video src="default_hair_lather"></video>')
+#     # Play video / gif of action:
+#         print('<video src="default_hair_lather"></video>')
 
-    While time < 1.5 minutes:
+#     #While time < 1.5 minutes:
 
-    # Rinse hair:
-        print('<p>Great! Now it\'s time to rinse your hair. Be sure to get all the shampoo out.</p>')
-        print('<video src="generic rinse hair"></video>')
+#     # Rinse hair:
+#         print('<p>Great! Now it\'s time to rinse your hair. Be sure to get all the shampoo out.</p>')
+#         print('<video src="generic rinse hair"></video>')
 
-    print('<h2>Are you all done rinsing?</h2>')
-        If <button> == False:
-            Increment timer
-        Else:
-            exit and return to shower_flow
+#     print('<h2>Are you all done rinsing?</h2>')
+        # If <button> == False:
+        #     Increment timer
+        # Else:
+        #     exit and return to shower_flow
 
     return True
 
@@ -180,105 +178,105 @@ def final_rinse():
     return False
 
 
->Start Shower<
-    1. Start State: Initial Rinse
-        Timer:
-            "Next Step?"
-                {Move to next State}
-                If Shampoo == True
-                    State 2
-                Else If Condition == True
-                    State 3
-                Else:
-                    State 4
-            "More time?"
-                {Increment timer}
-                State 1
-    2. State: Shampoo
-        Timer:
-            "Rinse your hair!"
-            "Next Step?"
-                {Move to next State}
-                If Condition == True
-                    State 3
-                Else:
-                    State 4
-            "More time?"
-                {Increment timer}
-                State 2
-    3. State: Condition
-        Timer:
-            "Rinse your hair!"
-            "Next Step?"
-                {Move to next State}
-                State 4
-            "More time?"
-                {Increment timer}
-                State 3
-    4. State: Wash Body
-        Timer:
-            "Rinse your body!"
-            "Next Step?"
-                {Move to next State}
-                If Shave Face == True
-                    State 5
-                Else If Shave armpits == True
-                    State 6
-                Else If Shave legs == True
-                    State 7
-                Else:
-                    State 8 (final rinse)
-            "More time?"
-                {Increment timer}
-                State 4
-    5. State: Shave Face
-        Timer:
-            "Rinse your face!"
-            "Next Step?"
-                {Move to next State}
-                If Shave armpits == True
-                    State 6
-                Else If Shave legs == True
-                    State 7
-                Else:
-                    State 8 (final rinse)
-            "More time?"
-                {Increment timer}
-                State 5
-    6. State: Shave Armpits
-        Timer:
-            "Rinse your pits!"
-            "Next Step?"
-                {Move to next State}
-                If Shave legs == True
-                    State 7
-                Else:
-                    State 8 (final rinse)
-            "More time?"
-                {Increment timer}
-                State 6
-    7. State: Shave Legs
-        Timer:
-            "Rinse your Legs!"
-            "Next Step?"
-                {Move to next State}
-                State 8 (final rinse)
-            "More time?"
-                {Increment timer}
-                State 7
-    8. State: Final Rinse
-        Timer:
-            "Rinse fully and make sure all the soaps are off!"
-            "More time?"
-                {Increment timer}
-                State 8
-            EXIT FLOW
-            State: COMPLETE
+# >Start Shower<
+#     1. Start State: Initial Rinse
+#         Timer:
+#             "Next Step?"
+#                 {Move to next State}
+#                 If Shampoo == True
+#                     State 2
+#                 Else If Condition == True
+#                     State 3
+#                 Else:
+#                     State 4
+#             "More time?"
+#                 {Increment timer}
+#                 State 1
+#     2. State: Shampoo
+#         Timer:
+#             "Rinse your hair!"
+#             "Next Step?"
+#                 {Move to next State}
+#                 If Condition == True
+#                     State 3
+#                 Else:
+#                     State 4
+#             "More time?"
+#                 {Increment timer}
+#                 State 2
+#     3. State: Condition
+#         Timer:
+#             "Rinse your hair!"
+#             "Next Step?"
+#                 {Move to next State}
+#                 State 4
+#             "More time?"
+#                 {Increment timer}
+#                 State 3
+#     4. State: Wash Body
+#         Timer:
+#             "Rinse your body!"
+#             "Next Step?"
+#                 {Move to next State}
+#                 If Shave Face == True
+#                     State 5
+#                 Else If Shave armpits == True
+#                     State 6
+#                 Else If Shave legs == True
+#                     State 7
+#                 Else:
+#                     State 8 (final rinse)
+#             "More time?"
+#                 {Increment timer}
+#                 State 4
+#     5. State: Shave Face
+#         Timer:
+#             "Rinse your face!"
+#             "Next Step?"
+#                 {Move to next State}
+#                 If Shave armpits == True
+#                     State 6
+#                 Else If Shave legs == True
+#                     State 7
+#                 Else:
+#                     State 8 (final rinse)
+#             "More time?"
+#                 {Increment timer}
+#                 State 5
+#     6. State: Shave Armpits
+#         Timer:
+#             "Rinse your pits!"
+#             "Next Step?"
+#                 {Move to next State}
+#                 If Shave legs == True
+#                     State 7
+#                 Else:
+#                     State 8 (final rinse)
+#             "More time?"
+#                 {Increment timer}
+#                 State 6
+#     7. State: Shave Legs
+#         Timer:
+#             "Rinse your Legs!"
+#             "Next Step?"
+#                 {Move to next State}
+#                 State 8 (final rinse)
+#             "More time?"
+#                 {Increment timer}
+#                 State 7
+#     8. State: Final Rinse
+#         Timer:
+#             "Rinse fully and make sure all the soaps are off!"
+#             "More time?"
+#                 {Increment timer}
+#                 State 8
+#             EXIT FLOW
+#             State: COMPLETE
 
-At each transition, $get the <img> <video/gif> <instructions> for that step. Use default, unless there is an override for that user.
-When new state:
-    Declare state
-    Show image
-    Start timer
-    Play video / gif
+# At each transition, $get the <img> <video/gif> <instructions> for that step. Use default, unless there is an override for that user.
+# When new state:
+#     Declare state
+#     Show image
+#     Start timer
+#     Play video / gif
 

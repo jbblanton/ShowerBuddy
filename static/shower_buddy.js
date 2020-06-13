@@ -6,6 +6,9 @@
 
 
 
-
+$("#about-button").on('click', function () {
+  $("#about-text").toggle();
+});  
+  
 
 

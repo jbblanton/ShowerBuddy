@@ -59,21 +59,40 @@
 //   };
 
 // };
-  $('start-button').on('click', (evt) => {
-    takeShower(flowID)
-  });
+  // $('start-button').on('click', (evt) => {
+  //   takeShower(flowID)
+  // });
+
+
+
+
+//  This is to toggle visibility between 
+//    starting and playing a shower flow:
+$(document).ready(function(){
+
+  $('#start-shower').on('click', (evt) => {
+
+    $("div.shower-action").show();
+    $(".start-shower").hide();
+  });  
+
+});
+
+
+
+
 
 
 function testList() {
 
   let myList = ["cat", "dog", "fish"]
 
-  let active === true;
+  let active = true;
 
   startAction(0);
   console.log("started");
 
-  while active {
+  while (active) {
 
     if (myList.includes("dog")) {
       firstFunc(1)
@@ -108,7 +127,7 @@ function testList() {
     console.log("complete");
 
   };    
-}
+};
 
 function startAction(n){
 
@@ -121,11 +140,12 @@ function startAction(n){
   // Update product_img in img
   $('product-img').attr('src', product_img);
 
-  Reset progress bar
+  // Reset progress bar
   
-  Reset timer (together)
+  // Reset timer (together)
 
-}
+};
+
 function firstFunc() {
   return "done"
 };
@@ -142,4 +162,3 @@ function finalTest() {
   return false
 };
 
-const updateActionName = ()
