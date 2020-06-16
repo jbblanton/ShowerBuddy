@@ -1,6 +1,6 @@
 """Server file for Shower Buddy"""
 
-from flask import (Flask, render_template, request, flash, session, redirect) 
+from flask import (Flask, render_template, json, request, flash, session, redirect) 
 from jinja2 import StrictUndefined
 from model import (db, connect_to_db, Caregiver, User)
 from flask_login import (LoginManager, login_user, login_required, logout_user)
@@ -61,23 +61,19 @@ def register_user():
 # Why?? I'm not even doing anything with sessions.... UGH
     session["cg_email"] = cg_email
 
-
     # create a user profile:
     user_name = request.form.get('user-name')
     user_body = request.form.get('body')
 
     new_user = crud.create_user(user_name, user_body, caregiver)
 
-
     # create a flow:
     activities = request.form.getlist('activity')
-    print(activities)
-    new_flow = crud.create_flow(activities, user=new_user)
 
+    new_flow = crud.create_flow(activities, user=new_user)
 
     # get the list of associated users for display on the start_shower page:
     users = crud.get_user_by_caregiver(caregiver=caregiver)
-    print(users)
 
     return render_template('/start_shower.html', users=users)    
 
@@ -118,6 +114,7 @@ def login():
         return render_template('/start_shower.html', users=users)
     else:
         flash('No account found. Please try again!')
+        # TO DO fix this to actually work
 
 
 
@@ -129,10 +126,10 @@ def choose_flow():
 
     users = crud.get_user_by_caregiver()
 
-    return render_template('start_shower', users=users)
+    return render_template('/start_shower.html', users=users)
 
 
-@app.route('/start_shower')
+@app.route('/start_shower', methods=["GET", "POST"])
 def play_shower():
     """Play the shower flow.
         Will need user_id / flow_id
@@ -140,15 +137,23 @@ def play_shower():
         Add connection for the SOS button?
         Event listener for Snooze and Next buttons """
 
+
+    user_id = request.form.get['user_id.id'] 
+    print(user_id)
     # Get the user_id from the FE based on who's in the drop-down
-    flow_id = crud.get_users_flow_id(user)
-    # this function is currently expecting a user obj. Remember to update if we're passing in the actual number!
 
-    activities = shower_flow.create_shower(flow_id)
+    flow_id = crud.get_users_flow_id(int(user_id))
+    # Send a user_id, receive a flow_id
 
+    activities = crud.create_shower(flow_id)
+    acts_json = json.dumps(activities)
+    # Get a dictionary of activities for this flow; convert to json
 
+    products = crud.create_product_dict(flow_id)
+    prods_json = json.dumps(products)
+    # Get a dictionary of products for this flow; convert to json
 
-    return render_template('/start_shower.html')
+    return render_template('/start_shower.html', acts_json, prods_json)
 
 
 if __name__ == "__main__":
