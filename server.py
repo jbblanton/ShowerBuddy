@@ -6,7 +6,6 @@ from model import (db, connect_to_db, Caregiver, User)
 from flask_login import (LoginManager, login_user, login_required, logout_user)
 import crud
 import model
-# from model import (db, connect_to_db, Caregiver, User)
 import test
 
 
@@ -78,19 +77,6 @@ def register_user():
     return render_template('/start_shower.html', users=users)    
 
 
-#     if email == caregiver.email and password == caregiver.password:
-#         flash('Successfully logged in!')
-# # Pretty sure the flash won't work. Whatever happened to our 3 page app??
-#         session["cg_email"] = caregiver.email
-# # Pretty sure this should change to caregiver ID. Need to check in on this
-#         users = crud.get_user_by_caregiver(caregiver=caregiver)
-#         return render_template('/start_shower.html', users=users)
-#     else: 
-#         flash('Could not log in. Please try again!')
-#         return redirect('/')
-
-
-
 @app.route('/homepage', methods=["GET", "POST"])
 def login():
 
@@ -115,7 +101,6 @@ def login():
     else:
         flash('No account found. Please try again!')
         # TO DO fix this to actually work
-
 
 
 @app.route('/start_shower')

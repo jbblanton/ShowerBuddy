@@ -90,7 +90,6 @@ def get_caregiver_by_email(email):
         >>>
         """
 
-
     caregiver = db.session.query(Caregiver).filter(Caregiver.email == email).first()        
 
     return caregiver
