@@ -24,7 +24,7 @@ class Caregiver(db.Model):
     password = db.Column(db.String(25), nullable = False,)
     telephone = db.Column(db.String(12),)
 
-    user = db.relationship('User')
+    users = db.relationship('User')
 
     def __repr__(self):
         return f'<Caregiver caregiver_id={self.caregiver_id}, \
