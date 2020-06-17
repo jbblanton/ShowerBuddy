@@ -15,7 +15,7 @@ db = SQLAlchemy()
 class Caregiver(db.Model):
     """A User, aka: a Caregiver"""
 
-    __tablename__ = "users"
+    __tablename__ = "caregivers"
 
     caregiver_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     #caregiver_name =db.Column(db.String(25),)
@@ -23,36 +23,11 @@ class Caregiver(db.Model):
     password = db.Column(db.String(25), nullable = False,)
     telephone = db.Column(db.String(12),)
 
-    client = db.relationship('Client')
+    users = db.relationship('User')
 
-    def get_id(self):
-        """Return caregiver's ID, to satisfy login requirements;
-            For use with the Flask Login """
-
-        return self.user_id
-
-    def is_authenticated(self):
-        """Return True if user is authenticated;
-            For use with the Flask Login """
-
-        return self.authenticated
-
-    def is_anonymous(self):
-        """No anonymous use allowed!
-            For use with the Flask Login """
-
-        return False
 
     def __repr__(self):
         return f'<Caregiver user_id={self.user_id}, email={self.email}, phone={self.telephone}>'
-
-    def check_if_registered(email):
-        """Check if a caregiver is already registered"""
-
-        # Query a given email address; 
-        #   If exists in db, alert('this email already has an account, plz log in')
-        #   Else: create account
-        return User.query.filter(User.email == email).first()
 
 
     def check_if_registered(email):
@@ -74,7 +49,7 @@ class User(db.Model):
     caregiver_id = db.Column(db.Integer, db.ForeignKey('caregivers.caregiver_id'))
 
 
-    caregiver = db.relationship('User')
+    caregiver = db.relationship('Caregiver')
     flow = db.relationship('Flow')
 
     def __repr__(self):

@@ -17,26 +17,17 @@ def create_caregiver(email, telephone, password):
     return caregiver
 
 
-def create_client(name, body, caregiver):
+def create_user(name, body, caregiver):
     """P2 of form will collect this data:
         ...
         Expecting to be able to call on caregiver data based on either P1 or an existing caregiver account """
 
-    client = Client(client_name=name, client_body=body, caregiver=caregiver)
+    user = User(user_name=name, user_body=body, caregiver=caregiver)
 
-    db.session.add(client)
+    db.session.add(user)
     db.session.commit()
 
     return user
-
-
-
-def get_user_by_caregiver(caregiver):
-    """Returns a list of users associated with a given caregiver"""
-
-    users = db.session.query(User).filter(User.caregiver_id == caregiver.caregiver_id).all()
-
-    return users
 
 
 # For now, default title = 'Daily'
@@ -76,7 +67,7 @@ def get_users_flow_id(user):
 
     flow_id = flows[0].flow_id
     # hard coding this due to every user currently only having one flow.  
-    # TO DO: Edit when additional routines are an option!
+# TO DO: Edit when additional routines are an option!
 
     return flow_id
 
@@ -107,10 +98,12 @@ def create_shower(flow_id):
     action = db.session.query(Activity).join(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
 
     for i, act in enumerate(action):
-        shower_flow[action[i].activity_id] = {"name" : action[i].activity_name, 
-                                "description" : action[i].description,
-                                "video" : action[i].activity_video,
-                                "act_prod_id" : action[i].flow_act.flow_act_id}
+        shower_flow[action[i].activity_id] = {
+                            "name" : action[i].activity_name, 
+                            "description" : action[i].description,
+                            "video" : action[i].activity_video,
+
+                            }
 
     return shower_flow
 
@@ -126,21 +119,20 @@ def create_product_dict(flow_id):
 
     product_dict = {}
 
-    # SELECT * FROM flow_acts WHERE flow_id = 2;
-    #   returns list of objects with flow_act_id, seq_step, and activity_id
-    all_products = db.session.query(Flow_Activity).filter(flow_id == flow_id)
+
+    all_products = db.session.query(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
 
     prod_list = []
     # Make a list of the flow_act_ids
     for i, prod in enumerate(all_products):
-        prod_list.append(products[i].flow_act_id)
+        prod_list.append(all_products[i].flow_act_id)
+  
 
-    # SELECT * FROM products JOIN flow_products ON products.product_id = flow_products.prod_id WHERE fa_id = 5;
     for num in prod_list:
-        product = db.session.query(Product).join(Flow_Product).filter(fa_id == num)
-        product_dict[product.fa_id] = {"name" : product.product_name, 
-                                    "image" : product.product_img, 
-                                    "label_color" : product.product_label_color,}
+        product = db.session.query(Product).join(Flow_Product).filter(Flow_Product.fa_id == num).all()
+        product_dict[num] = {"name" : product[0].product_name, 
+                                    "image" : product[0].product_img, 
+                                    "label_color" : product[0].product_label_color,}
         
     return product_dict
 

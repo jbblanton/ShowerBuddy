@@ -1,12 +1,11 @@
 """Server file for Shower Buddy"""
 
-from flask import (Flask, render_template, json, request, flash, session, redirect) 
+from flask import (Flask, render_template, jsonify, request, flash, session, redirect) 
 from jinja2 import StrictUndefined
 from model import (db, connect_to_db, Caregiver, User)
 from flask_login import (LoginManager, login_user, login_required, logout_user)
 import crud
 import model
-import test
 
 
 app = Flask(__name__)
@@ -23,24 +22,14 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     """Render the homepage"""
 
-    return render_template('/homepage.html')
-
-
-@app.route('/about')
-def about_app():
-    """Take visitor to the About page"""
-
-    return test.test_function()
-
-    #return render_template('/about.html')
+    return render_template('homepage.html')
 
 
 @app.route('/create_user')
 def create_user():
     """Go to New User form """
 
-
-    return render_template('/create_user.html')
+    return render_template('create_user.html')
 
 
 @app.route('/create_user', methods=["POST"])
@@ -49,16 +38,18 @@ def register_user():
         Check if caregiver info already exists
         else create both objects """
 
+# TO DO: If cg_email already in system, need to divert to adding an addtl user, not creating 2 accounts
+    
+
     # create a caregiver:
     cg_email = request.form.get('caregiver-email')
-# TO DO: If cg_email already in system, need to divert to adding an addtl user, not creating 2 accounts
     cg_pass = request.form.get('caregiver-password')
     cg_phone = request.form.get('caregiver-phone')
 
     caregiver = crud.create_caregiver(cg_email, cg_phone, cg_pass)
 
-# Why?? I'm not even doing anything with sessions.... UGH
     session["cg_email"] = cg_email
+
 
     # create a user profile:
     user_name = request.form.get('user-name')
@@ -66,15 +57,30 @@ def register_user():
 
     new_user = crud.create_user(user_name, user_body, caregiver)
 
+
     # create a flow:
     activities = request.form.getlist('activity')
 
     new_flow = crud.create_flow(activities, user=new_user)
 
-    # get the list of associated users for display on the start_shower page:
-    users = crud.get_user_by_caregiver(caregiver=caregiver)
 
-    return render_template('/start_shower.html', users=users)    
+    # get the list of associated users for display on the dashboard:
+    cg = crud.get_caregiver_by_email(session['cg_email'])
+    users = cg.users
+
+    return render_template('start_shower.html', users=users)
+
+
+@app.route('/dashboard')
+def caregiver_control_panel():
+    """A page for a caregiver to 
+        Add a new user
+        Add a new flow to existing user
+        Edit a flow/user
+        Start the shower for one of their users
+        """
+
+    return render_template('dashboard.html')
 
 
 @app.route('/homepage', methods=["GET", "POST"])
@@ -96,49 +102,56 @@ def login():
     active = model.Caregiver.check_if_registered(email)
 
     if active:
-        users = crud.get_user_by_caregiver(caregiver=active)
-        return render_template('/start_shower.html', users=users)
+        cg = crud.get_caregiver_by_email(session['cg_email'])
+        users = cg.users
+        session["cg_email"] = email
+        return render_template('dashboard.html', users=users)
     else:
-        flash('No account found. Please try again!')
-        # TO DO fix this to actually work
+        redirect('homepage.html')
+# TO DO fix this to actually work
 
 
-@app.route('/start_shower')
+@app.route('/start_shower', methods=["GET"])
 def choose_flow():
     """Display users and their shower flows.
         Only associated user(s) will display.
-        Caregiver will be able to select and start a flow"""
+        Caregiver will be able to select from dropdown and start a flow"""
 
-    users = crud.get_user_by_caregiver()
+    cg = crud.get_caregiver_by_email(session['cg_email'])
 
-    return render_template('/start_shower.html', users=users)
+    users = cg.users
+
+    return render_template('start_shower.html', users=users)
 
 
-@app.route('/start_shower', methods=["GET", "POST"])
+@app.route('/start_shower', methods=["POST"])
 def play_shower():
     """Play the shower flow.
-        Will need user_id / flow_id
+        Will need user_id.
 
-        Add connection for the SOS button?
+# TO DO Add connection for the SOS button?
         Event listener for Snooze and Next buttons """
 
-
-    user_id = request.form.get['user_id.id'] 
-    print(user_id)
     # Get the user_id from the FE based on who's in the drop-down
+    user_id = int(request.form.get('user_id')) 
+    print(user_id)
 
-    flow_id = crud.get_users_flow_id(int(user_id))
     # Send a user_id, receive a flow_id
+    flow_id = crud.get_users_flow_id(user_id)
 
+    # Get a dictionary of activities for this flow
     activities = crud.create_shower(flow_id)
-    acts_json = json.dumps(activities)
-    # Get a dictionary of activities for this flow; convert to json
 
+    # Get a dictionary of products for this flow
     products = crud.create_product_dict(flow_id)
-    prods_json = json.dumps(products)
-    # Get a dictionary of products for this flow; convert to json
 
-    return render_template('/start_shower.html', acts_json, prods_json)
+    try:
+        return jsonify({"success" : True, 
+                        "activities" : activities, 
+                        "products" : products,})
+    except Exception as err:
+        return jsonify({"success" : False, "message" : err})
+
 
 
 if __name__ == "__main__":

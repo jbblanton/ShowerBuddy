@@ -18,57 +18,30 @@ def example_people():
 
     caregivers = []
     users = []
+    flows = []
 
     a = model.Caregiver(email="atest@test.com", password="password", telephone="555-789-4561")
-    caregivers.append(a)
     b = model.Caregiver(email="btest@test.com", password="password", telephone="555-789-4561")
-    caregivers.append(b)
     c = model.Caregiver(email="ctest@test.com", password="password", telephone="555-789-4561")
-    caregivers.append(c)
+    caregivers.extend([a,b,c])
 
     lola = model.User(user_name="Lola", user_body="female", caregiver=a)
-    users.append(lola)
     Tuesday = model.User(user_name="Tuesday", user_body="other", caregiver=b)
-    users.append(Tuesday)
     pickle = model.User(user_name="Pickle", user_body="male", caregiver=b)
-    users.append(pickle)
     toca = model.User(user_name="Toca", user_body="female", caregiver=c)
-    users.append(toca)
+    users.extend([lola, Tuesday, pickle, toca])
 
-    # flows = []
+    one = crud.create_flow(["shampoo", "conditioner", "bar-soap", "shave-armpits"], lola)
+    two = crud.create_flow(["conditioner", "liquid-soap", "shave-legs"], Tuesday)
+    three = crud.create_flow(["bar-soap", "shave-face"], pickle)
+    four = crud.create_flow(["shampoo", "conditioner", "liquid-soap", "shave-armpits", "shave-legs"], toca)
+    flows.extend([one, two, three, four])
 
-    flow = {
-        1: {"user": lola, "title": "daily",
-            1: "shampoo", 2: "conditioner", 3: "bar_soap", 4: "shave armpits"},
-        2: {"user": Tuesday, "title": "weekly",
-            1: "conditioner", 2: "liquid_soap", 3: "shave legs"},
-        3: {"user": pickle, "title": "daily",
-            1: "bar_soap", 2: "shave face"},
-        4: {"user": Tuesday, "title": "Mon, Thur",
-            1: "shampoo", 2: "conditioner", 3: "liquid_soap", 
-            4: "shave armpits", 5: "shave legs"}
-            }
-
-    #for key in flow:
-
-
-
-    # lola-daily = Flow(title="daily", user=lola)
-    # flows.append(lola-daily)
-    # tues-weekly = Flow(title="weekly", user=Tuesday)
-    # flows.append(tues-weekly)
-    # pickle = Flow(title="daily", user=pickle)
-    # flows.append(pickle)
-    # tues = Flow(title="Mon, Thur", user=Tuesday)
-    # flows.append(tues)
-
-    # one = Flow_Activity(seq_step=1, flow=pickle)
 
     model.db.session.add_all(caregivers)
     model.db.session.add_all(users)
-    #model.db.session.add_all(flows)
+    model.db.session.add_all(flows)
     model.db.session.commit()
-
 
 
 def seed_activities():
@@ -77,37 +50,37 @@ def seed_activities():
     Activities_dictionary = {
     "shampoo": {
         "description": "Put a small amount of shampoo into your hand, pat your hands together, and then rub this shampoo into your hair. Use your fingertips to massage your head, so the shampoo can clean your scalp.", 
-        "video": "video_file.mpeg",
+        "video": "https://giphy.com/embed/1dPi0Gy6t0rTQQvTZ6",
         "image": "/static/img/shampoo.png"
         }, 
     "conditioner": {
         "description": "Put a small amount of conditioner into your hand, pat your hands together, and then massage this conditioner into your hair.", 
-        "video": "video_file2.mpeg",
+        "video": "https://giphy.com/embed/mRvJKBHGhJFIc",
         "image": "/static/img/conditioner.png"
         },
     "bar-soap": {
-        "description": "Get the bar of soap wet and rub the bar onto a washcloth to create a lather. Use washcloth to scrub your body. Be sure to spend extra time on the trinity.",
-        "video": "video_file3.mpeg",
+        "description": "Get the bar of soap wet and rub the bar onto a washcloth to create a lather. Scrub!",
+        "video": "https://giphy.com/embed/MBZKkYQYgv95pantzk",
         "image": "/static/img/bar_soap.png"
         },
     "liquid-soap": {
-        "description": "To Be Completed",
-        "video": "video_file",
+        "description": "Squirt soap on loofah and scrub!",
+        "video": "https://giphy.com/embed/3o6nUOysbD4Q4WEKuA",
         "image": "/static/img/liquid_soap.png"
         },
     "shave-face": {
-        "description": "To Be Completed",
-        "video": "video_file",
+        "description": "Shave your face",
+        "video": "https://giphy.com/embed/l3q2NRoiCbOtccRqw",
         "image": "/static/img/razor2.png"
         },
     "shave-armpits": {
-        "description": "To Be Completed",
-        "video": "video_file",
+        "description": "Shave under your arms",
+        "video": "https://giphy.com/embed/pXPytwoLcTRJu",
         "image": "/static/img/razor_blades.png"
         },
     "shave-legs": {
-        "description": "To Be Completed",
-        "video": "video_file",
+        "description": "Shave your legs",
+        "video": "https://giphy.com/embed/LvBMdu0KRfKlq",
         "image": "/static/img/lady_razor.png"
         },
 }
@@ -134,4 +107,29 @@ def seed_activities():
 
 seed_activities()
 example_people()
+
+
+
+#####********###########*************##########***********#########***
+
+# PLEASE DO NOT FORGET THAT THESE ARE ALL TERRIBLE.  REPLACE BEFORE DEMO!!
+
+# <iframe src="https://giphy.com/embed/l3q2NRoiCbOtccRqw" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/loop-man-hair-l3q2NRoiCbOtccRqw">via GIPHY</a></p>   shave-face
+
+# <iframe src="https://giphy.com/embed/LvBMdu0KRfKlq" width="480" height="286" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/shaving-LvBMdu0KRfKlq">via GIPHY</a></p> shave-legs
+
+# <iframe src="https://giphy.com/embed/pXPytwoLcTRJu" width="480" height="265" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/yeah-armpits-youladies-pXPytwoLcTRJu">via GIPHY</a></p>  shave-armpits
+
+# <iframe src="https://giphy.com/embed/3o6nUOysbD4Q4WEKuA" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/video-art-zita-nagy-3o6nUOysbD4Q4WEKuA">via GIPHY</a></p>  liquid-soap
+
+# <iframe src="https://giphy.com/embed/1dPi0Gy6t0rTQQvTZ6" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/kingoftheroad-viceland-shampoo-shampooing-1dPi0Gy6t0rTQQvTZ6">via GIPHY</a></p>  shampoo
+
+# <iframe src="https://giphy.com/embed/mRvJKBHGhJFIc" width="480" height="266" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/sing-problem-shower-mRvJKBHGhJFIc">via GIPHY</a></p> conditioner
+
+
+
+# ACTUAL QUALITY: 
+# <iframe src="https://giphy.com/embed/MBZKkYQYgv95pantzk" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/virus-washing-hands-sanitize-MBZKkYQYgv95pantzk">via GIPHY</a></p>  wash-hands
+
+# <iframe src="https://giphy.com/embed/yoJC2zNPBxSVPNQC0o" width="480" height="271" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/skintimate-shower-shave-gel-yoJC2zNPBxSVPNQC0o">via GIPHY</a></p>  shaving-cream
 

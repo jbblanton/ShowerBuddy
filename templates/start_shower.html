@@ -27,19 +27,26 @@
     {% for user in users %}
       <option class="start-shower" value="{{user.user_id}}">{{user.user_name}}
 
+<<<<<<< HEAD
 {#  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER.
 
       {% for flow in user %}
         <option value="{{flow.title}}">{{flow.title}}</option>
 
       {% endfor %} #}
+=======
+{#  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER.  #}
+{#  I bet a lil' if/else action in here will bridge the gap #}
+{#       {% for flow in user %}
+          <option value="{{flow.title}}">{{flow.title}}</option>
+         {% endfor %} #}
+>>>>>>> 5c1bb18... About to adjust pages to add a dashboard
 
       </option>
     {% endfor %}
   </select>
 
     <button type="submit" class="start-shower" id="start-shower" value="start-shower">Start Shower!</button>
-{#   <input class="start-shower" id="start-shower" type="submit" name="start-shower" value="Start Shower!"> #}
 </form>
 </p>
 
@@ -72,7 +79,10 @@
     </div>
   
     <img id="product-img" src="/static/img/male_shower.png">
+    <p id="product-label-color">insert a band of the label color under / near the image</p>   
+
     <button id="help">HELP!</button>
+
   </div>
 </div>
 
