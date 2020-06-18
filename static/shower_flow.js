@@ -1,7 +1,7 @@
 // """To Manage the Flow, but now in Java Script!"""
 
 
-//  This is to toggle visibility between starting and playing a shower flow:
+// This is to toggle visibility between starting and playing a shower flow:
 $(document).ready(function(){
   $('#start-shower').on('click', (evt) => {
     $("div.shower-action").show();
@@ -9,68 +9,73 @@ $(document).ready(function(){
   });  
 });
 
+
 //  This POSTS user_id from select menu; 
 //    response includes Activities and Products as dictionaries:
 $('#start-shower').on('click', (evt) => {
   evt.preventDefault();
 
   const formData = {
-    user_id : $("#user-name :selected").val()
+    user_id : $("#user-name :selected").val(),
     };
-    console.log(formData)
+  console.log(formData.user_id)
   
   $.post('/start_shower', formData, (response) => {
     if (response.success) {
-    console.log(response)
-    const activities = response.activities;
-    console.log(activities)
-    const products = response.products;
-    console.log(products)
-    runShowerFlow(activities, products)
+      // $( ).html(response.html)
+      const activities = response.activities;
+      console.log(activities)
+      const products = response.products;
+      console.log(products)
+      runShowerFlow(activities, products);
     } else {
       alert(`Error: ${response.error}`);
     }
   });
 });
 
-// - List of activities names
-// -activites[key]['name'] / ['description'] / ['video']
+
+// The SOS button; TO DO: Personalize with the user's name
+$('#HELP').on('click', (evt) => {
+  $.get('/send_help', (response) => {
+
+      alert(response.msg);
+  })
+});
 
 
-// let showerSeq = []
-// for (const act of activities) {
-//   showerSeq.push(act['name'])
-// }
 
-// - List of products names
-// -products[key]['product_name'] / ['product_img'] / ['product_label_color']
-
-
-// let showerProds = []
-// for (const prod of products) {
-//   showerProds.push(prod['product_name'])
-// }
-
-
+// Run the user's shower routine. 
+//   Activity Name, Description, Video, Image, and Label color are
+//    all sourced from the database and cycle through at a fixed pace.
+// ...
+// FUTURE FEATURES will include: 
+//    - variable cycle speeds (slow/med/fast)
+//    - user interface ('done?' 'need more time?')
+//      - alerts to caregiver if user does not progress to next step
 const runShowerFlow = (activities, products) => {
 
   const showerSeq = Object.keys(activities)
-
+  console.log(showerSeq)
   const showerProds = Object.keys(products)
+  console.log(showerProds)
 
-  for (const step of showerSeq) {
-    const time = (1 * 60 * 1000) + ((60 * 1000) * showerSeq.indexOf(step))
-    setTimeout(() => {$('h2#activity-name').html(activities[step]['name'].toUpperCase())}, time);
-    setTimeout(() => {$('#activity-video').attr('src', activities[step]["video"])}, time);
-   }
+// This is assuming the length of both lists are equal; 
+//   If & when caregivers can add images, 
+//   this will not be true (eg. razor and shaving cream)  
+  for (let idx = 0; idx < showerSeq.length; idx++) {
+    const time = (1 * 30 * 1000) + ((30 * 1000) * idx)
+    setTimeout(() => {$('h2#activity-name').html(activities[showerSeq[idx]]['name'].toUpperCase())}, time);
+    setTimeout(() => {$('#activity-descr').html(activities[showerSeq[idx]]['description'])}, time);
+    setTimeout(() => {$('#activity-video').attr('src', activities[showerSeq[idx]]["video"])}, time);
+    setTimeout(() => {$('#product-img').attr('src', products[showerProds[idx]]["image"])}, time);
+    // setTimeout(() => {$('product-label-color').attr('color', products[showerProds[idx]]['label_color'])});
+  }
+};
 
-  for (const prod of showerProds) {
-    const time = (1 * 60 * 1000) + ((60 * 1000) * showerProds.indexOf(prod))
-    setTimeout(() => {$('#product-img').attr('src', products[prod]["product_img"])}, time);
-    setTimeout(() => {$('product-label-color').attr('color', products[prod]['product_label_color'])})
-  };
 
 
+// #########################################################################
 
 // function thisOne(list=myList, attributes=myAttr) {
 

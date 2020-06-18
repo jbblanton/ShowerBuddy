@@ -7,7 +7,7 @@
 
 {% block body %}
 
-<p class="start-shower">
+{# <p class="start-shower">
   <h1 class="start-shower">Start a Shower Routine</h1>
 
 <form method="POST" class="start-shower"> 
@@ -16,25 +16,27 @@
     {% for user in users %}
       <option class="start-shower" value="{{user.user_id}}">{{user.user_name}}
 
-{#  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER.  #}
+ This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER. 
 {#  I bet a lil' if/else action in here will bridge the gap #}
 {#       {% for flow in user %}
           <option value="{{flow.title}}">{{flow.title}}</option>
-         {% endfor %} #}
+         {% endfor %}
 
       </option>
     {% endfor %}
   </select>
+ #} 
 
-    <button type="submit" class="start-shower" id="start-shower" value="start-shower">Start Shower!</button>
+{#     <button type="submit" class="start-shower" id="start-shower" value="start-shower">Start Shower!</button>
 </form>
-</p>
+</p> #}
 
 
 {# Maybe this all goes on to the DASHBOARD so the start_shower.html can be where the event is coded? 
   Or just do it all on one pg?  #}
 
-<div class="shower-action" style="display: none;">
+<div class="shower-action">
+  {# Put this back in the div if we revert to previous page design:  style="display: none; #}
   
   <span>
     <h2 id="activity-name"> - activity_name goes here - </h2>
@@ -54,6 +56,10 @@
 
   <br>
   
+
+{#   <p>{{ products }}</p> #}
+
+
     <button onclick="move()">Click Me</button> 
 {# Obviously the 'click me' needs to go and the start will trigger automatically #}
     </div>
@@ -61,7 +67,7 @@
     <img id="product-img" src="/static/img/male_shower.png">
     <p id="product-label-color">insert a band of the label color under / near the image</p>   
 
-    <button id="help">HELP!</button>
+    <button id="HELP">HELP!</button>
 
   </div>
 </div>
