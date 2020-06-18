@@ -1,5 +1,3 @@
-
-
 // Added via Bootstrap, to enable hover-over tool-tips:
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -65,6 +63,7 @@ $(document).ready(function(){
   });  
 });
 
+
 //  This POSTS user_id from select menu; 
 //    response includes Activities and Products as dictionaries:
 $('#start-shower').on('click', (evt) => {
@@ -74,6 +73,7 @@ $('#start-shower').on('click', (evt) => {
     user_id : $("#flow-id :selected").val(),
     };
     console.log(formData.user_id)
+
   $.post('/start_shower', formData, (response) => {
     if (response.success) {
       // $( ).html(response.html)
@@ -89,6 +89,14 @@ $('#start-shower').on('click', (evt) => {
   });
 });
 
+// The SOS button; TO DO: Personalize with the user's name
+$('#HELP').on('click', (evt) => {
+  $.get('/send_help', (response) => {
+>>>>>>> 4ecf779... WOO! Shower flow is functional!
+
+      alert(response.msg);
+  })
+});
 
 // Run the user's shower routine. 
 //   Activity Name, Description, Video, Image, and Label color are
@@ -116,7 +124,6 @@ const runShowerFlow = (activities, products, duration) => {
   // setTimeout(() => {$('#activity-video').attr('src', "https://giphy.com/embed/kDBhX1Il2PZL66ljiL")}, TestthisTime);   
   // setTimeout(() => {$('#product-img').attr('src', '')}, TestthisTime);
   // setTimeout(() => {$("div.shower-action").show()}, TestthisTime);
-
 
 // Run the actual shower flow:
 //    NOTE: This is assuming the length of both lists are equal; 
@@ -172,124 +179,3 @@ const runShowerFlow = (activities, products, duration) => {
 
   // $("div.shower-action").hide()}, exitTime);
   // setTimeout(() => {$("div.shower-ended").show()}, exitTime);
-
-
-
-
-  // ///// ////////// ////////////// ///////////////////////
-
-// To enable drag and drop ordering of the shower events
-
-// NONE of this really works. Sort of, and kind of, but it looks like shit and doesn't seem to add value to the project.
-
-
-
-
-// let dragged;
-
-// document.addEventListener("drag", function(evt) {
-
-// }, false);
-
-// document.addEventListener('dragstart', function(evt) {
-//   dragged = evt.target;
-//   evt.target.style.opacity = .5;
-// }, false);
-
-// document.addEventListener('dragend', function(evt) {
-//   evt.target.style.opacity = "";
-// }, false);
-
-// document.addEventListener('dragover', function(evt) {
-//   evt.preventDefault();
-// }, false);
-
-// document.addEventListener('dragenter', function(evt) {
-//   if (evt.target.className == 'dropzone') {
-//     // this color is too dark, but using it for now. RESTYLE!!
-//     evt.target.style.background = "#272c67";  
-//   }
-// }, false);
-
-// document.addEventListener('dragleave', function(evt) {
-//   if (evt.target.className == 'dropzone') {
-//     evt.target.style.background = "";
-//   }
-// }, false);
-
-// document.addEventListener("drop", function(evt) {
-//   evt.preventDefault();
-//   if (evt.target.className == 'dropzone') {
-//     evt.target.style.background = "";
-//     dragged.parentNode.removeChild(dragged);
-//     evt.target.appendChild(dragged);
-//   }
-// }, false);
-
-
-
-//=> => https://www.youtube.com/watch?v=7HUCAYMylCQ
-
-// dropzone.forEach(drop => {
-//   drop.addEventListener('dragover', evt => {
-//     evt.preventDefault();
-//     const afterElement = getDragAfterElement(dropzone, evt.clientY);
-//     const draggable = document.querySelector('.dragging');
-//     if (afterElement == null) {
-//       dropzone.appendChild(draggable);
-//     } else {
-//       dropzone.insertBefore(draggable, afterElement)
-//     }
-//   })
-// });
-
-// function getDragAfterElement(dropzone, y) {
-//   const actions = [...dropzone.querySelectorAll('.draggable:not(.dragging)')]
-
-//   return actions.reduce((closest, child) => {
-//     const box = child.getBoundingClientRect();
-//     const offset = y - box.top - box.height / 2
-//     if (offset < 0 && offset > closest.offset) {
-//       return { offset: offset, element: child }
-//     } else {
-//       return closest
-//     }
-//   }, { offset: Number.NEGATIVE_INFINITY }).element
-// }
-
-
-
-// // Add target element's id to the data transfer object
-//   function dragstart_handler(evt) {
-//     evt.dataTransfer.setData("text/plain", evt.target.id);
-//   }
-
-//   window.addEventListener('DOMContentLoaded', () => {
-//     const element = document.getElementById('shampoo-act');
-//     element.addEventListener('dragstart', dragstart_handler);
-//   });
-
-
-// // Add a drag image (choosing a black water droplet for now); 
-// //    this may not be kept...
-// function dragstart_handler(evt) {
-//   let img = new Image();
-//   img.src = '/static/css/black_drop.png'
-//   evt.dataTransfer.setDragImage(img, 5, 5);
-// }
-
-// // To copy the item over, (alts are move and link)
-// function dragstart_handler(evt) {
-//   evt.dataTransfer.dropEffect = "copy";
-// }
-
-// function dragover_handler(evt) {
-//   evt.preventDefault();
-//   evt.dataTransfer.dropEffect = "copy"
-// }
-
-// function drop_handler(evt) {
-//   evt.preventDefault();
-//   const data = evt.dataTransfer.getData("text/plain");
-//   evt.target.appendChild(document.getElementById(data));
-// }
