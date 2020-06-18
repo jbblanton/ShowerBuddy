@@ -1,5 +1,3 @@
-
-
 // Added via Bootstrap, to enable hover-over tool-tips:
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -61,6 +59,7 @@ $(document).ready(function(){
   });  
 });
 
+
 //  This POSTS user_id from select menu; 
 //    response includes Activities and Products as dictionaries:
 $('#start-shower').on('click', (evt) => {
@@ -69,6 +68,7 @@ $('#start-shower').on('click', (evt) => {
   const formData = {
     user_id : $("#flow-id :selected").val(),
     };
+
 
   $.post('/start_shower', formData, (response) => {
     if (response.success) {
@@ -84,6 +84,14 @@ $('#start-shower').on('click', (evt) => {
   });
 });
 
+// The SOS button; TO DO: Personalize with the user's name
+$('#HELP').on('click', (evt) => {
+  $.get('/send_help', (response) => {
+
+
+      alert(response.msg);
+  })
+});
 
 // Run the user's shower routine. 
 //   Activity Name, Description, Video, Image, and Label color are
@@ -109,7 +117,6 @@ const runShowerFlow = (activities, products, duration) => {
   // setTimeout(() => {$('#activity-video').attr('src', "https://giphy.com/embed/kDBhX1Il2PZL66ljiL")}, TestthisTime);   
   // setTimeout(() => {$('#product-img').attr('src', '')}, TestthisTime);
   // setTimeout(() => {$("div.shower-action").show()}, TestthisTime);
-
 
 // Run the actual shower flow:
 //    NOTE: This is assuming the length of both lists are equal; 
@@ -157,4 +164,5 @@ const runShowerFlow = (activities, products, duration) => {
         setTimeout(() => {$("div.shower-ended").show()}, thisTime);
     }
   };
+
 };

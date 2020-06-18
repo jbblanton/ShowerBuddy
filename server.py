@@ -80,6 +80,10 @@ def register_user():
         
         login_user(caregiver)
 
+##########
+    alert = crud.send_creation_alert(API_SID, AUTH)
+##########
+
     if current_user.is_authenticated:
         caregiver = current_user   
 
@@ -115,8 +119,7 @@ def register_user():
         error = 'Duplicate user'
         flash('Oops! Looks like you already have a flow for this person.  If you\'re trying to create additional routines, give it a new name.')
     
-    return render_template('create_user.html', error=error)
-
+    return render_template('dashboard.html', users=users)
 
 @app.route('/dashboard')
 @login_required
@@ -129,6 +132,7 @@ def caregiver_control_panel():
         """
 
     return render_template('dashboard.html')
+
 
 
 @app.route('/login', methods=['POST'])

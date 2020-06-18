@@ -57,6 +57,7 @@ def send_SOS_alert(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
 
     print(message.sid)
 
+
 #TO DO: Write what calls this function:
 def alert_shower_started(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
     """Send a text message to caregiver when a shower is started.
@@ -74,6 +75,7 @@ def alert_shower_started(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
             )
 
     print(message.sid)
+    
 
 #TO DO: Write what calls this function:
 def alert_shower_completed(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
