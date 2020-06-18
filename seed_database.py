@@ -126,10 +126,15 @@ example_people()
 
 # <iframe src="https://giphy.com/embed/mRvJKBHGhJFIc" width="480" height="266" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/sing-problem-shower-mRvJKBHGhJFIc">via GIPHY</a></p> conditioner
 
+# <iframe src="https://giphy.com/embed/1tK61mF7P7x4I" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/shower-loop-dexter-1tK61mF7P7x4I">via GIPHY</a></p>  get-wet
 
+# <iframe src="https://giphy.com/embed/3o6MbjjOqVPMHZvuve" width="480" height="362" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/season-4-the-simpsons-4x3-3o6MbjjOqVPMHZvuve">via GIPHY</a></p> Homer-soap
 
 # ACTUAL QUALITY: 
 # <iframe src="https://giphy.com/embed/MBZKkYQYgv95pantzk" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/virus-washing-hands-sanitize-MBZKkYQYgv95pantzk">via GIPHY</a></p>  wash-hands
 
 # <iframe src="https://giphy.com/embed/yoJC2zNPBxSVPNQC0o" width="480" height="271" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/skintimate-shower-shave-gel-yoJC2zNPBxSVPNQC0o">via GIPHY</a></p>  shaving-cream
+
+
+# <iframe src="https://giphy.com/embed/l0HlEIP347YAFjq6I" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/wikihow-daily-bath-l0HlEIP347YAFjq6I">via GIPHY</a></p>  taking a shower
 

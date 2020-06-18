@@ -2,6 +2,38 @@
 
 from model import (db, connect_to_db, Caregiver, User, Flow, Flow_Activity, Activity, Flow_Product, Product)
 import json
+from twilio.rest import Client
+
+
+def send_creation_alert(ACCOUNT_SID, AUTH_TOKEN, cg_phone):
+    """TESTING Twilio functionality"""
+
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
+    message = client.messages \
+                    .create(
+                        body="Nice job on creating a new user!",
+                        from_='+12058968145',
+                        to="cg_phone"
+                        )
+
+    print(message.sid)
+
+
+def send_SOS_alert(ACCOUNT_SID, AUTH_TOKEN, cg_phone):
+    """Send text message to caregiver if SOS Button is pressed"""
+
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
+    message = client.messages \
+                    .create(
+                        body="HELP is needed!",
+                        from_='+12058968145',
+                        to="cg_phone"
+                        )
+
+    print(message.sid)
+
 
 
 def create_caregiver(email, telephone, password):
@@ -131,8 +163,8 @@ def create_product_dict(flow_id):
     for num in prod_list:
         product = db.session.query(Product).join(Flow_Product).filter(Flow_Product.fa_id == num).all()
         product_dict[num] = {"name" : product[0].product_name, 
-                                    "image" : product[0].product_img, 
-                                    "label_color" : product[0].product_label_color,}
+                            "image" : product[0].product_img, 
+                            "label_color" : product[0].product_label_color,}
         
     return product_dict
 

@@ -9,6 +9,7 @@ Will have controls for
 -Logout #}
 
 {% extends 'base.html' %}
+
 {% block title %} Caregiver Dashboard {% endblock %}
 
 {% block body %}
@@ -23,13 +24,16 @@ Will have controls for
 
   <button class="start-shower" id="edit-flow">Edit a flow for an existing user</button>
 
+
   <p class="start-shower">
     <h1 class="start-shower">Start a Shower Routine</h1>
 
     <form form action="/start_shower" method="POST" class="start-shower"> 
       <label class="start-shower" for="user-name">Who is taking a shower?</label>
       <select class="start-shower" id="user-name" name="select">
+
         {% for user in current_user.users %}
+
           <option class="start-shower" value="{{user.user_id}}">{{user.user_name}}
 
 {#  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER.  #}
@@ -47,6 +51,7 @@ Will have controls for
     </form>
 </p>
 
+
 <button class="start-shower" id="logout"><a href="/logout">Logout</a></button>
 
 </div>
@@ -57,6 +62,7 @@ Will have controls for
   {# Put this back in the div if we revert to previous page design:  style="display: none; #}
   
   <span>
+
     <h2 class="shower-action" id="activity-name"> - INITIAL RINSE - </h2>
   </span>
   
@@ -78,7 +84,6 @@ Will have controls for
 
     <button onclick="move()">Click Me</button> 
 {# Obviously the 'click me' needs to go and the start will trigger automatically #}
-
   
     <img class="shower-action" id="product-img" src="/static/img/male_shower.png">
     <p class="shower-action" id="product-label-color">insert a band of the label color under / near the image</p>   
@@ -98,4 +103,5 @@ Will have controls for
 </div>
   
   {# <script src="/static/shower_flow.js" type="text/javascript"></script>   #}
+
 {% endblock %}
