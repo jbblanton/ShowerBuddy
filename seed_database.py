@@ -20,9 +20,9 @@ def example_people():
     users = []
     flows = []
 
-    a = model.Caregiver(email="atest@test.com", password="password", telephone="555-789-4561")
-    b = model.Caregiver(email="btest@test.com", password="password", telephone="555-789-4561")
-    c = model.Caregiver(email="ctest@test.com", password="password", telephone="555-789-4561")
+    a = model.Caregiver(caregiver_name="Jane", email="atest@test.com", password="password", telephone="555-789-4561")
+    b = model.Caregiver(caregiver_name="paula", email="btest@test.com", password="password", telephone="555-789-4561")
+    c = model.Caregiver(caregiver_name="George", email="ctest@test.com", password="password", telephone="555-789-4561")
     caregivers.extend([a,b,c])
 
     lola = model.User(user_name="Lola", user_body="female", caregiver=a)

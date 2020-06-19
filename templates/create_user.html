@@ -58,6 +58,9 @@
 
 <br>
 
+  {% if not current_user.is_authenticated %}
+
+
     <fieldset>
       <legend>Caregiver Information:</legend>
       <label for="caregiver-name">Name:</label>
@@ -72,6 +75,8 @@
       <label for="caregiver-password">Password (8 characters minimum):</label>
         <input id="caregiver-password" type="password" name="caregiver-password" minlength="8" required>
     </fieldset>
+
+  {% endif %}
 
     <input type="submit" value="Create Account">
     {# <input type="submit" formaction="reset" value="Save & Create another"> #}

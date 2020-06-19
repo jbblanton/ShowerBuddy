@@ -5,42 +5,65 @@ import json
 from twilio.rest import Client
 
 
-def send_creation_alert(ACCOUNT_SID, AUTH_TOKEN):
+def send_creation_alert(ACCOUNT_SID, AUTH_TOKEN, cg_phone):
     """TESTING Twilio functionality"""
 
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
     message = client.messages \
                     .create(
-                        body="Nice job on creating a new user!",
+                        body="Nice job on creating a new user! Please visit your ShowerBuddy dashboard to start a shower.",
                         from_='+12058968145',
-                        to="+15085794940"
+                        to=cg_phone,
                         )
 
     print(message.sid)
 
 
-def send_SOS_alert(ACCOUNT_SID, AUTH_TOKEN):
-    """Send text message to caregiver if SOS Button is pressed"""
+def send_SOS_alert(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
+    """Send text message to caregiver if SOS Button is pressed
+
+        >>> crud.send_SOS_alert(API_SID, AUTH, 'Lola', DEMO_PHONE)
+        SM928107b713b644808792cf51d24dc2bc
+        """
 
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
     message = client.messages \
                     .create(
-                        body="HELP is needed!",
+                        body=f"{user_name} needs help in the bathroom!",
                         from_='+12058968145',
-                        to="+15085794940"
+                        to=cg_phone,
                         )
 
     print(message.sid)
 
 
-def create_caregiver(email, telephone, password):
-    """Pt 1 of form will collect this data: 
-        ...
-        Plan is to call this function when the person moves from Pt 1 to Pt 2 so the Caregiver object will be available for the next function """
+def get_user_by_user_id(user_id):
+    """Pull the name of user by their ID;
+        for use with phone alerts.
 
-    caregiver = Caregiver(email=email, telephone=telephone, password=password)
+            >>> crud.get_user_by_user_id(3)
+            Pickle
+
+            >>> crud.get_user_by_user_id(2)
+            Tuesday
+
+            >>> crud.get_user_by_user_id(12)
+            None
+        """
+
+    user = db.session.query(User).filter(User.user_id == user_id).first()
+
+    name = user.user_name
+
+    return name
+
+
+def create_caregiver(name, email, telephone, password):
+    """ Data gathered at bottom of Create User form: """
+
+    caregiver = Caregiver(caregiver_name=name, email=email, telephone=telephone, password=password)
 
     db.session.add(caregiver)
     db.session.commit()
@@ -62,6 +85,15 @@ def create_user(name, body, caregiver):
 
 
 def get_caregiver_by_email(email):
+    """Search database by email; Used for login. 
+        Returns Caregiver Object
+
+        >>> crud.get_caregiver_by_email('btest@test.com')
+        <Caregiver caregiver_id=2, email=btest@test.com, phone=555-789-4561>
+
+        >>> crud.get_caregiver_by_email('nobody@test.com')
+        >>>
+        """
 
     caregiver = db.session.query(Caregiver).filter(Caregiver.email == email).first()
 
@@ -70,8 +102,8 @@ def get_caregiver_by_email(email):
 
 # For now, default title = 'Daily'
 def create_flow(activities, user):
-    """Will call upon an existing User object to create a shower routine 
-        (returns a flow object) """
+    """Will call upon an existing User object to create a shower routine; 
+        Returns a flow object. """
 
     flow = Flow(title="daily", user=user)
 

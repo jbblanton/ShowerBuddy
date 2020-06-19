@@ -6,17 +6,31 @@ import crud
 import model
 from twilio.rest import Client
 import os
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 
 app = Flask(__name__)
-app.secret_key = 'lola'
+app.secret_key = os.environ['SUPER_SECRET_KEY']
 app.jinja_env.undefined = StrictUndefined  
 
 ########### TWILIO #############
 
 API_SID = os.environ['ACCOUNT_SID']
 AUTH = os.environ['AUTH_TOKEN']
+DEMO_PHONE = os.environ['PHONE']
 
+########### Flask Login ########
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.session_protection = "strong"
+LoginManager.login_view = "/"
+
+@login_manager.user_loader
+def load_user(caregiver_id):
+    """Returns a Caregiver object, based on unique ID"""
+
+    return model.Caregiver.query.get(int(caregiver_id))
 
 ##### Routes ###########
 
@@ -40,24 +54,32 @@ def register_user():
         Check if caregiver info already exists
         else create both objects """
 
-# TO DO: If cg_email already in system, need to divert to adding an addtl user, not creating 2 accounts
-    
 
-    # create a caregiver:
-    cg_email = request.form.get('caregiver-email')
-    cg_pass = request.form.get('caregiver-password')
-    cg_phone = request.form.get('caregiver-phone')
+    if not current_user.is_authenticated:
 
-    caregiver = crud.create_caregiver(cg_email, cg_phone, cg_pass)
+        # Get Caregiver info from form:
+        cg_name = request.form.get('caregiver-name')
+        cg_email = request.form.get('caregiver-email')
+        cg_pass = request.form.get('caregiver-password')
+        cg_phone = request.form.get('caregiver-phone')
 
-    session["cg_email"] = cg_email
+        # Instantiate a Caregiver object
+        caregiver = crud.create_caregiver(cg_name, cg_email, cg_phone, cg_pass)
+        
+        login_user(caregiver)
 
-##########
-    alert = crud.send_creation_alert(API_SID, AUTH)
-##########
+
+    # # If not in the database, create a new Caregiver and add to session:
+    # active = model.Caregiver.check_if_registered(cg_email)
+    # print(active)
+
+    if current_user.is_authenticated:
+        caregiver = current_user   
+
 
     # create a user profile:
-    user_name = request.form.get('user-name')
+    name = request.form.get('user-name')
+    user_name = name.capitalize()
     user_body = request.form.get('body')
 
     new_user = crud.create_user(user_name, user_body, caregiver)
@@ -70,10 +92,12 @@ def register_user():
 
 
     # get the list of associated users for display on the dashboard:
-    cg = crud.get_caregiver_by_email(session['cg_email'])
-    users = cg.users
+    # cg = crud.get_caregiver_by_email(cg_email)
+    users = caregiver.users
 
-    return render_template('dashboard.html', users=users)
+    alert = crud.send_creation_alert(API_SID, AUTH, DEMO_PHONE)
+
+    return render_template('dashboard.html', users=users, cg_name=current_user.caregiver_name)
 
 
 @app.route('/dashboard')
@@ -98,32 +122,32 @@ def log_in():
     password = request.form.get('cg-password')
 
     active = model.Caregiver.check_if_registered(email)
-
+    print('****************************')
+    print(active)
+    
+    
     if active:
-        session["cg_email"] = email
-        cg = crud.get_caregiver_by_email(session['cg_email'])
-        users = cg.users
-
-        return render_template('dashboard.html', users=users)
+        name = active.caregiver_name
+        users = active.users
+        login_user(active)
+        return render_template('dashboard.html', cg_name=name, users=users)
     else:
-        redirect('/')
-# TO DO fix this to actually work
+        flash('Account not found.')
+        return redirect('/')
 
 
-# @app.route('/dashboard', methods=["GET"])
-# def choose_flow():
-#     """Display users and their shower flows.
-#         Only associated user(s) will display.
-#         Caregiver will be able to select from dropdown and start a flow"""
+@app.route('/logout')
+@login_required
+def log_out():
+    """Exit a session"""
 
-#     cg = crud.get_caregiver_by_email(session['cg_email'])
+    logout_user()
 
-#     users = cg.users
-
-#     return render_template('dashboard.html', users=users)
+    return redirect('/')
 
 
 @app.route('/start_shower')
+@login_required
 def show_shower_page():
     """Render the shower page"""
 
@@ -131,6 +155,7 @@ def show_shower_page():
 
 
 @app.route('/start_shower', methods=["POST"])
+@login_required
 def play_shower():
     """Play the shower flow.
         Will need user_id.
@@ -171,7 +196,10 @@ def alert_caregiver():
     """For use with the SOS button.
         System will send a text to the caregiver"""
 
-    alert = crud.send_SOS_alert(API_SID, AUTH)
+    user_id = request.args.get('user_id')
+    user = crud.get_user_by_user_id(user_id)
+
+    alert = crud.send_SOS_alert(API_SID, AUTH, user, DEMO_PHONE)
 
     try:
         return jsonify({"success" : True, 

@@ -4,6 +4,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 # import crud
 import server
+from flask_login import UserMixin
 
 # os.system('dropdb testing')
 # os.system('createdb testing')
@@ -13,13 +14,14 @@ db = SQLAlchemy()
 
 ################# Models & Info ##################################
 
-class Caregiver(db.Model):
-    """A Caregiver"""
+class Caregiver(UserMixin, db.Model):
+    """A Caregiver
+        Trying again to use Flask-Login"""
 
     __tablename__ = "caregivers"
 
     caregiver_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
-    #caregiver_name =db.Column(db.String(25),)
+    caregiver_name =db.Column(db.String(25),)
     email = db.Column(db.String(50), unique = True, nullable = False,)
     password = db.Column(db.String(25), nullable = False,)
     telephone = db.Column(db.String(12),)
@@ -27,16 +29,24 @@ class Caregiver(db.Model):
     users = db.relationship('User')
 
     def __repr__(self):
-        return f'<Caregiver caregiver_id={self.caregiver_id}, \
-                email={self.email}, phone={self.telephone}>'
+        return f'<Caregiver caregiver_id={self.caregiver_id}, email={self.email}, phone={self.telephone}>' 
 
 
     def check_if_registered(email):
-        """Check if a caregiver is already registered"""
+        """Check if a caregiver is already registered;
+            cg will either contain that Caregiver object 
+            else equal None"""
 
         cg = db.session.query(Caregiver).filter(Caregiver.email == email).first()
 
         return cg
+
+# Written to override the default method from UserMixin:
+    def get_id(self):
+        try:
+            return str(self.caregiver_id)
+        except AttributeError:
+            raise NotImplementedError('No `caregiver_id` attribute - override `get_id`')
 
 
 class User(db.Model):
@@ -76,9 +86,8 @@ class Flow(db.Model):
     user = db.relationship('User')
 
     def __repr__(self):
-        return f'<Flow flow_id={self.flow_id}, title={self.title}, \
-                user={self.user.user_name}>'
-        # I don't know if I can write that last bit like that... FIND OUT
+        return """ f'<Flow flow_id={self.flow_id}, title={self.title}, 
+                user={self.user.user_name}>' """
 
 
 class Flow_Activity(db.Model):
@@ -95,8 +104,8 @@ class Flow_Activity(db.Model):
     activity = db.relationship('Activity')
 
     def __repr__(self):
-        return f'<Flow_Activity flow_act_id={self.flow_act_id}, \
-                step in sequence={self.seq_step}>'
+        return """ f'<Flow_Activity flow_act_id={self.flow_act_id}, 
+                step in sequence={self.seq_step}>' """
 
 
 class Activity(db.Model):
@@ -113,8 +122,9 @@ class Activity(db.Model):
     #act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
-        return f'<Activity id={self.activity_id}, description={self.description}, \
-                video={self.activity_video}>'
+        return """ f'<Activity id={self.activity_id}, 
+                description={self.description}, 
+                video={self.activity_video}>' """
 
 
 
