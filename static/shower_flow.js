@@ -1,6 +1,5 @@
 // """To Manage the Flow, but now in Java Script!"""
 
-
 // This is to toggle visibility between starting and playing a shower flow:
 $(document).ready(function(){
   $('#start-shower').on('click', (evt) => {
@@ -36,11 +35,14 @@ $('#start-shower').on('click', (evt) => {
 });
 
 
-// The SOS button; TO DO: Personalize with the user's name
-$('#HELP').on('click', (evt) => {
-  $.get('/send_help', (response) => {
+// The SOS button; Upon click, a text is sent to caregiver 
+//  & an alert pops on screen.
 
-      alert(response.msg);
+$('#HELP').on('click', (evt) => {
+  const user_id = { user_id : $("#user-name :selected").val() };
+  
+  $.get('/send_help', user_id, (response) => {
+    alert(response.msg);
   })
 });
 
@@ -68,9 +70,26 @@ const runShowerFlow = (activities, products) => {
   for (let idx = 0; idx < showerSeq.length; idx++) {
     const time = (1 * 30 * 1000) + ((30 * 1000) * idx)
     setTimeout(() => {$('h2#activity-name').html(activities[showerSeq[idx]]['name'].toUpperCase())}, time);
+    console.log(activities[showerSeq[idx]]['name'])
     setTimeout(() => {$('#activity-descr').html(activities[showerSeq[idx]]['description'])}, time);
+    console.log(activities[showerSeq[idx]]['description'])
     setTimeout(() => {$('#activity-video').attr('src', activities[showerSeq[idx]]["video"])}, time);
+    console.log(activities[showerSeq[idx]]["video"])    
     setTimeout(() => {$('#product-img').attr('src', products[showerProds[idx]]["image"])}, time);
+    console.log(products[showerProds[idx]]["image"])
     // setTimeout(() => {$('product-label-color').attr('color', products[showerProds[idx]]['label_color'])});
   }
 };
+<<<<<<< HEAD
+=======
+
+
+//This button is to create a new user on an existing account:
+//on click, render '/create_user' pg
+
+
+
+
+// This button is to edit an existing user flow:
+// TO DO: you know what you need to do
+>>>>>>> 9411956... End of Thursday

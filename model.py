@@ -4,6 +4,7 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 
 import server
+from flask_login import UserMixin
 
 
 
@@ -12,13 +13,14 @@ db = SQLAlchemy()
 
 ################# Models & Info ##################################
 
-class Caregiver(db.Model):
-    """A User, aka: a Caregiver"""
+class Caregiver(UserMixin, db.Model):
+    """A Caregiver
+        Trying again to use Flask-Login"""
 
     __tablename__ = "caregivers"
 
     caregiver_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
-    #caregiver_name =db.Column(db.String(25),)
+    caregiver_name =db.Column(db.String(25),)
     email = db.Column(db.String(50), unique = True, nullable = False,)
     password = db.Column(db.String(25), nullable = False,)
     telephone = db.Column(db.String(12),)
@@ -27,15 +29,24 @@ class Caregiver(db.Model):
 
 
     def __repr__(self):
-        return f'<Caregiver user_id={self.user_id}, email={self.email}, phone={self.telephone}>'
+        return f'<Caregiver caregiver_id={self.caregiver_id}, email={self.email}, phone={self.telephone}>' 
 
 
     def check_if_registered(email):
-        """Check if a caregiver is already registered"""
+        """Check if a caregiver is already registered;
+            cg will either contain that Caregiver object 
+            else equal None"""
 
         cg = db.session.query(Caregiver).filter(Caregiver.email == email).first()
 
         return cg
+
+# Written to override the default method from UserMixin:
+    def get_id(self):
+        try:
+            return str(self.caregiver_id)
+        except AttributeError:
+            raise NotImplementedError('No `caregiver_id` attribute - override `get_id`')
 
 
 class User(db.Model):
@@ -87,6 +98,7 @@ class Flow(db.Model):
         # I don't know if I can write that last bit like that... FIND OUT
 
 
+
 class Flow_Activity(db.Model):
     """Connector table between Flow & Activities"""
 
@@ -119,6 +131,7 @@ class Activity(db.Model):
 
     def __repr__(self):
         return f'<Activity id={self.activity_id}, description={self.description}, video={self.activity_video}>'
+
 
 
 

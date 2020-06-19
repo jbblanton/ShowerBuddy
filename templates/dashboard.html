@@ -14,16 +14,25 @@ Will have controls for
 
 {% block body %}
 
+<<<<<<< HEAD
 <div class="start-shower" id="dashboard">
+=======
+<div class="start-shower">
+>>>>>>> 9411956... End of Thursday
   <h1 class="start-shower">Welcome, {{ current_user.caregiver_name.capitalize() }}!</h1>
 
   <p class="start-shower">This space will include add, edit, start shower, and logout buttons.
 </p>
 
   <button class="start-shower" id="new-user"><a href="/create_user">Add a new user</a></button>
+<<<<<<< HEAD
 
   <button class="start-shower" id="edit-flow">Edit a flow for an existing user</button>
 
+=======
+
+  <button class="start-shower" id="edit-flow">Edit a flow for an existing user</button>
+>>>>>>> 9411956... End of Thursday
 
   <p class="start-shower">
     <h1 class="start-shower">Start a Shower Routine</h1>
@@ -31,9 +40,13 @@ Will have controls for
     <form form action="/start_shower" method="POST" class="start-shower"> 
       <label class="start-shower" for="user-name">Who is taking a shower?</label>
       <select class="start-shower" id="user-name" name="select">
+<<<<<<< HEAD
 
         {% for user in current_user.users %}
 
+=======
+        {% for user in current_user.users %}
+>>>>>>> 9411956... End of Thursday
           <option class="start-shower" value="{{user.user_id}}">{{user.user_name}}
 
 {#  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER.  #}
@@ -51,8 +64,13 @@ Will have controls for
     </form>
 </p>
 
+<<<<<<< HEAD
 
 <button class="start-shower" id="logout"><a href="/logout">Logout</a></button>
+=======
+<button class="start-shower"><a href="/">Back</a></button>
+<button class="start-shower" id="logout">Logout</button>
+>>>>>>> 9411956... End of Thursday
 
 </div>
 
@@ -62,13 +80,20 @@ Will have controls for
   {# Put this back in the div if we revert to previous page design:  style="display: none; #}
   
   <span>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9411956... End of Thursday
     <h2 class="shower-action" id="activity-name"> - INITIAL RINSE - </h2>
   </span>
   
   <p class="shower-action" id="activity-descr">START by getting under the water! Get your body and hair wet.
     <div class="shower-action" style="width:80%;height:0;padding-bottom:76%;position:relative;">
+<<<<<<< HEAD
       <iframe class="shower-action" id="activity-video" src="https://giphy.com/embed/1tK61mF7P7x4I" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen>    
+=======
+      <iframe id="activity-video" src="https://giphy.com/embed/1tK61mF7P7x4I" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen>    
+>>>>>>> 9411956... End of Thursday
       </iframe>
     </div>
     </p>
@@ -84,6 +109,7 @@ Will have controls for
 
     <button onclick="move()">Click Me</button> 
 {# Obviously the 'click me' needs to go and the start will trigger automatically #}
+<<<<<<< HEAD
   
     <img class="shower-action" id="product-img" src="/static/img/male_shower.png">
     <p class="shower-action" id="product-label-color">insert a band of the label color under / near the image</p>   
@@ -100,6 +126,16 @@ Will have controls for
   <h3 class="shower-ended">You're all done! Great work!</h3>
 
   <button class="shower-ended" id="shower-ended"><a href="/dashboard">Return to the Dashboard</a></button>
+=======
+
+  
+    <img class="shower-action" id="product-img" src="/static/img/male_shower.png">
+    <p id="product-label-color">insert a band of the label color under / near the image</p>   
+
+    <button class="shower-action" id="HELP">HELP!</button>
+
+
+>>>>>>> 9411956... End of Thursday
 </div>
   
   {# <script src="/static/shower_flow.js" type="text/javascript"></script>   #}
