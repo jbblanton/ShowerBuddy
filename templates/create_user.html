@@ -5,10 +5,6 @@
   
   <h1>Shower Buddy</h1>
 
-{# Look into a "Linear Stepper" or "Parallel Stepper" for making this form look
- good. Should be part of the Bootstrap work. #}
-
-
   <form id="create-user-form" method="POST">
     {# Get basic info about user for USERS table #}
     <label for="user-name">User's Name:</label>
@@ -27,16 +23,12 @@
         <label for="other-body">Other / Non-binary</label>
     </fieldset>
 
-{# Maybe I add a field for 'Frequncy' and use that as the title?  #}
-
     <fieldset>
       <legend>How does this person clean their Hair?</legend>
 
       Shampoo? <input id="shampoo" type="checkbox" name="activity" value="shampoo">
       Conditioner? <input id="conditioner" type="checkbox" name="activity" value="conditioner">
-      Other? <input id="other-hair" type="checkbox" name="activity" value="other-hair">
 
-      {# If other, add text input and collect that info #}
     </fieldset>
 
     <fieldset>
@@ -52,44 +44,17 @@
       Their legs? <input id="shave-legs" type="checkbox" name="activity" value="shave-legs">
     </fieldset>
 
-    
-    <div id="shower-sort">
-      <h4>In what order should this person shower?</h4>
-      <div class="span6"> 
-        {# In preparation for Boostrap; 2 equal columns #}
-        <ol class="shower-order options">Shower Elements:
-          <li class="add">Shampoo hair</li>
-          <li class="add">Condition hair</li>
-          <li class="add">Wash body</li>
-          <li class="add">Shave face</li>          
-          <li class="add">Shave underarms</li>
-          <li class="add">Shave legs</li>          
-        </ol>
-      </div>
-      <div class="span6">
-        <ol class="shower-order final">Shower Order:
-          <li class="base">Initial body rinse</li>
-          <li class="base">Wet hair</li>
-          <li class="base">Final body rinse</li>
-        </ol>
-      </div>
-
-    <div class="span4">
-      <h4>Final order:</h4>
-      <pre id="serialized-output"></pre>
-    </div>
-
-
-
-
-
-
-    <br>
-
-    <strong>
-      ** Need to figure out how to ask about the time needed for these tasks **
-    ** Offer as a 'user typically takes 10 / 20 / 30 min in the shower' & divide out the time? **
-    **Also, how are you offering an opportunity to name the flow and schedule it? (are they all defaulted to 'daily'?</strong>
+    <fieldset>
+      <legend>For how many minutes does an average shower last?</legend>
+      <input id="short" type="radio" name="duration" value="10">
+        <label for="short">10</label>
+      <br>
+      <input id="med" type="radio" name="duration" value="20">
+        <label for="med">20</label>
+      <br>
+      <input id="long" type="radio" name="duration" value="30">
+        <label for="long">30</label>
+    </fieldset>
 
 <br>
 
