@@ -54,7 +54,6 @@ def register_user():
         Check if caregiver info already exists
         else create both objects """
 
-
     if not current_user.is_authenticated:
 
         # Get Caregiver info from form:
@@ -69,15 +68,11 @@ def register_user():
         login_user(caregiver)
 
 
-    # # If not in the database, create a new Caregiver and add to session:
-    # active = model.Caregiver.check_if_registered(cg_email)
-    # print(active)
-
     if current_user.is_authenticated:
         caregiver = current_user   
 
 
-    # create a user profile:
+    # Create a user profile:
     name = request.form.get('user-name')
     user_name = name.capitalize()
     user_body = request.form.get('body')
@@ -85,55 +80,55 @@ def register_user():
     new_user = crud.create_user(user_name, user_body, caregiver)
 
 
-    # create a flow:
+    # Create a flow:
     activities = request.form.getlist('activity')
+    duration = int(request.form.get('duration'))
 
-    new_flow = crud.create_flow(activities, user=new_user)
+    new_flow = crud.create_flow(activities, duration, user=new_user)
 
 
-    # get the list of associated users for display on the dashboard:
-    # cg = crud.get_caregiver_by_email(cg_email)
+    # Get the list of associated users for display on the dashboard:
     users = caregiver.users
 
+    # Success alert to caregiver:
     alert = crud.send_creation_alert(API_SID, AUTH, DEMO_PHONE)
 
     return render_template('dashboard.html', users=users, cg_name=current_user.caregiver_name)
 
 
 @app.route('/dashboard')
+@login_required
 def caregiver_control_panel():
     """A page for a caregiver to 
-        Add a new user
-        Add a new flow to existing user
-        Edit a flow/user
-        Start the shower for one of their users
+        -Add a new user
+        -Add a new flow to existing user
+TO DO:  -Edit a flow/user
+        -Start the shower for one of their users
         """
 
     return render_template('dashboard.html')
 
 
-
 @app.route('/login', methods=['POST'])
 def log_in():
     """Log in a caregiver.
-        Render P3 (choose user / start shower) """
+        Render Dashboard"""
 
     email = request.form.get('cg-email')
     password = request.form.get('cg-password')
 
     active = model.Caregiver.check_if_registered(email)
-    print('****************************')
-    print(active)
-    
-    
+
     if active:
         name = active.caregiver_name
         users = active.users
         login_user(active)
-        return render_template('dashboard.html', cg_name=name, users=users)
+        return redirect(url_for('caregiver_control_panel', cg_name=name, users=users))
     else:
+        error = 'Invalid credentials.'
         flash('Account not found.')
-        return redirect('/')
+
+    return render_template('homepage.html', error=error)
 
 
 @app.route('/logout')
@@ -158,35 +153,31 @@ def show_shower_page():
 @login_required
 def play_shower():
     """Play the shower flow.
-        Will need user_id.
 
-# TO DO Add connection for the SOS button?
-        Event listener for Snooze and Next buttons """
+TO DO:    Event listener for Snooze and Next buttons """
 
     if request.method == "POST":
     # Get the user_id from the FE based on who's in the drop-down
         user_id = int(request.form.get('user_id')) 
-        print(user_id)
 
     # Send a user_id, receive a flow_id
         flow_id = crud.get_users_flow_id(user_id)
 
     # Get a dictionary of activities for this flow
         activities = crud.create_shower(flow_id)
-        # session['activities'] = activities
-
 
     # Get a dictionary of products for this flow
         products = crud.create_product_dict(flow_id)
-        # session['products'] = products
 
+    # Get duration of the shower flow (10, 20, 30 minutes)
+        duration = crud.get_length_of_shower(flow_id)
 
-        # return render_template('start_shower.html', activities= activities, products= "products")
         try:
             return jsonify({"success" : True, 
                             "html" : 'start_shower.html',
                             "activities" : activities, 
-                            "products" : products,})
+                            "products" : products,
+                            "duration" : duration,})
         except Exception as err:
             return jsonify({"success" : False, "message" : err})
 
@@ -199,6 +190,7 @@ def alert_caregiver():
     user_id = request.args.get('user_id')
     user = crud.get_user_by_user_id(user_id)
 
+    # Notify caregiver via text; includes user name:
     alert = crud.send_SOS_alert(API_SID, AUTH, user, DEMO_PHONE)
 
     try:

@@ -32,8 +32,8 @@
       <legend>How does this person clean their Hair?</legend>
       Shampoo? <input id="shampoo" type="checkbox" name="activity" value="shampoo">
       Conditioner? <input id="conditioner" type="checkbox" name="activity" value="conditioner">
-      Other? <input id="other-hair" type="checkbox" name="activity" value="other-hair">
-      {# If other, add text input and collect that info #}
+{#       Other? <input id="other-hair" type="checkbox" name="activity" value="other-hair"> #}
+      {# If other, add text input and collect that info <- Yea, but what does this mean?? What image or description would be used? #}
     </fieldset>
 
     <fieldset>
@@ -49,11 +49,21 @@
       Their legs? <input id="shave-legs" type="checkbox" name="activity" value="shave-legs">
     </fieldset>
 
+    <fieldset>
+      <legend>For how many minutes does an average shower last?</legend>
+      <input id="short" type="radio" name="duration" value="10">
+        <label for="short">10</label>
+      <br>
+      <input id="med" type="radio" name="duration" value="20">
+        <label for="med">20</label>
+      <br>
+      <input id="long" type="radio" name="duration" value="30">
+        <label for="long">30</label>
+    </fieldset>
     <br>
 
     <strong>
-      ** Need to figure out how to ask about the time needed for these tasks **
-    ** Offer as a 'user typically takes 10 / 20 / 30 min in the shower' & divide out the time? **
+
     **Also, how are you offering an opportunity to name the flow and schedule it? (are they all defaulted to 'daily'?</strong>
 
 <br>

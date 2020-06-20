@@ -31,10 +31,10 @@ def example_people():
     toca = model.User(user_name="Toca", user_body="female", caregiver=c)
     users.extend([lola, Tuesday, pickle, toca])
 
-    one = crud.create_flow(["shampoo", "conditioner", "bar-soap", "shave-armpits"], lola)
-    two = crud.create_flow(["conditioner", "liquid-soap", "shave-legs"], Tuesday)
-    three = crud.create_flow(["bar-soap", "shave-face"], pickle)
-    four = crud.create_flow(["shampoo", "conditioner", "liquid-soap", "shave-armpits", "shave-legs"], toca)
+    one = crud.create_flow(["shampoo", "conditioner", "bar-soap", "shave-armpits"], 20, lola)
+    two = crud.create_flow(["conditioner", "liquid-soap", "shave-legs"], 10, Tuesday)
+    three = crud.create_flow(["bar-soap", "shave-face"], 10, pickle)
+    four = crud.create_flow(["shampoo", "conditioner", "liquid-soap", "shave-armpits", "shave-legs"], 30, toca)
     flows.extend([one, two, three, four])
 
 
@@ -60,7 +60,7 @@ def seed_activities():
         },
     "bar-soap": {
         "description": "Get the bar of soap wet and rub the bar onto a washcloth to create a lather. Scrub!",
-        "video": "https://giphy.com/embed/MBZKkYQYgv95pantzk",
+        "video": "https://giphy.com/embed/3o6MbjjOqVPMHZvuve",
         "image": "/static/img/bar_soap.png"
         },
     "liquid-soap": {
@@ -125,7 +125,7 @@ example_people()
 
 # <iframe src="https://giphy.com/embed/mRvJKBHGhJFIc" width="480" height="266" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/sing-problem-shower-mRvJKBHGhJFIc">via GIPHY</a></p> conditioner
 
-# <iframe src="https://giphy.com/embed/1tK61mF7P7x4I" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/shower-loop-dexter-1tK61mF7P7x4I">via GIPHY</a></p>  get-wet
+# <iframe src="https://giphy.com/embed/1tK61mF7P7x4I" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/shower-loop-dexter-1tK61mF7P7x4I">via GIPHY</a></p>  Dexter-get-wet
 
 # <iframe src="https://giphy.com/embed/3o6MbjjOqVPMHZvuve" width="480" height="362" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/season-4-the-simpsons-4x3-3o6MbjjOqVPMHZvuve">via GIPHY</a></p> Homer-soap
 

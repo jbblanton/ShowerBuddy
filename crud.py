@@ -6,16 +6,35 @@ from twilio.rest import Client
 
 
 def send_creation_alert(ACCOUNT_SID, AUTH_TOKEN, cg_phone):
-    """TESTING Twilio functionality"""
+    """Text sent to Caregiver after create_user completed
+        ...
+        >>> crud.send_creation_alert(API_SID, AUTH, DEMO_PHONE)
+        SMe4c8c4664c6548108925f5030adbab88
+
+        For an un-verified number:
+        >>> crud.send_creation_alert(API_SID, AUTH, '+19876543210')
+        twilio.base.exceptions.TwilioRestException:
+        HTTP Error Your request was:
+
+        POST /Accounts/AC74fda96dded3b27bbd09502ceb5639d1/Messages.json
+
+        Twilio returned the following information:
+
+        Unable to create record: The number  is unverified. Trial accounts cannot send messages to unverified numbers; verify  at twilio.com/user/account/phone-numbers/verified, or purchase a Twilio number to send messages to unverified numbers.
+
+        More information may be available here:
+
+        https://www.twilio.com/docs/errors/21608
+        """
 
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
     message = client.messages \
-                    .create(
-                        body="Nice job on creating a new user! Please visit your ShowerBuddy dashboard to start a shower.",
-                        from_='+12058968145',
-                        to=cg_phone,
-                        )
+        .create(
+            body="Nice job on creating a new user! Please visit your ShowerBuddy dashboard to start a shower.",
+            from_='+12058968145',
+            to=cg_phone,
+            )
 
     print(message.sid)
 
@@ -30,13 +49,46 @@ def send_SOS_alert(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
     message = client.messages \
-                    .create(
-                        body=f"{user_name} needs help in the bathroom!",
-                        from_='+12058968145',
-                        to=cg_phone,
-                        )
+        .create(
+            body=f"{user_name} needs help in the bathroom!",
+            from_='+12058968145',
+            to=cg_phone,
+            )
 
     print(message.sid)
+
+#TO DO: Write what calls this function:
+def alert_shower_started(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
+    """Send a text message to caregiver when a shower is started.
+        USE CASE: if/when a user is able to start their own shower routine.
+            This alert is intended to alert the caregiver so they will 
+            respond quickly to any SOS alert """
+
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
+    message = client.messages \
+        .create(
+            body=f"{user_name} is starting a shower; Please keep your phone nearby until they have finished.",
+            from_='+12058968145',
+            to=cg_phone,
+            )
+
+    print(message.sid)
+
+#TO DO: Write what calls this function:
+def alert_shower_completed(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
+    """Send a text message when a shower flow is completed. """
+
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+
+    message = client.messages \
+        .create(
+            body=f"{user_name} has finished showering!",
+            from_='+12058968145',
+            to=cg_phone,
+            )
+
+    print(message.sid)    
 
 
 def get_user_by_user_id(user_id):
@@ -61,7 +113,16 @@ def get_user_by_user_id(user_id):
 
 
 def create_caregiver(name, email, telephone, password):
-    """ Data gathered at bottom of Create User form: """
+    """ Data gathered at bottom of Create User form: 
+
+        >>> crud.create_caregiver("Vera", "vvanderbilt@test.com", '147-258-3690', 'password')
+        ...
+        <Caregiver caregiver_id=4, email=vvanderbilt@test.com, phone=147-258-3690>
+        
+        >>> crud.create_caregiver(name="Jane", email="atest@test.com", password='password', telephone='789-456-1236')
+        psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "caregivers_email_key"
+        DETAIL:  Key (email)=(atest@test.com) already exists.
+        """
 
     caregiver = Caregiver(caregiver_name=name, email=email, telephone=telephone, password=password)
 
@@ -72,9 +133,9 @@ def create_caregiver(name, email, telephone, password):
 
 
 def create_user(name, body, caregiver):
-    """P2 of form will collect this data:
-        ...
-        Expecting to be able to call on caregiver data based on either P1 or an existing caregiver account """
+    """ Data gathered from create_user form
+        May be created at time of Caregiver creation or as an addtion to an
+        existing Caregiver (with expectation that they be logged inn) """
 
     user = User(user_name=name, user_body=body, caregiver=caregiver)
 
@@ -101,11 +162,11 @@ def get_caregiver_by_email(email):
 
 
 # For now, default title = 'Daily'
-def create_flow(activities, user):
-    """Will call upon an existing User object to create a shower routine; 
-        Returns a flow object. """
+def create_flow(activities, duration, user):
+    """ Data gathered from create_user form 
+        Must be created at time of User creation """
 
-    flow = Flow(title="daily", user=user)
+    flow = Flow(title="daily", duration= duration, user=user)
 
     flow_obj = []
     prod_obj = []
@@ -130,8 +191,14 @@ def create_flow(activities, user):
 
 def get_users_flow_id(user):
     """Loads all available shower routines for a given user.
-        Returns a list of objects:
-        [<Flow flow_id=1, title=daily, user=Honey>]
+        Returns the flow id as an integer.
+        
+        >>> crud.get_users_flow_id(2)
+        ...
+        2
+
+        >>> crud.get_users_flow_id(10)
+        IndexError: list index out of range
         """
 
     flows = db.session.query(Flow).filter(Flow.user_id == user).all()
@@ -141,10 +208,10 @@ def get_users_flow_id(user):
 # TO DO: Edit when additional routines are an option!
 
     return flow_id
-    # print(flows)
+
 
 def create_shower(flow_id):
-    """Use this function to make a list of activities for a given user"""
+    """Make a dictionary of activities for a given user"""
     # Shower Flow = { activity_id:
     #                 activity_name:
     #                 description:
@@ -163,10 +230,21 @@ def create_shower(flow_id):
                             }
 
     return shower_flow
-    # print(shower_flow)
+
+
+def get_length_of_shower(flow_id):
+    """Return duration of this shower flow"""
+
+    length = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+    print(length)
+    shower_length = length.duration
+    print(shower_length)
+    return shower_length
+
+
 
 def create_product_dict(flow_id):
-    """Use this to make a dictionary of products needed during a given flow"""
+    """Make a dictionary of products needed during a given flow"""
 
     # Product = { product_id:
     #                 product_image:

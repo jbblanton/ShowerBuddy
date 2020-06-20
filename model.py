@@ -80,14 +80,14 @@ class Flow(db.Model):
     flow_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     title = db.Column(db.String(60),)
 # default title = 'daily'
+    duration = db.Column(db.Integer,)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
 
     user = db.relationship('User')
 
     def __repr__(self):
-        return """ f'<Flow flow_id={self.flow_id}, title={self.title}, 
-                user={self.user.user_name}>' """
+        return f'<Flow flow_id={self.flow_id}, title={self.title}, user={self.user.user_name}>' 
 
 
 class Flow_Activity(db.Model):
