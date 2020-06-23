@@ -90,7 +90,7 @@ def register_user():
     activities = request.form.getlist('activity')
     duration = int(request.form.get('duration'))
 
-    new_flow = crud.create_flow(activities, duration, user=new_user)
+    new_flow = crud.create_flow(activities=activities, duration=duration, user=new_user)
 
 
     # Get the list of associated users for display on the dashboard:
@@ -99,7 +99,7 @@ def register_user():
     # Success alert to caregiver:
     alert = crud.send_creation_alert(API_SID, AUTH, DEMO_PHONE)
 
-    return render_template('dashboard.html', users=users, cg_name=current_user.caregiver_name)
+    return redirect(url_for('caregiver_control_panel'))
 
 
 @app.route('/dashboard')

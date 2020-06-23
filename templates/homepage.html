@@ -4,8 +4,10 @@
 {% block body %}
 
   <h1>Shower Buddy</h1>
-    
-    <button id="about-button">About the Shower Buddy</button>
+    <button id="about-button" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+    About the Shower Buddy
+    </button>
+
       <p id="about-text" style="display: none">Here is a paragraph 
         that explains this product, who it is for, and how it can be a benefit.
         Basic info on creating an account, and then using it.
@@ -26,8 +28,6 @@
     <br>
     <input type="submit" value="LogIn">
   </form>
-
-  <script src="/static/shower_flow.js" type="text/javascript"></script>
 
 {% endblock %}
 

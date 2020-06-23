@@ -130,6 +130,10 @@ example_people()
 
 # <iframe src="https://giphy.com/embed/3o6MbjjOqVPMHZvuve" width="480" height="362" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/season-4-the-simpsons-4x3-3o6MbjjOqVPMHZvuve">via GIPHY</a></p> Homer-soap
 
+# <iframe src="https://giphy.com/embed/kDBhX1Il2PZL66ljiL" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/farmersinsurance-bear-farmers-insurance-drying-off-kDBhX1Il2PZL66ljiL">via GIPHY</a></p>  Bear drying off
+
+
+
 # ACTUAL QUALITY: 
 # <iframe src="https://giphy.com/embed/MBZKkYQYgv95pantzk" width="480" height="360" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/virus-washing-hands-sanitize-MBZKkYQYgv95pantzk">via GIPHY</a></p>  wash-hands
 
