@@ -47,7 +47,6 @@ Will have controls for
     </form>
 </p>
 
-<button class="start-shower"><a href="/">Back</a></button>
 <button class="start-shower" id="logout"><a href="/logout">Logout</a></button>
 
 </div>
@@ -88,6 +87,14 @@ Will have controls for
 
 
 </div>
+
+{# What is there is one more div for the aftershower? #}
+
+<div class="shower-ended" design: style="display: none;">
+
+  <h3 class="shower-ended">You're all done! Great work!</h3>
+
+  <button><a href="/dashboard">Return to the Dashboard</a></button>
   
   <script src="/static/shower_flow.js" type="text/javascript"></script>  
 {% endblock %}

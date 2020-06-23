@@ -162,11 +162,11 @@ def get_caregiver_by_email(email):
 
 
 # For now, default title = 'Daily'
-def create_flow(activities, duration, user):
+def create_flow(activities, user, duration=20):
     """ Data gathered from create_user form 
         Must be created at time of User creation """
 
-    flow = Flow(title="daily", duration= duration, user=user)
+    flow = Flow(title="daily", duration=duration, user=user)
 
     flow_obj = []
     prod_obj = []
@@ -236,9 +236,9 @@ def get_length_of_shower(flow_id):
     """Return duration of this shower flow"""
 
     length = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
-    print(length)
+
     shower_length = length.duration
-    print(shower_length)
+  
     return shower_length
 
 
@@ -273,7 +273,15 @@ def create_product_dict(flow_id):
 
 
 #####  TO DO:  #####
+def prevent_duplicates():
+    """Check the database before creating a new user"""
 
+    # if cg is logged in and creates a new user/flow, 
+    #     check their user names and compare
+    #         already exist?
+    #             'theres someone with this name; let\'s name a new flow, instead'
+
+    pass
 
 def update_product_images():
     """Update the database with new photos """
