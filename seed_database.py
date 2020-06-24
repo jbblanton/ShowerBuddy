@@ -5,6 +5,7 @@ import json
 import crud
 import model
 import server
+from werkzeug.security import generate_password_hash
 
 os.system('dropdb testing')
 os.system('createdb testing')
@@ -20,9 +21,9 @@ def example_people():
     users = []
     flows = []
 
-    a = model.Caregiver(caregiver_name="Jane", email="atest@test.com", password="password", telephone="555-789-4561")
-    b = model.Caregiver(caregiver_name="paula", email="btest@test.com", password="password", telephone="555-789-4561")
-    c = model.Caregiver(caregiver_name="George", email="ctest@test.com", password="password", telephone="555-789-4561")
+    a = model.Caregiver(caregiver_name="Jane", email="atest@test.com", password=generate_password_hash("passworda", method='sha256'), telephone="555-789-4561")
+    b = model.Caregiver(caregiver_name="paula", email="btest@test.com", password=generate_password_hash("passwordb", method='sha256'), telephone="555-789-4561")
+    c = model.Caregiver(caregiver_name="George", email="ctest@test.com", password=generate_password_hash("passwordc", method='sha256'), telephone="555-789-4561")
     caregivers.extend([a,b,c])
 
     lola = model.User(user_name="Lola", user_body="female", caregiver=a)
@@ -31,10 +32,10 @@ def example_people():
     toca = model.User(user_name="Toca", user_body="female", caregiver=c)
     users.extend([lola, Tuesday, pickle, toca])
 
-    one = crud.create_flow(["shampoo", "conditioner", "bar-soap", "shave-armpits"], 20, lola)
-    two = crud.create_flow(["conditioner", "liquid-soap", "shave-legs"], 10, Tuesday)
-    three = crud.create_flow(["bar-soap", "shave-face"], 10, pickle)
-    four = crud.create_flow(["shampoo", "conditioner", "liquid-soap", "shave-armpits", "shave-legs"], 30, toca)
+    one = crud.create_flow(["shampoo", "conditioner", "bar-soap", "shave-armpits"], lola, 20)
+    two = crud.create_flow(["conditioner", "liquid-soap", "shave-legs"], Tuesday, 10)
+    three = crud.create_flow(["bar-soap", "shave-face"], pickle, 10)
+    four = crud.create_flow(["shampoo", "conditioner", "liquid-soap", "shave-armpits", "shave-legs"], toca, 30)
     flows.extend([one, two, three, four])
 
 

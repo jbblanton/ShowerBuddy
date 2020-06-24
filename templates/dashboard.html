@@ -78,10 +78,8 @@
     <img class="shower-action" id="product-img" src="/static/img/male_shower.png">
     <p class="shower-action" id="product-label-color">insert a band of the label color under / near the image</p>   
 
+
     <button type="button" class="shower-action btn btn-danger btn-lg" id="HELP">HELP!</button>
-
-
-</div>
 
 
 <div class="shower-ended" id="shower-ended" design: style="display: none;">
@@ -92,14 +90,14 @@
 
 </div>
 
-{# What is there is one more div for the aftershower? #}
+{# What if there is one more div for the aftershower? #}
 
-<div class="shower-ended" design: style="display: none;">
+<div class="shower-ended" id="shower-ended" design: style="display: none;">
 
   <h3 class="shower-ended">You're all done! Great work!</h3>
 
-  <button><a href="/dashboard">Return to the Dashboard</a></button>
+  <button class="shower-ended" id="shower-ended"><a href="/dashboard">Return to the Dashboard</a></button>
+</div>
   
-
 
 {% endblock %}
