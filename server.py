@@ -7,6 +7,7 @@ import model
 from twilio.rest import Client
 import os
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -62,8 +63,10 @@ def register_user():
         cg_pass = request.form.get('caregiver-password')
         cg_phone = request.form.get('caregiver-phone')
 
+        password = generate_password_hash(cg_pass, method='sha256')
+
         # Instantiate a Caregiver object
-        caregiver = crud.create_caregiver(cg_name, cg_email, cg_phone, cg_pass)
+        caregiver = crud.create_caregiver(cg_name, cg_email, cg_phone, password)
         
         login_user(caregiver)
 
@@ -119,7 +122,7 @@ def log_in():
 
     active = model.Caregiver.check_if_registered(email)
 
-    if active:
+    if active and check_password_hash(active.password, password):
         name = active.caregiver_name
         users = active.users
         login_user(active)

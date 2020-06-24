@@ -23,7 +23,7 @@ class Caregiver(UserMixin, db.Model):
     caregiver_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     caregiver_name =db.Column(db.String(25),)
     email = db.Column(db.String(50), unique = True, nullable = False,)
-    password = db.Column(db.String(25), nullable = False,)
+    password = db.Column(db.String(200), nullable = False,)
     telephone = db.Column(db.String(12),)
 
     users = db.relationship('User')
@@ -156,7 +156,7 @@ class Flow_Product(db.Model):
     """Tying a unique flow to the necessary products"""
 
     __tablename__ = "flow_products"
-
+    __table_args__ = (db.UniqueConstraint('fa_id', 'prod_id', name="flow_prod_id"),)
     
     flow_prod_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     fa_id = db.Column(db.Integer, db.ForeignKey('flow_acts.flow_act_id'),)
