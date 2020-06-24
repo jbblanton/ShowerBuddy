@@ -55,6 +55,10 @@ def register_user():
         Check if caregiver info already exists
         else create both objects """
 
+    error = None
+
+    # If caregiver not logged in / brand new, 
+    #   get info, create new caregiver, and log them in:
     if not current_user.is_authenticated:
 
         # Get Caregiver info from form:
@@ -70,34 +74,45 @@ def register_user():
         
         login_user(caregiver)
 
-
     if current_user.is_authenticated:
         caregiver = current_user   
-
 
     # Create a user profile:
     name = request.form.get('user-name')
     user_name = name.capitalize()
     user_body = request.form.get('body')
+    flow = request.form.get('flow-name')
+    if flow == " " :
+        flow = 'daily'
+    flow_title = flow.lower()
 
-    new_user = crud.create_user(user_name, user_body, caregiver)
+    dupe = crud.prevent_duplicates(caregiver, user_name, user_body, flow_title)
 
+    if not dupe:
+        new_user = crud.create_user(user_name, user_body, caregiver)
+    
+        # Create a flow:
+        activities = request.form.getlist('activity')
+        duration = int(request.form.get('duration'))
 
-    # Create a flow:
-    activities = request.form.getlist('activity')
-    duration = int(request.form.get('duration'))
+        new_flow = crud.create_flow(activities=activities, duration=duration, user=new_user, title=flow_title)
 
-    new_flow = crud.create_flow(activities=activities, duration=duration, user=new_user)
+        # Get the list of associated users for display on the dashboard:
+        users = caregiver.users
 
+        # Success alert to caregiver:
+        alert = crud.send_creation_alert(API_SID, AUTH, DEMO_PHONE)
 
-    # Get the list of associated users for display on the dashboard:
-    users = caregiver.users
-
-    # Success alert to caregiver:
-    alert = crud.send_creation_alert(API_SID, AUTH, DEMO_PHONE)
-
-    return redirect(url_for('caregiver_control_panel'))
+        return redirect(url_for('caregiver_control_panel'))
 # , users=users, cg_name=current_user.caregiver_name
+
+    else:
+        error = 'Duplicate user'
+        flash('Oops! Looks like you already have a flow for this person.  If you\'re trying to create additional routines, give it a new name.')
+    
+    return render_template('create_user.html', error=error)
+
+
 
 @app.route('/dashboard')
 @login_required
@@ -116,20 +131,23 @@ TO DO:  -Edit a flow/user
 def log_in():
     """Log in a caregiver.
         Render Dashboard"""
+    
+    error = None
 
-    email = request.form.get('cg-email')
-    password = request.form.get('cg-password')
+    if request.method == "POST":
+        email = request.form.get('cg-email')
+        password = request.form.get('cg-password')
 
-    active = model.Caregiver.check_if_registered(email)
+        active = model.Caregiver.check_if_registered(email)
 
-    if active and check_password_hash(active.password, password):
-        name = active.caregiver_name
-        users = active.users
-        login_user(active)
-        return redirect(url_for('caregiver_control_panel', cg_name=name, users=users))
-    else:
-        error = 'Invalid credentials.'
-        flash('Account not found.')
+        if active and check_password_hash(active.password, password):
+            name = active.caregiver_name
+            users = active.users
+            login_user(active)
+            return redirect(url_for('caregiver_control_panel', cg_name=name, users=users))
+        else:
+            error = 'Invalid credentials.'
+            flash('Account not found. Please try again, or create a new account!')
 
     return render_template('homepage.html', error=error)
 
@@ -160,11 +178,9 @@ def play_shower():
 TO DO:    Event listener for Snooze and Next buttons """
 
     if request.method == "POST":
-    # Get the user_id from the FE based on who's in the drop-down
-        user_id = int(request.form.get('user_id')) 
 
-    # Send a user_id, receive a flow_id
-        flow_id = crud.get_users_flow_id(user_id)
+    # Get the flow_id from the FE based on who's in the drop-down:
+        flow_id = request.form.get('user_id')
 
     # Get a dictionary of activities for this flow
         activities = crud.create_shower(flow_id)

@@ -1,3 +1,9 @@
+// Added via Bootstrap, to enable hover-over tool-tips:
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+
 // For the ABOUT paragraph on the homepage:
 $(document).ready(function(){
   $("#about-button").on('click', function () {
@@ -32,9 +38,9 @@ $('#start-shower').on('click', (evt) => {
   evt.preventDefault();
 
   const formData = {
-    user_id : $("#user-name :selected").val(),
+    user_id : $("#flow-id :selected").val(),
     };
-  
+    console.log(formData.user_id)
   $.post('/start_shower', formData, (response) => {
     if (response.success) {
       // $( ).html(response.html)

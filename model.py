@@ -60,7 +60,7 @@ class User(db.Model):
     caregiver_id = db.Column(db.Integer, db.ForeignKey('caregivers.caregiver_id'))
 
     caregiver = db.relationship('Caregiver')
-    flow = db.relationship('Flow')
+    flows = db.relationship('Flow')
 
     def __repr__(self):
         return f'<User name={self.user_name} user_id={self.user_id}>'

@@ -162,11 +162,11 @@ def get_caregiver_by_email(email):
 
 
 # For now, default title = 'Daily'
-def create_flow(activities, user, duration=20):
+def create_flow(activities, user, duration=20, title="daily"):
     """ Data gathered from create_user form 
         Must be created at time of User creation """
 
-    flow = Flow(title="daily", duration=duration, user=user)
+    flow = Flow(title=title, duration=duration, user=user)
 
     flow_obj = []
     prod_obj = []
@@ -188,26 +188,27 @@ def create_flow(activities, user, duration=20):
 
     return flow
 
+# No longer needed; Updated the Jinja to give flow_id; keeping until I'm 100% positive...
 
-def get_users_flow_id(user):
-    """Loads all available shower routines for a given user.
-        Returns the flow id as an integer.
+# def get_users_flow_id(user):
+#     """Loads all available shower routines for a given user.
+#         Returns the flow id as an integer.
         
-        >>> crud.get_users_flow_id(2)
-        ...
-        2
+#         >>> crud.get_users_flow_id(2)
+#         ...
+#         2
 
-        >>> crud.get_users_flow_id(10)
-        IndexError: list index out of range
-        """
+#         >>> crud.get_users_flow_id(10)
+#         IndexError: list index out of range
+#         """
 
-    flows = db.session.query(Flow).filter(Flow.user_id == user).all()
+#     flows = db.session.query(Flow).filter(Flow.user_id == user).all()
 
-    flow_id = flows[0].flow_id
-    # hard coding this due to every user currently only having one flow.  
-# TO DO: Edit when additional routines are an option!
+#     flow_id = flows[0].flow_id
+#     # hard coding this due to every user currently only having one flow.  
+# # TO DO: Edit when additional routines are an option!
 
-    return flow_id
+#     return flow_id
 
 
 def create_shower(flow_id):
@@ -273,7 +274,7 @@ def create_product_dict(flow_id):
 
 
 #####  TO DO:  #####
-def prevent_duplicates():
+def prevent_duplicates(caregiver, name, body, title):
     """Check the database before creating a new user"""
 
     # if cg is logged in and creates a new user/flow, 
@@ -281,7 +282,16 @@ def prevent_duplicates():
     #         already exist?
     #             'theres someone with this name; let\'s name a new flow, instead'
 
-    pass
+    for user in caregiver.users:
+        if user.user_name == name:
+            if user.user_body == body:
+                if title == 'daily':
+                    return True
+
+    return False
+
+    
+
 
 def update_product_images():
     """Update the database with new photos """
@@ -291,10 +301,37 @@ def update_product_images():
     # return success or fail message
 
 
-def update_user_flow():
+def update_user_flow(flow_id, duration, activities):
     """Update order, or elements, of a user's flow"""
 
-    pass
+    # old_flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+    # old_action = db.session.query(Activity).join(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
+    # old_products = db.session.query(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
+
+    # old_flow.
+
+    # flow = Flow(title="daily", duration=duration, user=user)
+
+    # flow_obj = []
+    # prod_obj = []
+
+    # # ['shampoo', 'bar soap', 'shave face']
+    # for activity in activities:
+    #     act = db.session.query(Activity).filter(Activity.activity_name == activity).first()
+    #     prod = db.session.query(Product).filter(Product.product_name == activity).first()
+    #     step = Flow_Activity(activity=act, flow=flow)
+    #     flow_obj.append(step)
+    #     thing = Flow_Product(flowacts=step, products=prod)
+    #     prod_obj.append(thing)
+
+
+    # db.session.add(flow)
+    # db.session.add_all(flow_obj)
+    # db.session.add_all(prod_obj)
+    # db.session.commit()
+
+    # return flow
+
 
 
 if __name__ == '__main__':
