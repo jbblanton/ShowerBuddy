@@ -8,7 +8,11 @@
   <form id="create-user-form" method="POST">
     {# Get basic info about user for USERS table #}
     <label for="user-name">User's Name:</label>
+
     <input id="user-name" type="text" name="user-name" required>
+    <label for="flow-name">Name for this shower routine:</label>
+    <input id="flow-name" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name">
+
     
     <fieldset>
       <legend>User's body type:</legend>
@@ -56,6 +60,7 @@
         <label for="long">30</label>
     </fieldset>
 
+
 <br>
 
   {% if not current_user.is_authenticated %}
@@ -68,6 +73,7 @@
         <br>
       <label for="caregiver-phone">Cellphone number:</label>
         <input id="caregiver-phone" type="tel" name="caregiver-phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-555-1212">
+        <a href="#" data-toggle="tooltip" title="This app includes text alerts when a user presses the HELP button during a shower.">Why do we need this?</a>
         <br>
       <label for="caregiver-email">Email Address:</label>
         <input id="caregiver-email" type="email" name="caregiver-email" required>

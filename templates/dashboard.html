@@ -11,9 +11,6 @@
 
   <h1 class="start-shower">Welcome, {{ current_user.caregiver_name.capitalize() }}!</h1>
 
-  <p class="start-shower">This space will include add, edit, start shower, and logout buttons.
-</p>
-
   <button class="start-shower" id="new-user"><a href="/create_user">Add a new user</a></button>
 
   <button class="start-shower" id="edit-flow">Edit a flow for an existing user</button>
@@ -22,16 +19,17 @@
     <h1 class="start-shower">Start a Shower Routine</h1>
 
     <form form action="/start_shower" method="POST" class="start-shower"> 
-      <label class="start-shower" for="user-name">Who is taking a shower?</label>
-      <select class="start-shower" id="user-name" name="select">
 
+      <label class="start-shower" for="flow-id">Who is taking a shower?</label>
+      <select class="start-shower" id="flow-id" name="select">
         {% for user in current_user.users %}
+          {% for flows in user.flows %}
+              <option class="start-shower" value="{{flows.flow_id}}">{{user.user_name}} - {{flows.title}}
+              </option>
+          {% endfor %}
+        {% endfor %}
+      </select>
 
-          <option class="start-shower" value="{{user.user_id}}">{{user.user_name}}
-
-          </option>
-      {% endfor %}
-    </select>
 
     <button type="submit" class="start-shower" id="start-shower" value="start-shower">
     <a href="/start_shower">Start Shower!</a></button>

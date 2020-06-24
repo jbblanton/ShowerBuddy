@@ -10,6 +10,15 @@
 
     <title>      {% block title %}Shower Buddy{% endblock %}    </title>
 
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
 
     {% block head %}{% endblock %}
   </head>
