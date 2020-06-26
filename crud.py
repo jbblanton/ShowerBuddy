@@ -331,7 +331,7 @@ def update_user_flow(flow_id, duration, activities):
     # db.session.commit()
 
     # return flow
-
+    pass
 
 
 if __name__ == '__main__':

@@ -181,6 +181,7 @@ TO DO:    Event listener for Snooze and Next buttons """
 
     # Get the flow_id from the FE based on who's in the drop-down:
         flow_id = request.form.get('user_id')
+        print(flow_id)
 
     # Get a dictionary of activities for this flow
         activities = crud.create_shower(flow_id)

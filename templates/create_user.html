@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+
 {% block title %} Create an Account {% endblock %}
 
 {% block body %}
 
-  <h1>Shower Buddy</h1>
+  <h1>Create a shower routine:</h1>
 
 {# Look into a "Linear Stepper" or "Parallel Stepper" for making this form look
  good. Should be part of the Bootstrap work. #}
@@ -27,8 +28,6 @@
       <input id="other-body" type="radio" name="body" value="other">
         <label for="other-body">Other / Non-binary</label>
     </fieldset>
-
-{# Maybe I add a field for 'Frequncy' and use that as the title?  #}
 
     <fieldset>
       <legend>How does this person clean their Hair?</legend>
@@ -55,19 +54,20 @@
       <legend>For how many minutes does an average shower last?</legend>
       <input id="short" type="radio" name="duration" value="10">
         <label for="short">10</label>
-      <br>
+      
       <input id="med" type="radio" name="duration" value="20">
         <label for="med">20</label>
-      <br>
+      
       <input id="long" type="radio" name="duration" value="30">
         <label for="long">30</label>
     </fieldset>
     <br>
 
-<br>
+<hr>
 
   {% if not current_user.is_authenticated %}
 
+<div>
 
     <fieldset>
       <legend>Caregiver Information:</legend>
@@ -84,7 +84,7 @@
       <label for="caregiver-password">Password (8 characters minimum):</label>
         <input id="caregiver-password" type="password" name="caregiver-password" minlength="8" required>
     </fieldset>
-
+</div>
   {% endif %}
 
     <input type="submit" value="Create Account">
@@ -93,4 +93,7 @@
     Maybe there should be a 'create new user' button on the post-log in page?? #}
   </form>
   
+
+
 {% endblock %}
+
