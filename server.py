@@ -151,7 +151,7 @@ def log_in():
             return redirect(url_for('caregiver_control_panel', cg_name=name, users=users))
         else:
             error = 'Invalid credentials.'
-            flash('Account not found. Please try again, or create a new account!')
+            flash('Account not found. Please try again, or create an account!')
 
     return render_template('homepage.html', error=error)
 
@@ -221,6 +221,75 @@ def alert_caregiver():
                     "msg" : 'Help is on the way!',})
     except Exception as err:
         return jsonify({"success" : False, "message" : err})
+
+
+@app.route('/edit_user')
+def show_edit_pg():
+    """Show edit_user page"""
+
+    return render_template('edit_user.html')
+
+
+@app.route('/edit_user/<flow_id>')
+@login_required
+def edit_existing_user(flow_id):
+    """Link from dashboard.
+        Can make edits to an existing user & their flow 
+    Plans include:
+        - Rename flow
+        - Re-order activities
+        - Add / remove activities
+        - Add / remove / change images
+        - Add custom activites  
+    """
+
+    flow = crud.get_flow_object(flow_id)
+    title = flow.title
+
+    activities = crud.create_shower(flow_id)
+    activity_list = []
+    for action in activities:
+        activity_list.append(activities[action]['name'])
+
+    duration = crud.get_length_of_shower(flow_id)
+
+    try:
+        return jsonify({"success" : True, 
+                    "html" : 'edit_user.html',
+                    "title" : title,
+                    "activities" : activity_list, 
+                    "duration" : duration,})
+    except Exception as err:
+        return jsonify({"success" : False, "message" : err})
+
+
+# @app.route('/submit_edits')
+# def make_edits():
+#     """Make requested changes to database"""
+
+#     flow_id = request.form.get('flow')
+#     print(flow_id)
+#     activities = request.form.getlist('upd-activity')
+#     # duration = int(request.form.get('upd-duration'))
+
+#     print(activities)
+#     # print(duration)
+
+#     title = request.form.get('flow-title')
+#     if title == " " :
+#         title = 'daily'
+#     flow_title = title.lower()
+#     #update = crud.update_user_flow_title(flow_id, flow_title)
+#     print(flow_title)
+
+
+#     try:
+#         return jsonify({"success" : True, 
+#                     "msg" : 'This routine has been updated!',})
+#     except Exception as err:
+#         return jsonify({"success" : False, "message" : err})
+
+
 
 
 
