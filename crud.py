@@ -273,7 +273,6 @@ def create_product_dict(flow_id):
     return product_dict
 
 
-#####  TO DO:  #####
 def prevent_duplicates(caregiver, name, body, title):
     """Check the database before creating a new user"""
 
@@ -290,7 +289,15 @@ def prevent_duplicates(caregiver, name, body, title):
 
     return False
 
-    
+def get_flow_object(flow_id):
+    """I know there has to be a better way..."""
+
+    flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+
+    return flow
+
+
+#####  TO DO:  #####    
 
 
 def update_product_images():
@@ -301,10 +308,18 @@ def update_product_images():
     # return success or fail message
 
 
-def update_user_flow(flow_id, duration, activities):
-    """Update order, or elements, of a user's flow"""
+def update_user_flow_title(flow_id, new_title):
+    """Eventually, this will be used to
+        Update order, elements, images in a user's flow
 
-    # old_flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+        For now, just name"""
+
+    old_flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+
+    old_flow.title = new_title
+
+    db.session.commit()
+
     # old_action = db.session.query(Activity).join(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
     # old_products = db.session.query(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
 

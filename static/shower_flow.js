@@ -14,6 +14,39 @@ $(document).ready(function(){
 });  
 
 
+// Get flow_id for editing; This is on the edit_user page
+$('#edit-flow').on('click', (evt) => {
+  (evt).preventDefault();
+  const flow_id = $("#flow-id :selected").val();
+  console.log(flow_id)
+
+  $.get(`/edit_user/${flow_id}`, (response) => {
+    console.log(response)
+    if (response.success) {
+      const activities = response.activities;
+      const title = response.title;
+      const duration = response.duration;
+
+      fillEditForm(title, activities, duration);
+    }
+  })
+});
+
+
+const fillEditForm = (title, activities, duration) => {
+
+  $('#flow-title').replaceWith(`<input id="title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
+
+  for (event of activities) {
+    console.log(event)
+    $(`#${event}`).attr("checked", true);
+  };
+
+  $(`#${duration}`).attr("checked", true);
+};
+
+
+
 // The SOS button; Upon click, a text is sent to caregiver 
 //  & an alert pops on screen.
 $('#HELP').on('click', (evt) => {
@@ -24,7 +57,6 @@ $('#HELP').on('click', (evt) => {
   })
 });
 
-
 // This is to toggle visibility between dashboard and playing a shower flow:
 $(document).ready(function(){
   $('#start-shower').on('click', (evt) => {
@@ -32,7 +64,6 @@ $(document).ready(function(){
     $("#dashboard").toggle();
   });  
 });
-
 
 //  This POSTS user_id from select menu; 
 //    response includes Activities and Products as dictionaries:
