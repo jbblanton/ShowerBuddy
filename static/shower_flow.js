@@ -50,9 +50,9 @@ const fillEditForm = (title, activities, duration) => {
 // The SOS button; Upon click, a text is sent to caregiver 
 //  & an alert pops on screen.
 $('#HELP').on('click', (evt) => {
-  const user_id = { user_id : $("#user-name :selected").val() };
-  
-  $.get('/send_help', user_id, (response) => {
+  const flow_id = { flow_id : $("#flow-id :selected").val() };
+  console.log(flow_id)
+  $.get('/send_help', flow_id, (response) => {
     alert(response.msg);
   })
 });
@@ -60,7 +60,7 @@ $('#HELP').on('click', (evt) => {
 // This is to toggle visibility between dashboard and playing a shower flow:
 $(document).ready(function(){
   $('#start-shower').on('click', (evt) => {
-    $("div.shower-action").show();
+    $("#shower-action").show();
     $("#dashboard").toggle();
   });  
 });

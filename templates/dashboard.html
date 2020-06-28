@@ -4,21 +4,42 @@
 {% block title %} Caregiver Dashboard {% endblock %}
 
 {% block body %}
-
+<body class="dashboard">
 <div class="container-fluid">
-<div class="start-shower" id="dashboard">
-  <h1 class="start-shower">Welcome, {{ current_user.caregiver_name.capitalize() }}!</h1>
+  <div class="row">
+    <div class="col-12">
 
-  <button class="start-shower btn btn-outline-dark" id="new-user"><a href="/create_user">Add a new user</a></button>
+    <div class="start-shower" id="dashboard">
+      <div class="row mt-5 mb-3">
+        <div class="col-8 offset-2">
+          <h2 class="start-shower">Welcome, {{ current_user.caregiver_name.capitalize() }}!</h2>
+        </div>
+      </div>
+    
+    <div class="row mt-5 mb-3">
+      <div class="col-3 offset-2">
+      <button class="start-shower btn btn-outline-dark" id="new-user"><a href="/create_user">Add a new user</a></button>
+      </div>
+      <div class="col-4">
+      <button class="start-shower btn btn-outline-dark" id="edit-flow"><a href="/edit_user">Edit a flow for an existing user</a></button>
+      </div>
+    </div>
 
-  <button class="start-shower btn btn-outline-dark" id="edit-flow"><a href="/edit_user">Edit a flow for an existing user</a></button>
+    <div class="row mt-5 mb-3">
+      <div class="col-6 offset-2">
+        <p class="start-shower"></p>
+        <h2 class="start-shower">Start a Shower Routine</h2>
+      </div>
+    </div>
 
-  <p class="start-shower">
-    <h1 class="start-shower">Start a Shower Routine</h1>
-
-    <form form action="/start_shower" method="POST" class="start-shower"> 
-      <label class="start-shower" for="flow-id">Who is taking a shower?</label>
-      <select class="start-shower" id="flow-id" name="select">
+<div class="row">
+  <div class="col-12">
+    <div class="form-group row">
+      <form form action="/start_shower" method="POST" class="start-shower"> 
+      {# <label class="col col-form-label pt-0 start-shower" for="flow-id"></label> #}
+      <div class="col">
+      <select class="custom-select custom-select-lg mb-3 start-shower" id="flow-id" name="select">
+        <option selected>Who is taking a shower?</option>
         {% for user in current_user.users %}
           {% for flows in user.flows %}
               <option class="start-shower" value="{{flows.flow_id}}">{{user.user_name}} - {{flows.title}}
@@ -27,60 +48,74 @@
         {% endfor %}
       </select>
 
-    <button type="submit" class="start-shower btn btn-outline-dark" id="start-shower" value="start-shower">
-    <a href="/start_shower">Start Shower!</a></button>
-    </form>
-</p>
+      <button type="submit" class="start-shower btn btn-outline-dark" id="start-shower" value="start-shower"><a href="/start_shower">Start Shower!</a></button>
+      </form>
+    </div>
+  </div>
+</div>
 
-<button class="start-shower btn btn-outline-dark" id="logout"><a href="/logout">Logout</a></button>
-
+<div class="row">
+  <div class="col">
+    <button class="start-shower btn btn-outline-dark" id="logout"><a href="/logout">Logout</a></button>
+  </div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
 {# Break for Shower Action: #}
 
-<div class="container-fluid">
+<div class="container-fluid shower-action" id="shower-action" design: style="display: none;">
+  <div class="row justify-content-center" id="shower-action">
+    {# <div class="col-12 shower-action"> #}
 
-<div class="shower-action" design: style="display: none;">
-  {# Put this back in the div if we revert to previous page design:  style="display: none; #}
-  
-  <span>
-    <h2 class="shower-action" id="activity-name"> - INITIAL RINSE - </h2>
-  </span>
-  
-  <p class="shower-action" id="activity-descr">START by getting under the water! Get your body and hair wet.
-    <div class="shower-action" id="video-div" style="width:80%;height:0;padding-bottom:66%;position:relative;">
-      <iframe class="shower-action" id="activity-video" src="https://giphy.com/embed/1tK61mF7P7x4I" width="90%" height="90%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen>    
-      </iframe>
+    <h2 class="col-10 mt-3 text-center shower-action" id="activity-name"> - INITIAL RINSE - </h2>
+
+    <div class="col-2">
+      <button type="button" class="shower-action btn btn-danger btn-lg" id="HELP">HELP!</button>
     </div>
-    </p>
-   
-    <hr>
+  </div>
+  
+  <div class="row">
+    <p class="col-12 mb-1 text-center shower-action" id="activity-descr">START by getting under the water! Get your body and hair wet.</p>
+  </div>
+  
+  <div class="row align-items-center">
+    <div class="col-8">
+  <div class="embed-responsive embed-responsive-16by9 shower-action" id="video-div">
+    <iframe class="embed-responsive-item justify-content-center shower-action" id="activity-video" src="https://giphy.com/embed/1tK61mF7P7x4I" allowFullScreen>    
+    </iframe>
+  </div>
+  </div>
+  <div class="col-4">
+    <img class="img-rounded img-fluid justify-content-center shower-action" id="product-img" src="/static/img/male_shower_transparent.png">
+    {# <p class="shower-action" id="product-label-color shower-action">insert a band of the label color under / near the image</p>   #}
+  </div>
+  </div>
 
-  <h2 class="shower-action" id="activity-name"> - INITIAL RINSE - </h2>
+  <div class="row">
+    <h2 class="col-12 text-center" id="activity-name"> - INITIAL RINSE - </h2>
 
     {# <div class="shower-action" id="myProgress"><div id="myBar"></div> #}
-
-  <br>
-  
-    <img class="shower-action" id="product-img" src="/static/img/male_shower.png">
-    <p class="shower-action" id="product-label-color">insert a band of the label color under / near the image</p>   
-
-    <button type="button" class="shower-action btn btn-danger btn-lg" id="HELP">HELP!</button>
+  </div>
 
 </div>
 </div>
 
 {# What if there is one more div for the aftershower? #}
 
-<div class="container-fluid">
-<div class="shower-ended" id="shower-ended" design: style="display: none;">
-
-  <h3 class="shower-ended">You're all done! Great work!</h3>
-
-  <button class="shower-ended" id="shower-ended"><a href="/dashboard">Return to the Dashboard</a></button>
+<div class="container-fluid shower-ended" id="shower-ended" design: style="display: none;">
+  <div class="row">
+    <div class="col-12 text-center">    
+      <h3 class="shower-ended">You're all done! Great work!</h3>
+    </div>
+  <div class="row">
+    <button class="col-8 shower-ended" id="shower-ended"><a href="/dashboard">Return to the Dashboard</a></button>
+  </div>
+  </div>
 </div>
-</div>
-  
 
+
+</body>
 {% endblock %}

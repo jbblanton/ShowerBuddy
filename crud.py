@@ -91,22 +91,15 @@ def alert_shower_completed(ACCOUNT_SID, AUTH_TOKEN, user_name, cg_phone):
     print(message.sid)    
 
 
-def get_user_by_user_id(user_id):
-    """Pull the name of user by their ID;
+def get_user_by_flow_id(flow_id):
+    """Pull the name of user by their flow ID to get the user ID;
         for use with phone alerts.
-
-            >>> crud.get_user_by_user_id(3)
-            Pickle
-
-            >>> crud.get_user_by_user_id(2)
-            Tuesday
-
-            >>> crud.get_user_by_user_id(12)
-            None
         """
 
-    user = db.session.query(User).filter(User.user_id == user_id).first()
+    flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+    user_id = flow.user_id
 
+    user = db.session.query(User).filter(User.user_id == user_id).first()
     name = user.user_name
 
     return name
