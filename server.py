@@ -210,8 +210,8 @@ def alert_caregiver():
     """For use with the SOS button.
         System will send a text to the caregiver"""
 
-    user_id = request.args.get('user_id')
-    user = crud.get_user_by_user_id(user_id)
+    flow_id = request.args.get('flow_id')
+    user = crud.get_user_by_flow_id(flow_id)
 
     # Notify caregiver via text; includes user name:
     alert = crud.send_SOS_alert(API_SID, AUTH, user, DEMO_PHONE)

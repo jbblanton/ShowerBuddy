@@ -1,0 +1,53 @@
+
+body {
+    margin: 0;
+    background-color: #c3e0dc;
+    font-family: 'Open Sans', sans-serif;
+    display: flex !important;
+}
+
+body.homescreen {
+    background: url('/static/img/ON5RS50-blur.jpg') center top no-repeat;
+    background-size: cover;
+    /*height: 100%;*/
+    /*width: 100%;*/
+    background-position: center;
+    top: 0;
+}
+
+body.dashboard {
+    background: url('/static/img/tiles.jpg') ;: 
+}
+
+.btn {
+    background-color: #B6BCCC;
+    color: black;
+    box-shadow: inset 0 0 3px #000000;
+}
+
+.btn-danger {
+    background-color: red!important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#video-div {
+    width:80%;
+    height:0;
+    padding-bottom:66%;
+    position:relative;
+}
+
+#activity-video {
+    width: 90%; 
+    height: 90%;
+    position: absolute;
+    frameBorder: 0; 
+}
+
+#product-img {
+    max-width: 100%;
+    height: auto;
+}

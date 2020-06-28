@@ -1,0 +1,82 @@
+{# Edit an existing user/flow #}
+
+{# Pull user_name and user_id from the drop down menu on the dashboard
+
+update flow name:
+
+
+
+update flow order:
+
+update flow activities:
+
+add personalized images:
+
+write custom descriptions: #}
+
+{% extends 'base.html' %}
+
+{% block title %} Edit a Flow {% endblock %}
+
+{% block body %}
+
+<h4> Choose a routine to edit </h4>
+
+  <div id="current-data">
+    <form id="update-user" method='POST'>
+
+
+  <select class="edit-flow" id="flow-id" name="select">
+    {% for user in current_user.users %}
+      {% for flows in user.flows %}
+          <option class="edit-flow" value="{{flows.flow_id}}">{{user.user_name}} - {{flows.title}}
+          </option>
+      {% endfor %}
+    {% endfor %}
+  </select>
+
+  <button id="edit-flow">Edit</button>
+
+
+    <label for="flow-name">Name of routine:</label>
+    <input id="flow-title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name">
+
+   
+      <legend>How does this person clean their Hair?</legend>
+      Shampoo <input id="shampoo" type="checkbox" name="upd-activity" value="shampoo">
+      Conditioner <input id="conditioner" type="checkbox" name="upd-activity" value="conditioner">
+    
+
+    
+      <legend>How does this person clean their Body?</legend>
+      Bar soap <input id="bar-soap" type="checkbox" name="upd-activity" value="bar-soap">
+      Liquid soap <input id ="liquid-soap" type="checkbox" name="upd-activity" value="liquid-soap">
+    
+
+    
+      <legend>Does this person Shave?</legend>
+      Their face <input id="shave-face" type="checkbox" name="upd-activity" value="shave-face">
+      Their underarms <input id="shave-armpits" type="checkbox" name="upd-activity" value="shave-armpits">
+      Their legs <input id="shave-legs" type="checkbox" name="upd-activity" value="shave-legs">
+    
+
+    <fieldset>
+      <legend>For how many minutes does an average shower last?</legend>
+      <input id="10" type="radio" name="upd-duration" value="10">
+        <label for="10">10</label>
+      
+      <input id="20" type="radio" name="upd-duration" value="20">
+        <label for="20">20</label>
+      
+      <input id="30" type="radio" name="upd-duration" value="30">
+        <label for="30">30</label>
+    </fieldset>
+  
+  <input id="update-user" type="submit" value="Update!">
+
+</form>
+
+{# <button id="clear-form">Clear All</button> #}
+</div>
+
+{% endblock %}
