@@ -2,9 +2,22 @@
 {% block title %} Shower Buddy Homepage {% endblock %}
 
 {% block body %}
+          
 
-  <h1>Shower Buddy</h1>
-    <button id="about-button" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+<body class="homescreen d-flex flex-column h-100">
+<div class="container-fluid homescreen">
+  <div class="row">
+    <div class="col-12">
+
+<div class="row mt-5 mb-3">
+  <div class="col-8 offset-2">
+    <h1>Shower Buddy</h1>
+  </div>
+</div>
+
+<div class="row mt-5 mb-3">
+  <div class="col-4 offset-2">
+    <button id="about-button" type="button" class="btn btn-outline-dark" data-toggle="button" aria-pressed="false" autocomplete="off">
     About the Shower Buddy
     </button>
 
@@ -12,22 +25,45 @@
         that explains this product, who it is for, and how it can be a benefit.
         Basic info on creating an account, and then using it.
       </p>
+  </div>
 
-    <button id="create-user"><a href="/create_user">Create a New Account & Start a Shower Routine</a></button>
-    
+  <div class="col-4">
+    <button id="create-user" type="button" class="btn btn-outline-dark" aria-pressed="false" autocomplete="off"><a href="/create_user">Get Started</a></button>
+  </div>
+</div>
+
+<div class="row mt-5 mb-5"></div>
 
 
-  <h4>Already have an account? Please login to start a shower!</h4>
+<div class="row mt-5 mb-5">
+  <div class="col-6 offset-2">
+    <h5>Already have an account? Please login to start a shower!</h5>
+
   
-  <form id="login" action="/login" method="POST">
-    <label for="cg-email">Email Address:</label>
-    <input id="cg-email" type="email" name="cg-email" required>
-        <br>
-    <label for="cg-password">Password:</label>
-    <input id="cg-password" type="password" name="cg-password" minlength="8" required>
+    <form id="login" action="/login" method="POST">
+      <label for="cg-email">Email Address:</label>
+      <input class="form-control shadow p-4 sm" id="cg-email" type="email" name="cg-email" required>
     <br>
-    <input type="submit" value="LogIn">
-  </form>
+
+      <label for="cg-password">Password:</label>
+      <input class="form-control shadow p-4 sm" id="cg-password" type="password" name="cg-password" minlength="8" required>
+    <br>
+      <input type="submit" value="LogIn" class="btn btn-outline-dark">
+    </form>
+  </div>
+</div>
+
+<div class="row mt-5 mb-5"></div>
+
+<div class="row mt-5 mb-5"></div>
+
+</div>
+</div>
+</div>
+</body>
+
+
+
 
 {% endblock %}
 

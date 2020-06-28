@@ -4,93 +4,156 @@
 
 {% block body %}
 
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-3">
+      <h1>Create a shower routine:</h1>
+    </div>
 
-  <h1>Create a shower routine:</h1>
+    <div class="col-9">
+      <form id="create-user-form" method="POST">
+        <div class="form-group row">
+          <label for="user-name" class="col-4 col-form-label pt-0">User's Name:</label>
+          <div class="col-5">
+            <input class="form-control shadow p-4 sm-white form-control-sm"  id="user-name" type="text" name="user-name">
+          </div>
+        </div>
+        <div class="form-group row"> 
+          <label for="flow-name" class="col-4 col-form-label pt-0">Name for this shower routine:</label>
+          <div class="col-5">
+            <input class="form-control shadow p-4 sm-white form-control-sm" id="flow-name" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name">
+          </div>
+        </div>  
+
+      
+    <fieldset class="form-group">
+      <div class="row">
+        <legend class="col-form-label col-4">User's body type:</legend>
+        <div class="col-5">
+          <div class="form-check">
+            <input class="form-check-input" id="fem" type="radio" name="body" value="female-feminine">
+            <label class="form-check-label" for="fem">Female / Feminine</label>
+        </div>
+          <div class="form-check">
+            <input class="form-check-input" id="masc" type="radio" name="body" value="male-masculine">
+            <label class="form-check-label" for="masc"> Male / Masculine</label>
+        </div>
+          <div class="form-check">
+            <input class="form-check-input" id="other-body" type="radio" name="body" value="other">
+            <label class="form-check-label" for="other-body">Other / Non-binary</label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
 
 
-  <form id="create-user-form" method="POST">
-    {# Get basic info about user for USERS table #}
-    <label for="user-name">User's Name:</label>
-
-    <input id="user-name" type="text" name="user-name" required>
-    <label for="flow-name">Name for this shower routine:</label>
-    <input id="flow-name" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name">
-
+    <div class="form-group row">
+      <div class="col-4">How does this person clean their Hair?</div>
+      <div class="col-5">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="shampoo" type="checkbox" name="activity" value="shampoo">
+          <label class="form-check-label" for="shampoo">Shampoo</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="conditioner" type="checkbox" name="activity" value="conditioner">
+          <label class="form-check-label" for="conditioner">Conditioner</label>
+        </div>
+      </div>
+    </div>
     
-    <fieldset>
-      <legend>User's body type:</legend>
-        <input class="body-type" id="fem" type="radio" name="body" value="female-feminine">
-      <label for="fem">Female / Feminine</label>
-      <br>
-      <input class="body-type" id="masc" type="radio" name="body" value="male-masculine">
-        <label for="masc"> Male / Masculine</label>
-      <br>
 
-      <input class="body-type" id="other-bod" type="radio" name="body" value="other-bod">
-        <label for="other-body">Other / Non-binary</label>
-    </fieldset>
+    <div class="form-group row">
+      <div class="col-4">How does this person clean their Body?</div>
+      <div class="col-5">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="bar-soap" type="radio" name="activity" value="bar-soap">
+          <label class="form-check-label" for="bar-soap">Bar soap</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id ="liquid-soap" type="radio" name="activity" value="liquid-soap">
+          <label class="form-check-label">Liquid soap</label>
+        </div>
+      </div>
+    </div>
 
-    <fieldset>
-      <legend>How does this person clean their Hair?</legend>
+    <div class="form-group row">
+      <div class="col-4">Does this person Shave?</div>
+      <div class="col-5">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="shave-face" type="checkbox" name="activity" value="shave-face">
+          <label class="form-check-label">Their face</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="shave-armpits" type="checkbox" name="activity" value="shave-armpits">
+          <label class="form-check-label">Their underarms</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="shave-legs" type="checkbox" name="activity" value="shave-legs">
+          <label class="form-check-label">Their legs</label>
+        </div>
+      </div>
+    </div>
 
-      Shampoo? <input id="shampoo" type="checkbox" name="activity" value="shampoo">
-      Conditioner? <input id="conditioner" type="checkbox" name="activity" value="conditioner">
-
-    </fieldset>
-
-    <fieldset>
-      <legend>How does this person clean their Body?</legend>
-      Bar soap? <input id="bar-soap" type="checkbox" name="activity" value="bar-soap">
-      Liquid soap? <input id ="liquid-soap" type="checkbox" name="activity" value="liquid-soap">
-    </fieldset>
-
-    <fieldset>
-      <legend>Does this person Shave?</legend>
-      Their face? <input id="shave-face" type="checkbox" name="activity" value="shave-face">
-      Their underarms? <input id="shave-armpits" type="checkbox" name="activity" value="shave-armpits">
-      Their legs? <input id="shave-legs" type="checkbox" name="activity" value="shave-legs">
-    </fieldset>
-
-    <fieldset>
-      <legend>For how many minutes does an average shower last?</legend>
-      <input id="short" type="radio" name="duration" value="10">
-        <label for="short">10</label>
-      
-      <input id="med" type="radio" name="duration" value="20">
-        <label for="med">20</label>
-      
-      <input id="long" type="radio" name="duration" value="30">
-        <label for="long">30</label>
-    </fieldset>
-
-
+    <div class="form-group row">
+      <div class="col-4">For how many minutes does an average shower last?</div>
+      <div class="col-5"> 
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="short" type="radio" name="duration" value="10">
+          <label class="form-check-label" for="short">10</label>          
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="med" type="radio" name="duration" value="20">
+          <label class="form-check-label" for="med">20</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" id="long" type="radio" name="duration" value="30">
+          <label class="form-check-label" for="long">30</label>
+        </div>
+      </div>
+    </div>
+  </div>
 <hr>
 
   {% if not current_user.is_authenticated %}
 
-<div>
+<div class="row">
+  <div class="col-3 pl-3">
+    <h3>Caregiver Information:</h3>
+  </div>      
 
-    <fieldset>
-      <legend>Caregiver Information:</legend>
-      <label for="caregiver-name">Name:</label>
-        <input id="caregiver-name" type="text" name="caregiver-name">
-        <br>
-      <label for="caregiver-phone">Cellphone number:</label>
-        <input id="caregiver-phone" type="tel" name="caregiver-phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-555-1212">
+  <div class="col-9 pl-5">
+    <div class="form-group row">
+      <label class="col-4 col-form-label pt-0" for="caregiver-name">Name:</label>
+      <div class="col-5">
+      <input class="form-control shadow p-4 sm-white" id="caregiver-name" type="text" name="caregiver-name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-4 col-form-label pt-0" for="caregiver-phone">Cellphone number:</label>
+      <div class="col-5">
+      <input class="form-control shadow p-4 sm-white" id="caregiver-phone" type="tel" name="caregiver-phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-555-1212">
         <a href="#" data-toggle="tooltip" title="This app includes text alerts when a user presses the HELP button during a shower.">Why do we need this?</a>
-        <br>
-      <label for="caregiver-email">Email Address:</label>
-        <input id="caregiver-email" type="email" name="caregiver-email" required>
-        <br>
-      <label for="caregiver-password">Password (8 characters minimum):</label>
-        <input id="caregiver-password" type="password" name="caregiver-password" minlength="8" required>
-    </fieldset>
-</div>
-  {% endif %}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-4 col-form-label pt-0" for="caregiver-email">Email Address:</label>
+      <div class="col-5">
+      <input class="form-control shadow p-4 sm-white" id="caregiver-email" type="email" name="caregiver-email" required>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-4 col-form-label pt-0" for="caregiver-password">Password (8 characters minimum):</label>
+      <div class="col-5">
+      <input class="form-control shadow p-4 sm-white" id="caregiver-password" type="password" name="caregiver-password" minlength="8" required>
+      </div>
+    </div>
+  </div>
+   {% endif %}
 
-    <input type="submit" value="Create Account">
+    <input type="submit" value="Create Account" class="btn btn-outline-dark">
 
   </form>
   
+  </div>
 
 {% endblock %}
