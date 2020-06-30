@@ -31,7 +31,7 @@ $('#edit-flow').on('click', (evt) => {
 
 const fillEditForm = (title, activities, duration) => {
 
-  $('#flow-title').replaceWith(`<input id="title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
+  $('#upd-flow-title').replaceWith(`<input id="upd-flow-title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
 
   for (event of activities) {
     $(`#${event}`).attr("checked", true);
@@ -39,6 +39,27 @@ const fillEditForm = (title, activities, duration) => {
 
   $(`#${duration}`).attr("checked", true);
 };
+
+
+$('#update-user-btn').on('click', (evt) => {
+  evt.preventDefault();
+
+  let activities = [];
+  $.each($('[name="upd-activity"]:checked'), function() {
+    activities.push($(this).val());
+  });
+
+  const formData = {
+    flow_id: $("#flow-id :selected").val(),
+    flow_title : $('#upd-flow-title').val(),
+    f_activities : activities,
+    duration : $('[name="upd-duration"]:checked').val(),
+    }
+
+  $.get('/submit_edits', formData, (response) => {
+    alert('update sent')
+  })
+});
 
 
 // The SOS button; Upon click, a text is sent to caregiver 
@@ -84,14 +105,6 @@ $('#start-shower').on('click', (evt) => {
   });
 });
 
-// The SOS button; TO DO: Personalize with the user's name
-$('#HELP').on('click', (evt) => {
-  $.get('/send_help', (response) => {
-
-
-      alert(response.msg);
-  })
-});
 
 // Run the user's shower routine. 
 //   Activity Name, Description, Video, Image, and Label color are

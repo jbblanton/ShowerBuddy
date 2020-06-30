@@ -191,7 +191,7 @@ TO DO:    Event listener for Snooze and Next buttons """
         flow_id = request.form.get('user_id')
 
     # Get a dictionary of activities for this flow
-        activities = crud.create_shower(flow_id)
+        activities = crud.create_shower_dict(flow_id)
 
     # Get a dictionary of products for this flow
         products = crud.create_product_dict(flow_id)
@@ -250,7 +250,7 @@ def edit_existing_user(flow_id):
     flow = crud.get_flow_object(flow_id)
     title = flow.title
 
-    activities = crud.create_shower(flow_id)
+    activities = crud.create_shower_dict(flow_id)
     activity_list = []
     for action in activities:
         activity_list.append(activities[action]['name'])
@@ -267,31 +267,29 @@ def edit_existing_user(flow_id):
         return jsonify({"success" : False, "message" : err})
 
 
-# @app.route('/submit_edits')
-# def make_edits():
-#     """Make requested changes to database"""
+@app.route('/submit_edits', methods=["GET"])
+def make_edits():
+    """Make requested changes to database"""
 
-#     flow_id = request.form.get('flow')
-#     print(flow_id)
-#     activities = request.form.getlist('upd-activity')
-#     # duration = int(request.form.get('upd-duration'))
+    flow_id = request.args.get('flow_id')
+    activities = request.args.getlist('f_activities[]')
+    duration = request.args.get('duration')
 
-#     print(activities)
-#     # print(duration)
+    title = request.args.get('flow_title')
+    if title == "" or title == None:
+        title = 'daily'
+    flow_title = title.lower()
 
-#     title = request.form.get('flow-title')
-#     if title == " " :
-#         title = 'daily'
-#     flow_title = title.lower()
-#     #update = crud.update_user_flow_title(flow_id, flow_title)
-#     print(flow_title)
+    update_flow = crud.update_user_flow(flow_id, duration, flow_title)
+    
+    update_activities = crud.update_user_activities(flow_id, activities)
 
-
-#     try:
-#         return jsonify({"success" : True, 
-#                     "msg" : 'This routine has been updated!',})
-#     except Exception as err:
-#         return jsonify({"success" : False, "message" : err})
+    # return flash('update submitted!')
+    try:
+        return jsonify({"success" : True, 
+                    "msg" : 'This routine has been updated!',})
+    except Exception as err:
+        return jsonify({"success" : False, "message" : err})
 
 
 

@@ -16,7 +16,9 @@ body.homescreen {
 }
 
 body.dashboard {
-    background: url('/static/img/tiles.jpg') ;: 
+    background: url('/static/img/tiles.jpg');
+    background: rgba( , , , 0.9);
+    /*I don't know if that actually made a difference...*/
 }
 
 .btn {
