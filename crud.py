@@ -183,30 +183,8 @@ def create_flow(activities, user, duration=20, title="daily"):
 
     return flow
 
-# No longer needed; Updated the Jinja to give flow_id; keeping until I'm 100% positive...
 
-# def get_users_flow_id(user):
-#     """Loads all available shower routines for a given user.
-#         Returns the flow id as an integer.
-        
-#         >>> crud.get_users_flow_id(2)
-#         ...
-#         2
-
-#         >>> crud.get_users_flow_id(10)
-#         IndexError: list index out of range
-#         """
-
-#     flows = db.session.query(Flow).filter(Flow.user_id == user).all()
-
-#     flow_id = flows[0].flow_id
-#     # hard coding this due to every user currently only having one flow.  
-# # TO DO: Edit when additional routines are an option!
-
-#     return flow_id
-
-
-def create_shower(flow_id):
+def create_shower_dict(flow_id):
     """Make a dictionary of activities for a given user"""
     # Shower Flow = { activity_id:
     #                 activity_name:
@@ -222,7 +200,6 @@ def create_shower(flow_id):
                             "name" : action[i].activity_name, 
                             "description" : action[i].description,
                             "video" : action[i].activity_video,
-
                             }
 
     return shower_flow
@@ -238,7 +215,6 @@ def get_length_of_shower(flow_id):
     return shower_length
 
 
-
 def create_product_dict(flow_id):
     """Make a dictionary of products needed during a given flow"""
 
@@ -250,7 +226,6 @@ def create_product_dict(flow_id):
 
     product_dict = {}
 
-
     all_products = db.session.query(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
 
     prod_list = []
@@ -258,7 +233,6 @@ def create_product_dict(flow_id):
     for i, prod in enumerate(all_products):
         prod_list.append(all_products[i].flow_act_id)
   
-
     for num in prod_list:
         product = db.session.query(Product).join(Flow_Product).filter(Flow_Product.fa_id == num).all()
         product_dict[num] = {"name" : product[0].product_name, 
@@ -284,12 +258,76 @@ def prevent_duplicates(caregiver, name, body, title):
 
     return False
 
+
 def get_flow_object(flow_id):
     """I know there has to be a better way..."""
 
     flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
 
     return flow
+
+
+def update_user_flow(flow_id, new_duration, new_title):
+    """Update a users flow title and duration"""
+    
+    old_flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
+
+    old_flow.title = new_title
+    old_flow.duration = new_duration
+
+    db.session.commit()
+
+    return old_flow
+
+
+def update_user_activities(flow_id, activities):
+    """Update the activities in a flow"""
+
+    old_action = db.session.query(Activity).join(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
+
+    if len(old_action) == len(activities):
+        for idx, act in enumerate(old_action):
+            for index, activity in enumerate(activities):
+                old_action[idx] = db.session.query(Activity).filter(Activity.activity_name == activities[idx]).first()
+        db.session.commit()
+
+    if len(old_action) > len(activities):
+        old = set(old_action) #this is printing a set of objects
+        print(old)
+        print('OLD')
+        new = set(activities)
+        print(new)
+        print('NEW')
+        remove = old - new
+        for act in list(remove):
+            print(act)
+            print('***********')
+
+
+
+    # old_flow.
+
+    # flow = Flow(title="daily", duration=duration, user=user)
+
+    # flow_obj = []
+
+    # # ['shampoo', 'bar soap', 'shave face']
+    # for activity in activities:
+    #     act = db.session.query(Activity).filter(Activity.activity_name == activity).first()
+    #     prod = db.session.query(Product).filter(Product.product_name == activity).first()
+    #     step = Flow_Activity(activity=act, flow=flow)
+    #     flow_obj.append(step)
+
+
+
+    # db.session.add(flow)
+    # db.session.add_all(flow_obj)
+    # db.session.add_all(prod_obj)
+    # db.session.commit()
+
+    # return flow
+
+
 
 
 #####  TO DO:  #####    
@@ -303,45 +341,7 @@ def update_product_images():
     # return success or fail message
 
 
-def update_user_flow_title(flow_id, new_title):
-    """Eventually, this will be used to
-        Update order, elements, images in a user's flow
 
-        For now, just name"""
-
-    old_flow = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
-
-    old_flow.title = new_title
-
-    db.session.commit()
-
-    # old_action = db.session.query(Activity).join(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
-    # old_products = db.session.query(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
-
-    # old_flow.
-
-    # flow = Flow(title="daily", duration=duration, user=user)
-
-    # flow_obj = []
-    # prod_obj = []
-
-    # # ['shampoo', 'bar soap', 'shave face']
-    # for activity in activities:
-    #     act = db.session.query(Activity).filter(Activity.activity_name == activity).first()
-    #     prod = db.session.query(Product).filter(Product.product_name == activity).first()
-    #     step = Flow_Activity(activity=act, flow=flow)
-    #     flow_obj.append(step)
-    #     thing = Flow_Product(flowacts=step, products=prod)
-    #     prod_obj.append(thing)
-
-
-    # db.session.add(flow)
-    # db.session.add_all(flow_obj)
-    # db.session.add_all(prod_obj)
-    # db.session.commit()
-
-    # return flow
-    pass
 
 
 if __name__ == '__main__':

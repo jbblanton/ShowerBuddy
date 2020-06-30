@@ -4,8 +4,6 @@
 
 update flow name:
 
-
-
 update flow order:
 
 update flow activities:
@@ -23,7 +21,7 @@ write custom descriptions: #}
 <h4> Choose a routine to edit </h4>
 
   <div id="current-data">
-    <form id="update-user" method='POST'>
+
 
 
   <select class="edit-flow" id="flow-id" name="select">
@@ -37,9 +35,10 @@ write custom descriptions: #}
 
   <button id="edit-flow">Edit</button>
 
+    <form id="update-user-form">
 
     <label for="flow-name">Name of routine:</label>
-    <input id="flow-title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name">
+    <input id="upd-flow-title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name">
 
    
       <legend>How does this person clean their Hair?</legend>
@@ -72,7 +71,7 @@ write custom descriptions: #}
         <label for="30">30</label>
     </fieldset>
   
-  <input id="update-user" type="submit" value="Update!">
+  <input id="update-user-btn" type="submit" value="Update!">
 
 </form>
 

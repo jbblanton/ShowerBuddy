@@ -33,7 +33,7 @@ $('#edit-flow').on('click', (evt) => {
 
 const fillEditForm = (title, activities, duration) => {
 
-  $('#flow-title').replaceWith(`<input id="title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
+  $('#upd-flow-title').replaceWith(`<input id="upd-flow-title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
 
   for (event of activities) {
     console.log(event)
@@ -42,6 +42,31 @@ const fillEditForm = (title, activities, duration) => {
 
   $(`#${duration}`).attr("checked", true);
 };
+
+// $('#update-user-btn').on('click', (evt) => {
+//   alert('the click is working')
+// });
+
+
+$('#update-user-btn').on('click', (evt) => {
+  evt.preventDefault();
+
+  let activities = [];
+  $.each($('[name="upd-activity"]:checked'), function() {
+    activities.push($(this).val());
+  });
+
+  const formData = {
+    flow_id: $("#flow-id :selected").val(),
+    flow_title : $('#upd-flow-title').val(),
+    f_activities : activities,
+    duration : $('[name="upd-duration"]:checked').val(),
+    }
+
+  $.get('/submit_edits', formData, (response) => {
+    alert('update sent')
+  })
+});
 
 
 
@@ -92,7 +117,6 @@ $('#start-shower').on('click', (evt) => {
 // The SOS button; TO DO: Personalize with the user's name
 $('#HELP').on('click', (evt) => {
   $.get('/send_help', (response) => {
->>>>>>> 4ecf779... WOO! Shower flow is functional!
 
       alert(response.msg);
   })
