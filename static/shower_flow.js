@@ -17,10 +17,9 @@ $("#about-button").on('click', function () {
 $('#edit-flow').on('click', (evt) => {
   (evt).preventDefault();
   const flow_id = $("#flow-id :selected").val();
-  console.log(flow_id)
 
   $.get(`/edit_user/${flow_id}`, (response) => {
-    console.log(response)
+
     if (response.success) {
       const activities = response.activities;
       const title = response.title;
@@ -37,13 +36,11 @@ const fillEditForm = (title, activities, duration) => {
   $('#flow-title').replaceWith(`<input id="title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
 
   for (event of activities) {
-    console.log(event)
     $(`#${event}`).attr("checked", true);
   };
 
   $(`#${duration}`).attr("checked", true);
 };
-
 
 
 // The SOS button; Upon click, a text is sent to caregiver 
