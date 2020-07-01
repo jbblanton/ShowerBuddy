@@ -5,10 +5,11 @@ $(function () {
 
 
 // For the ABOUT paragraph on the homepage:
-
-$("#about-button").on('click', function () {
-  $("#about-text").toggle();
-});
+$(document).ready(function(){
+  $("#about-button").on('click', function () {
+    $("#about-text").toggle();
+  });
+});  
 
 
 // Get flow_id for editing; This is on the edit_user page
@@ -34,6 +35,7 @@ const fillEditForm = (title, activities, duration) => {
   $('#upd-flow-title').replaceWith(`<input id="upd-flow-title" type="text" data-toggle="tooltip" data-placement="right" title="Try something like 'Sunday', 'quick-wash', etc. to help you distinguish different routines for the same person.  Hint: the default is 'daily'" name="flow-name" placeholder='${title}'>`);
 
   for (event of activities) {
+
     $(`#${event}`).attr("checked", true);
   };
 
@@ -72,6 +74,7 @@ $('#HELP').on('click', (evt) => {
   })
 });
 
+
 // This is to toggle visibility between dashboard and playing a shower flow:
 $(document).ready(function(){
   $('#start-shower').on('click', (evt) => {
@@ -90,10 +93,10 @@ $('#start-shower').on('click', (evt) => {
     user_id : $("#flow-id :selected").val(),
     };
 
-
   $.post('/start_shower', formData, (response) => {
+    
     if (response.success) {
-      // $( ).html(response.html)
+
       const activities = response.activities;
       const products = response.products;
       const duration = response.duration;

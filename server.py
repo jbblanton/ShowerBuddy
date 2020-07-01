@@ -2,15 +2,12 @@
 
 from flask import (Flask, render_template, jsonify, request, flash, session, redirect, url_for) 
 from jinja2 import StrictUndefined
-from model import (db, connect_to_db, Caregiver, User)
-from flask_login import (LoginManager, login_user, login_required, logout_user)
 import crud
 import model
 from twilio.rest import Client
 import os
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 
 app = Flask(__name__)
@@ -120,6 +117,7 @@ def register_user():
         flash('Oops! Looks like you already have a flow for this person.  If you\'re trying to create additional routines, give it a new name.')
     
     return render_template('dashboard.html', users=users)
+
 
 @app.route('/dashboard')
 @login_required
@@ -239,7 +237,7 @@ def show_edit_pg():
 def edit_existing_user(flow_id):
     """Link from dashboard.
         Can make edits to an existing user & their flow 
-    Plans include:
+    Tasks include:
         - Rename flow
         - Re-order activities
         - Add / remove activities

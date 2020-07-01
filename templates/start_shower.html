@@ -9,6 +9,7 @@
 
 {# <p class="start-shower">
   <h1 class="start-shower">Start a Shower Routine</h1>
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -43,12 +44,24 @@
          {% endfor %} #}
 >>>>>>> 5c1bb18... About to adjust pages to add a dashboard
 =======
+=======
+
+<form method="POST" class="start-shower"> 
+  <label class="start-shower" for="user-name">Who is taking a shower?</label>
+  <select class="start-shower" id="user-name" name="select">
+    {% for user in users %}
+      <option class="start-shower" value="{{user.user_id}}">{{user.user_name}}
+
+>>>>>>> nologin
  This won't work until you create a function that queries flows by users. Since we are defaulting with "daily" and haven't figured out how to add a flow for an existing user, IT DOESNT MATTER. 
 {#  I bet a lil' if/else action in here will bridge the gap #}
 {#       {% for flow in user %}
           <option value="{{flow.title}}">{{flow.title}}</option>
          {% endfor %}
+<<<<<<< HEAD
 >>>>>>> 4ecf779... WOO! Shower flow is functional!
+=======
+>>>>>>> nologin
 
       </option>
     {% endfor %}
@@ -79,6 +92,7 @@
     <hr>
 
   <h2 id="activity-name"> - Activity_name - Progress Bar</h2>
+<<<<<<< HEAD
 
     <div id="myProgress"><div id="myBar"></div>
 
@@ -92,6 +106,21 @@
 {# Obviously the 'click me' needs to go and the start will trigger automatically #}
     </div>
   
+=======
+
+    <div id="myProgress"><div id="myBar"></div>
+
+  <br>
+  
+
+{#   <p>{{ products }}</p> #}
+
+
+    <button onclick="move()">Click Me</button> 
+{# Obviously the 'click me' needs to go and the start will trigger automatically #}
+    </div>
+  
+>>>>>>> nologin
     <img id="product-img" src="/static/img/male_shower.png">
     <p id="product-label-color">insert a band of the label color under / near the image</p>   
 

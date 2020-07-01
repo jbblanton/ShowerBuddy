@@ -175,6 +175,7 @@ def create_flow(activities, user, duration=20, title="daily"):
         thing = Flow_Product(flowacts=step, products=prod)
         prod_obj.append(thing)
 
+
     db.session.add(flow)
     db.session.add_all(flow_obj)
     db.session.add_all(prod_obj)
@@ -208,9 +209,9 @@ def get_length_of_shower(flow_id):
     """Return duration of this shower flow"""
 
     length = db.session.query(Flow).filter(Flow.flow_id == flow_id).first()
- 
+
     shower_length = length.duration
-   
+  
     return shower_length
 
 

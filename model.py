@@ -6,6 +6,8 @@ import server
 from flask_login import UserMixin
 
 
+# os.system('dropdb testing')
+# os.system('createdb testing')
 
 db = SQLAlchemy()
 
@@ -25,7 +27,6 @@ class Caregiver(UserMixin, db.Model):
     telephone = db.Column(db.String(12),)
 
     users = db.relationship('User')
-
 
     def __repr__(self):
         return f'<Caregiver caregiver_id={self.caregiver_id}, email={self.email}, phone={self.telephone}>' 
@@ -78,6 +79,12 @@ class User(db.Model):
 
         pass
 
+    def check_if_user():
+        """Look for the combo of user name & body + caregiver
+            Goal: prevent duplication; redirect to "add a flow" """
+
+        pass
+
 
 class Flow(db.Model):
     """A user's shower routine"""
@@ -86,6 +93,7 @@ class Flow(db.Model):
 
     flow_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
     title = db.Column(db.String(60),)
+# default title = 'daily'
     duration = db.Column(db.Integer,)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
@@ -123,11 +131,9 @@ class Activity(db.Model):
     activity_video = db.Column(db.Text,)
 
     flow_act = db.relationship('Flow_Activity')
-    #act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Activity id={self.activity_id}, description={self.description}, video={self.activity_video}>'
-
 
 
 class Flow_Product(db.Model):
@@ -154,7 +160,6 @@ class Product(db.Model):
     product_name = db.Column(db.String(25), nullable = False,)
     product_label_color = db.Column(db.String(20),)
 
-    # act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Product id={self.product_id}, name={self.product_name}, label color={self.product_label_color}>'
