@@ -7,42 +7,44 @@
 {% block body %}
 
 <body class="dashboard">
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
+<div class="container-fluid" id="dashboard">
+  <div class="row" id="dashboard">
+    <div class="col-12" id="dashboard">
 
     <div class="start-shower" id="dashboard">
-      <div class="row mt-5 mb-3">
-        <div class="col-8 offset-2">
-          <h2 class="start-shower">Welcome, {{ current_user.caregiver_name.capitalize() }}!</h2>
+      <div class="row mt-5 mb-3" id="dashboard">
+        <div class="col-8 offset-2" id="dashboard">
+          <h2 class="start-shower" id="dashboard">Welcome, {{ current_user.caregiver_name.capitalize() }}!</h2>
         </div>
       </div>
     
-    <div class="row mt-5 mb-3">
+    <div class="row mt-5 mb-3" id="dashboard">
       <div class="col-3 offset-2">
       <button class="start-shower btn btn-outline-dark" id="new-user"><a href="/create_user">Add a new user</a></button>
       </div>
       <div class="col-4">
       <button class="start-shower btn btn-outline-dark" id="edit-flows"><a href="/edit_user">Edit a flow for an existing user</a></button>
       </div>
-    </div>
-
-
-    <div class="row mt-5 mb-3">
-      <div class="col-6 offset-2">
-        <p class="start-shower"></p>
-        <h2 class="start-shower">Start a Shower Routine</h2>
+      <div class="col-3">
+      <button class="start-shower btn btn-outline-dark" id="logout"><a href="/logout">Logout</a></button>
       </div>
     </div>
 
 
-<div class="row">
-  <div class="col-12">
+    <div class="row mt-5 mb-3" id="dashboard">
+      <div class="col-6 offset-2">
+        <p class="start-shower"></p>
+        <h3 class="start-shower">Start a Shower Routine</h3>
+      </div>
+    </div>
+
+
+<div class="row" id="dashboard">
+  <div class="col-10 offset-2">
     <div class="form-group row">
       <form form action="/start_shower" method="POST" class="start-shower"> 
-      {# <label class="col col-form-label pt-0 start-shower" for="flow-id"></label> #}
       <div class="col">
-      <select class="custom-select custom-select-lg mb-3 start-shower" id="flow-id" name="select">
+      <select class="custom-select shadow custom-select-md mb-3 start-shower" id="flow-id" name="select">
         <option selected>Who is taking a shower?</option>
 
         {% for user in current_user.users %}
@@ -53,18 +55,15 @@
         {% endfor %}
       </select>
 
+      </div>
+      <button type="submit" class="start-shower btn btn-outline-dark ml-3" id="start-shower" value="start-shower"><a href="/start_shower">Start Shower!</a></button>
 
-      <button type="submit" class="start-shower btn btn-outline-dark" id="start-shower" value="start-shower"><a href="/start_shower">Start Shower!</a></button>
       </form>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <button class="start-shower btn btn-outline-dark" id="logout"><a href="/logout">Logout</a></button>
-  </div>
-</div>
+
 </div>
 </div>
 
@@ -81,7 +80,7 @@
 
 
     <div class="col-2">
-      <button type="button" class="shower-action btn btn-danger btn-lg" id="HELP">HELP!</button>
+      <button type="button" class="shower-action btn btn-danger btn-lg mt-5" id="HELP">HELP!</button>
     </div>
   </div>
   
@@ -89,43 +88,45 @@
     <p class="col-12 mb-1 text-center shower-action" id="activity-descr">START by getting under the water! Get your body and hair wet.</p>
   </div>
   
-  <div class="row align-items-center">
+  <div id="vid-img-block">
+    <div class="row align-items-center">
     <div class="col-7 offset-1">
-  <div class="embed-responsive embed-responsive-16by9 shower-action" id="video-div">
-    <iframe class="embed-responsive-item justify-content-center shower-action" id="activity-video" src="https://giphy.com/embed/1tK61mF7P7x4I" allowFullScreen>    
-    </iframe>
-  </div>
-  </div>
-  <div class="col-4">
-    <img class="img-rounded img-fluid justify-content-left shower-action" id="product-img" src="/static/img/male_shower_transparent.png">
-    {# <p class="shower-action" id="product-label-color shower-action">insert a band of the label color under / near the image</p>   #}
-  </div>
-  </div>
-
-  <div class="row">
-    <h2 class="col-12 text-center" id="activity-name"> - INITIAL RINSE - </h2>
-
-    {# <div class="shower-action" id="myProgress"><div id="myBar"></div> #}
-  </div>
-
-
-
-
-</div>
-
-{# What if there is one more div for the aftershower? #}
-
-<div class="container-fluid shower-ended" id="shower-ended" design: style="display: none;">
-  <div class="row">
-    <div class="col-12 text-center">    
-      <h3 class="shower-ended">You're all done! Great work!</h3>
+      <div class="embed-responsive embed-responsive-16by9 shower-action" id="video-div">
+      <iframe class="embed-responsive-item justify-content-center shower-action" id="activity-video" src="https://giphy.com/embed/1tK61mF7P7x4I" allowFullScreen>    
+      </iframe>
+      </div>
     </div>
-  <div class="row">
-    <button class="col-8 shower-ended" id="shower-ended"><a href="/dashboard">Return to the Dashboard</a></button>
-  </div>
-  </div>
-</div>
+    <div class="col-3">
+      <img class="img-rounded img-fluid justify-content-left mr-5 shower-action" id="product-img" src="/static/img/male_shower_transparent.png">
+      {# <p class="shower-action" id="product-label-color shower-action">insert a band of the label color under / near the image</p>   #}
+      </div>
+    </div>
 
+    <div class="row">
+      <h2 class="col-10 text-center" id="activity-name"> - INITIAL RINSE - </h2>
+
+      {# <div class="shower-action" id="myProgress"><div id="myBar"></div> #}
+    </div>
+
+
+  </div>
+
+
+  {# This is the END of the shower - button click Returns to Dashboard #}
+      <div class="container-fluid shower-ended" id="shower-ended" design: style="display: none;">
+        <div class="row" id="shower-ended">
+          <div class="col-7 text-center">    
+            <h3 class="shower-ended">You're all done! Great work!</h3>
+          </div>
+        {# <div class="row" id="shower-ended"> #}
+          <button class="col-3 btn btn-outline-dark ml-3" id="shower-ended"><a href="/dashboard">Return to the Dashboard</a></button>
+        {# </div> #}
+        </div>
+      </div>
+  {# This is the END of the shower - button click Returns to Dashboard #}
+
+</div>
+</div>
 
 </body>
 

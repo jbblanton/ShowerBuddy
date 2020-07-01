@@ -279,54 +279,35 @@ def update_user_flow(flow_id, new_duration, new_title):
     return old_flow
 
 
-def update_user_activities(flow_id, activities):
+def update_user_activities(flow_id, activities, flow):
     """Update the activities in a flow"""
 
-    old_action = db.session.query(Activity).join(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).all()
-
-    if len(old_action) == len(activities):
-        for idx, act in enumerate(old_action):
-            for index, activity in enumerate(activities):
-                old_action[idx] = db.session.query(Activity).filter(Activity.activity_name == activities[idx]).first()
-        db.session.commit()
-
-    if len(old_action) > len(activities):
-        old = set(old_action) #this is printing a set of objects
-        print(old)
-        print('OLD')
-        new = set(activities)
-        print(new)
-        print('NEW')
-        remove = old - new
-        for act in list(remove):
-            print(act)
-            print('***********')
+    # TO DO: Work out deleting across tables
+    #    ref: passive_deletes & cascade="delete"
+    #       https://docs.sqlalchemy.org/en/13/orm/cascades.html
+    #       https://docs.sqlalchemy.org/en/13/orm/collections.html#passive-deletes
 
 
+    # # DELETE old_action
+    # old_action = db.session.query(Flow_Activity).filter(Flow_Activity.flow_id == flow_id).delete()
+    # old_products = db.session.query(Flow_Product).join(Flow_Activity).filter(Flow_Activity.flow_id == flow).delete()
 
-    # old_flow.
+    # db.session.commit()
 
-    # flow = Flow(title="daily", duration=duration, user=user)
-
-    # flow_obj = []
+    # # Create new rows on Flow_Activity with new activities
+    # new_steps = []
 
     # # ['shampoo', 'bar soap', 'shave face']
     # for activity in activities:
     #     act = db.session.query(Activity).filter(Activity.activity_name == activity).first()
-    #     prod = db.session.query(Product).filter(Product.product_name == activity).first()
     #     step = Flow_Activity(activity=act, flow=flow)
-    #     flow_obj.append(step)
+    #     new_steps.append(step)
 
-
-
-    # db.session.add(flow)
-    # db.session.add_all(flow_obj)
-    # db.session.add_all(prod_obj)
+    # db.session.add_all(new_steps)
     # db.session.commit()
 
     # return flow
-
-
+    pass
 
 
 #####  TO DO:  #####    

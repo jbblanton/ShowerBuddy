@@ -16,13 +16,14 @@ body.homescreen {
 }
 
 body.dashboard {
-    background: url('/static/img/tiles.jpg');
-    background: rgba( , , , 0.9);
+    background: url('/static/img/tiles_light.png');
+    /*background: rgba( , , , 0.9);*/
     /*I don't know if that actually made a difference...*/
 }
 
 .btn {
-    background-color: #B6BCCC;
+    background-color: #D9B45C;
+    /*background-color: #CCD9D6;*/*/
     color: black;
     box-shadow: inset 0 0 3px #000000;
 }
@@ -31,8 +32,31 @@ body.dashboard {
     background-color: red!important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.alert-custom {
+    background-color: #DC8223;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    color: white;
+}
+
+h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
+    color: black;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 2px;
+    size: 20em;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-width: 1px;
 }
 
 #video-div {

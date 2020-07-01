@@ -129,6 +129,7 @@ class Activity(db.Model):
         return f'<Activity id={self.activity_id}, description={self.description}, video={self.activity_video}>'
 
 
+
 class Flow_Product(db.Model):
     """Tying a unique flow to the necessary products"""
 

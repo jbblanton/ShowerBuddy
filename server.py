@@ -75,14 +75,14 @@ def register_user():
 
         password = generate_password_hash(cg_pass, method='sha256')
 
-        # Instantiate a Caregiver object
-        caregiver = crud.create_caregiver(cg_name, cg_email, cg_phone, password)
-        
-        login_user(caregiver)
+        dupe_cg = model.Caregiver.check_if_registered(cg_email)
 
-##########
-    alert = crud.send_creation_alert(API_SID, AUTH)
-##########
+        if dupe_cg:
+            login_user(dupe_cg)
+        else:
+            # Instantiate a Caregiver object
+            caregiver = crud.create_caregiver(cg_name, cg_email, cg_phone, password)
+            login_user(caregiver)
 
     if current_user.is_authenticated:
         caregiver = current_user   
@@ -92,7 +92,7 @@ def register_user():
     user_name = name.capitalize()
     user_body = request.form.get('body')
     flow = request.form.get('flow-name')
-    if flow == " " :
+    if flow == "":
         flow = 'daily'
     flow_title = flow.lower()
 
@@ -280,9 +280,9 @@ def make_edits():
         title = 'daily'
     flow_title = title.lower()
 
-    update_flow = crud.update_user_flow(flow_id, duration, flow_title)
+    updated_flow = crud.update_user_flow(flow_id, duration, flow_title)
     
-    update_activities = crud.update_user_activities(flow_id, activities)
+# TO DO:  updated_activities = crud.update_user_activities(flow_id, activities, updated_flow)
 
     # return flash('update submitted!')
     try:
