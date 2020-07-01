@@ -19,7 +19,7 @@ $('#edit-flow').on('click', (evt) => {
   console.log(flow_id)
 
   $.get(`/edit_user/${flow_id}`, (response) => {
-    console.log(response)
+
     if (response.success) {
       const activities = response.activities;
       const title = response.title;
@@ -43,10 +43,6 @@ const fillEditForm = (title, activities, duration) => {
   $(`#${duration}`).attr("checked", true);
 };
 
-// $('#update-user-btn').on('click', (evt) => {
-//   alert('the click is working')
-// });
-
 
 $('#update-user-btn').on('click', (evt) => {
   evt.preventDefault();
@@ -69,16 +65,15 @@ $('#update-user-btn').on('click', (evt) => {
 });
 
 
-
 // The SOS button; Upon click, a text is sent to caregiver 
 //  & an alert pops on screen.
 $('#HELP').on('click', (evt) => {
   const flow_id = { flow_id : $("#flow-id :selected").val() };
-  console.log(flow_id)
   $.get('/send_help', flow_id, (response) => {
     alert(response.msg);
   })
 });
+
 
 // This is to toggle visibility between dashboard and playing a shower flow:
 $(document).ready(function(){
@@ -97,16 +92,14 @@ $('#start-shower').on('click', (evt) => {
   const formData = {
     user_id : $("#flow-id :selected").val(),
     };
-    console.log(formData.user_id)
 
   $.post('/start_shower', formData, (response) => {
+    
     if (response.success) {
-      // $( ).html(response.html)
       const activities = response.activities;
       const products = response.products;
       const duration = response.duration;
       runShowerFlow(activities, products, duration);
-//      exitShowerFlow(duration);
 
     } else {
       alert(`Error: ${response.error}`);
@@ -135,8 +128,6 @@ const runShowerFlow = (activities, products, duration) => {
 
   const showerSeq = Object.keys(activities)
   const showerProds = Object.keys(products)
-  console.log(showerSeq)
-  console.log(showerProds)
   
 //  const interval = (duration / (showerSeq.length + 2)) * 60 * 1000
   const Testinterval = (duration / (showerSeq.length + 2)) * 1000
@@ -192,10 +183,3 @@ const runShowerFlow = (activities, products, duration) => {
     }
   };
 };
-
-
-
-
-
-  // $("div.shower-action").hide()}, exitTime);
-  // setTimeout(() => {$("div.shower-ended").show()}, exitTime);

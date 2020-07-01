@@ -2,7 +2,6 @@
 
 import os
 from flask_sqlalchemy import SQLAlchemy
-# import crud
 import server
 from flask_login import UserMixin
 
@@ -119,7 +118,6 @@ class Activity(db.Model):
     activity_video = db.Column(db.Text,)
 
     flow_act = db.relationship('Flow_Activity')
-    #act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return """ f'<Activity id={self.activity_id}, 
@@ -151,7 +149,6 @@ class Product(db.Model):
     product_name = db.Column(db.String(25), nullable = False,)
     product_label_color = db.Column(db.String(20),)
 
-    # act_prod_id = db.relationship('Activity_Product')
 
     def __repr__(self):
         return f'<Product id={self.product_id}, name={self.product_name}, \

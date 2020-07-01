@@ -122,7 +122,7 @@ def caregiver_control_panel():
     """A page for a caregiver to 
         -Add a new user
         -Add a new flow to existing user
-TO DO:  -Edit a flow/user
+        -Edit a flow/user
         -Start the shower for one of their users
         """
 
@@ -151,7 +151,6 @@ def log_in():
         else:
             error = 'Invalid credentials.'
             flash('Account not found. Please try again, or create an account!')
-            print('error message here')
 
     return render_template('homepage.html', error=error)
 
@@ -185,7 +184,6 @@ TO DO:    Event listener for Snooze and Next buttons """
 
     # Get the flow_id from the FE based on who's in the drop-down:
         flow_id = request.form.get('user_id')
-        print(flow_id)
 
     # Get a dictionary of activities for this flow
         activities = crud.create_shower_dict(flow_id)
@@ -236,7 +234,7 @@ def show_edit_pg():
 def edit_existing_user(flow_id):
     """Link from dashboard.
         Can make edits to an existing user & their flow 
-    Plans include:
+    Tasks include:
         - Rename flow
         - Re-order activities
         - Add / remove activities
