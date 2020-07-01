@@ -124,32 +124,7 @@ class Activity(db.Model):
     def __repr__(self):
         return """ f'<Activity id={self.activity_id}, 
                 description={self.description}, 
-                video={self.activity_video}>' """
-
-
-
-## Deactivated this table on 6/5 based on a conversation with mentor R. 
-## Since one activity (shampooing) can have many products due to the number of 
-## unique users (Bob uses Pert, Lola uses Suave, Pickle uses Pantene, etc.), 
-## this was a messy connection.
-## This table is being replaced by Flow_Product which will tuple a 
-## flow_act_id and product_id to allow the unique combo of user + product.
-##
-# class Activity_Product(db.Model):
-#     """Connector table between Activities & Products """
-
-#     __tablename__ = "activity_products"
-
-#     act_prod_id = db.Column(db.Integer, primary_key = True, autoincrement = True,)
-#     activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'))
-#     product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'))
-
-#     activity = db.relationship('Activity')
-#     product = db.relationship('Product')
-
-#     def __repr__(self):
-#         return f'<Act_Prod id={self.act_prod_id}, activity_id={self.activity_id}, \
-#                 product_id={self.product_id}>' 
+                video={self.activity_video}>' """ 
 
 
 class Flow_Product(db.Model):
