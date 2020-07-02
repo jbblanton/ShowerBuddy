@@ -51,7 +51,7 @@ def seed_activities():
     Activities_dictionary = {
     "shampoo": {
         "description": "Put a small amount of shampoo into your hand, rub your hands together, and then rub this shampoo into your hair. Use your fingertips to massage your head, so the shampoo can clean your scalp.", 
-        "video": "https://giphy.com/embed/1dPi0Gy6t0rTQQvTZ6",
+        "video": "https://giphy.com/embed/10uVasOeFs6U92",
         "image": "/static/img/shampoo.png"
         }, 
     "conditioner": {
@@ -81,7 +81,7 @@ def seed_activities():
         },
     "shave-legs": {
         "description": "Squirt a small amount of shaving cream into your palm, rub your hands together, and then smear the cream on your left leg. Carefully shave away any hair. Repeat this on your right leg. Take your time!",
-        "video": "https://giphy.com/embed/LvBMdu0KRfKlq",
+        "video": "https://giphy.com/embed/TlK63EoG08XCy2J9ZWU",
         "image": "/static/img/lady_razor.png"
         },
 }
@@ -137,3 +137,17 @@ example_people()
 # <iframe src="https://giphy.com/embed/yoJC2zNPBxSVPNQC0o" width="480" height="271" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/skintimate-shower-shave-gel-yoJC2zNPBxSVPNQC0o">via GIPHY</a></p>  shaving-cream
 
 # <iframe src="https://giphy.com/embed/l0HlEIP347YAFjq6I" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/wikihow-daily-bath-l0HlEIP347YAFjq6I">via GIPHY</a></p>  taking a shower
+
+# <iframe src="https://giphy.com/embed/10uVasOeFs6U92" width="480" height="267" frameBorder="0" 
+# class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/
+# commercial-vintage-gif-shampoo-10uVasOeFs6U92">via GIPHY</a></p>  woman shampooing
+
+# <iframe src="https://giphy.com/embed/h6fdp40290xriG7kLl" width="480" height="351" frameBorder="0" 
+# class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/
+# tcm-tcmff-tcmff2020-lost-horizon-h6fdp40290xriG7kLl">via GIPHY</a></p> woman final rinse
+
+# <iframe src="https://giphy.com/embed/3o6Mb37iKrmLpiTTBC" width="480" height="366" frameBorder="0"
+#  class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/
+#  season-5-the-simpsons-5x13-3o6Mb37iKrmLpiTTBC">via GIPHY</a></p>  homer final rinse
+
+<iframe src="https://giphy.com/embed/TlK63EoG08XCy2J9ZWU" width="480" height="271" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/skintimate-shave-lotion-gel-TlK63EoG08XCy2J9ZWU">via GIPHY</a></p> shave legs with cream

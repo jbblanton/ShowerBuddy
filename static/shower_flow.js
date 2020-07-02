@@ -59,7 +59,7 @@ $('#update-user-btn').on('click', (evt) => {
     }
 
   $.get('/submit_edits', formData, (response) => {
-    alert('update sent')
+    alert('The updates have been made!')
   })
 });
 
@@ -122,57 +122,50 @@ const runShowerFlow = (activities, products, duration) => {
   const showerProds = Object.keys(products)
   
 //  const interval = (duration / (showerSeq.length + 2)) * 60 * 1000
-  const Testinterval = (duration / (showerSeq.length + 2)) * 1000
 
-  console.log(Testinterval)
+// For the demo:
+  const demoInterval = (duration / (showerSeq.length + 2)) * 2000 
 
 // Run the actual shower flow:
 //    NOTE: This is assuming the length of both lists are equal; 
 //      If & when caregivers can add images, 
 //      this will not be true (eg. razor and shaving cream)  
-  for (let idx = 0; idx <= showerSeq.length + 2; idx++) {
+  for (let idx = 0; idx <= (showerSeq.length + 2); idx++) {
     if (idx < showerSeq.length) {
 //      let time = interval + (interval * idx)
-      let testTime = Testinterval +(Testinterval * idx)
-      console.log(testTime)
-      console.log(activities[showerSeq[idx]]['name'])
-      setTimeout(() => {$('h2#activity-name').html(activities[showerSeq[idx]]['name'].toUpperCase())}, testTime);
-      setTimeout(() => {$('#activity-descr').html(activities[showerSeq[idx]]['description'])}, testTime);
-      setTimeout(() => {$('#activity-video').attr('src', activities[showerSeq[idx]]["video"])}, testTime); 
-      setTimeout(() => {$('#product-img').attr('src', products[showerProds[idx]]["image"])}, testTime);
+      let demoTime = demoInterval + (demoInterval * idx)
+
+      setTimeout(() => {$('h2#activity-name').html(activities[showerSeq[idx]]['name'].toUpperCase())}, demoTime);
+      setTimeout(() => {$('#activity-descr').html(activities[showerSeq[idx]]['description'])}, demoTime);
+      setTimeout(() => {$('#activity-video').attr('src', activities[showerSeq[idx]]["video"])}, demoTime); 
+      setTimeout(() => {$('#product-img').attr('src', products[showerProds[idx]]["image"])}, demoTime);
       // setTimeout(() => {$('product-label-color').attr('color', products[showerProds[idx]]['label_color'])});
     } else if (idx === showerSeq.length) {
 //      const endTime = (duration * 60 * 1000) - interval
-      const Testtime = Testinterval + (1000 * showerSeq.length)
-      console.log('final rinse:')
-      console.log(Testtime)
+      const demoFR = (duration * 2000) - demoInterval 
 
-        setTimeout(() => {$('h2#activity-name').html('FINAL RINSE')}, Testtime);
-        setTimeout(() => {$('#activity-descr').html('RINSE all over; Make sure there\'s no more soap suds on your body or hair.')}, Testtime);
-        setTimeout(() => {$('#activity-video').attr('src', "https://giphy.com/embed/1tK61mF7P7x4I")}, Testtime);   
-        setTimeout(() => {$('#product-img').attr('src', '/static/img/shower_head2.png')}, Testtime);
+        setTimeout(() => {$('h2#activity-name').html('FINAL RINSE')}, demoFR);
+        setTimeout(() => {$('#activity-descr').html('RINSE all over; Make sure there\'s no more soap suds on your body or hair.')}, demoFR);
+        setTimeout(() => {$('#activity-video').attr('src', "https://giphy.com/embed/1tK61mF7P7x4I")}, demoFR);   
+        setTimeout(() => {$('#product-img').attr('src', '/static/img/shower_head2.png')}, demoFR);
     } else if (idx === showerSeq.length + 1) {
 //        let thisTime = duration * 60 * 1000
-        let TestthisTime = duration * 1000
-        console.log('all done:')
-        console.log(TestthisTime)
+        let demoDry = duration * 2000
 
-        setTimeout(() => {$('h2#activity-name').html('ALL DONE! DRY OFF')}, TestthisTime);
-        setTimeout(() => {$('#activity-descr').html('Turn the water off. Carefully reach for your towel and dry your body, starting from your face, then shoulders and arms, and work your way down to your toes.  Be careful stepping out of the shower!')}, TestthisTime);
-        setTimeout(() => {$('#activity-video').attr('src', "https://giphy.com/embed/kDBhX1Il2PZL66ljiL")}, TestthisTime);   
-        setTimeout(() => {$('#product-img').attr('src', '')}, TestthisTime);
+        setTimeout(() => {$('h2#activity-name').html('ALL DONE! DRY OFF')}, demoDry);
+        setTimeout(() => {$('#activity-descr').html('Turn the water off. Carefully reach for your towel and dry your body, starting from your face, then shoulders and arms, and work your way down to your toes.  Be careful stepping out of the shower!')}, demoDry);
+        setTimeout(() => {$('#activity-video').attr('src', "https://giphy.com/embed/kDBhX1Il2PZL66ljiL")}, demoDry);   
+        setTimeout(() => {$('#product-img').attr('src', '/static/img/red_towel.png')}, demoDry);
     } else if (idx === showerSeq.length + 2) {
 //        let thisTime = (duration + 2) * 60 * 1000     
-        let TestthisTime = duration * 2000
-        console.log('The End:')
-        console.log(TestthisTime)
-        setTimeout(() => {$('h2#activity-name').html('GREAT JOB!')},TestthisTime);
-        setTimeout(() => {$('#activity-descr').hide()}, TestthisTime);
-        setTimeout(() => {$('#vid-img-block').hide()}, TestthisTime);
+        let demoExit = (duration  + 2) * 2000
+
+        setTimeout(() => {$('h2#activity-name').html('GREAT JOB!')},demoExit);
+        setTimeout(() => {$('#activity-descr').hide()}, demoExit);
+        setTimeout(() => {$('#vid-img-block').hide()}, demoExit);
         // setTimeout(() => {$('#video-div').collapse()}, TestthisTime);
         // setTimeout(() => {$('#product-img').collapse()}, TestthisTime);
-        setTimeout(() => {$("#shower-ended").show()}, TestthisTime);
+        setTimeout(() => {$("#shower-ended").show()}, demoExit);
     }
   };
-
 };

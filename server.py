@@ -150,7 +150,7 @@ def log_in():
             name = active.caregiver_name
             users = active.users
             login_user(active)
-            return redirect(url_for('caregiver_control_panel', cg_name=name, users=users))
+            return redirect(url_for('caregiver_control_panel'))
         else:
             error = 'Invalid credentials.'
             flash('Account not found. Please try again, or create an account!')

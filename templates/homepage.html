@@ -21,8 +21,10 @@
     About the Shower Buddy
     </button>
 
-    <p id="about-text" style="display: none">ShowerBuddy is desgined to guide a person through the steps of taking a shower, allowing them greater independence in their personal hygeine.
-    It has been designed especially for those with I/DD and other types of cognitive impairments that make it hard to complete many-stepped tasks.</p>
+    <div id="about-text" class="border border-dark rounded px-1 pt-1" style="display: none">
+      <p>ShowerBuddy is desgined to guide a person through the steps of taking a shower, allowing them greater independence in their personal hygeine.</p>
+      <p>It has been designed especially for those with I/DD and other types of cognitive impairments that make it hard to complete many-stepped tasks.</p>
+    </div>
   </div>
 
   <div class="col-4">
@@ -34,7 +36,8 @@
 
 <div class="row mt-5 mb-5">
   <div class="col-6 offset-2">
-    <h5>Already have an account? Please login to start a shower!</h5>
+    <h5 class="dash">Already have an account?</h5>
+    <h5 class="dash">Please login to start a shower!</h5>
 
   
     <form id="login" action="/login" method="POST">

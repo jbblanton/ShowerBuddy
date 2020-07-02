@@ -1,3 +1,14 @@
+.alert-custom {
+    background-color: #DC8223;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    color: white;
+}
 
 body {
     margin: 0;
@@ -32,18 +43,6 @@ body.dashboard {
     background-color: red!important;
 }
 
-.alert-custom {
-    background-color: #DC8223;
-}
-
-a {
-    color: black;
-}
-
-a:hover {
-    color: white;
-}
-
 h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
     color: black;
@@ -54,15 +53,30 @@ h1 {
     font-weight: bold;
     color: white;
     letter-spacing: 2px;
-    size: 20em;
+    font-size: 4em;
     -webkit-text-fill-color: black;
     -webkit-text-stroke-width: 1px;
 }
 
+h5.dash {
+    font-weight: bold;
+    color: black;
+    letter-spacing: 2px;
+    font-size: 1.5em;
+    -webkit-text-fill-color: black;
+    -webkit-text-stroke-width: 1px;
+}
+
+div#about-text {
+    background-color: white;
+    border-color: #616F72;
+    border-width: 1px;
+}
+
 #video-div {
-    width:80%;
+    width:100%;
     height:0;
-    padding-bottom:66%;
+    padding-bottom:80%;
     position:relative;
 }
 
