@@ -150,4 +150,4 @@ example_people()
 #  class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/
 #  season-5-the-simpsons-5x13-3o6Mb37iKrmLpiTTBC">via GIPHY</a></p>  homer final rinse
 
-<iframe src="https://giphy.com/embed/TlK63EoG08XCy2J9ZWU" width="480" height="271" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/skintimate-shave-lotion-gel-TlK63EoG08XCy2J9ZWU">via GIPHY</a></p> shave legs with cream
+# <iframe src="https://giphy.com/embed/TlK63EoG08XCy2J9ZWU" width="480" height="271" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/skintimate-shave-lotion-gel-TlK63EoG08XCy2J9ZWU">via GIPHY</a></p> shave legs with cream
